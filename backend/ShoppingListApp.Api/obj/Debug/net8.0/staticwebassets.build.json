@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "8plQ5VJcz8fAhjgDEJfLcownScl5R20Am79haIrABA0=",
+  "Source": "ShoppingListApp.Api",
+  "BasePath": "_content/ShoppingListApp.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

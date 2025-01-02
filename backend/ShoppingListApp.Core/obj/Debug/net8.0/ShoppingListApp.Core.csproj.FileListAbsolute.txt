@@ -1,0 +1,12 @@
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.AssemblyInfoInputs.cache
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.AssemblyInfo.cs
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.csproj.CoreCompileInputs.cache
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.sourcelink.json
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\bin\Debug\net8.0\ShoppingListApp.Core.deps.json
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\bin\Debug\net8.0\ShoppingListApp.Core.dll
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\bin\Debug\net8.0\ShoppingListApp.Core.pdb
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.dll
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\refint\ShoppingListApp.Core.dll
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ShoppingListApp.Core.pdb
+C:\Users\Stefa\Projects\vue-dotnet-collaborative_shopping_list\collaborative-shopping-list\backend\ShoppingListApp.Core\obj\Debug\net8.0\ref\ShoppingListApp.Core.dll

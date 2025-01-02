@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ShoppingListApp.Core/1.0.0": {
+        "runtime": {
+          "ShoppingListApp.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ShoppingListApp.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

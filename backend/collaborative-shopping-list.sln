@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingListApp.Api", "ShoppingListApp.Api\ShoppingListApp.Api.csproj", "{437AEE81-9465-4E5D-9090-14C692C4E239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingListApp.Core", "ShoppingListApp.Core\ShoppingListApp.Core.csproj", "{FD9DB23B-C7FD-4646-80E5-5A2A8844F16F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingListApp.Infrastructure", "ShoppingListApp.Infrastructure\ShoppingListApp.Infrastructure.csproj", "{7C477D29-9973-4F9D-A919-686BD23B2DB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{437AEE81-9465-4E5D-9090-14C692C4E239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{437AEE81-9465-4E5D-9090-14C692C4E239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{437AEE81-9465-4E5D-9090-14C692C4E239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{437AEE81-9465-4E5D-9090-14C692C4E239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD9DB23B-C7FD-4646-80E5-5A2A8844F16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9DB23B-C7FD-4646-80E5-5A2A8844F16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9DB23B-C7FD-4646-80E5-5A2A8844F16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9DB23B-C7FD-4646-80E5-5A2A8844F16F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C477D29-9973-4F9D-A919-686BD23B2DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C477D29-9973-4F9D-A919-686BD23B2DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C477D29-9973-4F9D-A919-686BD23B2DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C477D29-9973-4F9D-A919-686BD23B2DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
