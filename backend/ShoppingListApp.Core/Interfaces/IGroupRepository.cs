@@ -6,4 +6,6 @@
     Task AddAsync(Group group);
     Task UpdateAsync(Group group);
     Task DeleteAsync(Group group);
+    Task AddUserToGroupAsync(GroupMember groupMember);
+    Task RemoveUserFromGroupAsync(int groupId, int userId);
 }

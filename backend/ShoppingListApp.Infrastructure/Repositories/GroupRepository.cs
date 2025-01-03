@@ -49,4 +49,21 @@ public class GroupRepository : IGroupRepository
         _context.Groups.Remove(group);
         await _context.SaveChangesAsync();
     }
+    public async Task AddUserToGroupAsync(GroupMember groupMember)
+    {
+        _context.GroupMembers.Add(groupMember);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveUserFromGroupAsync(int groupId, int userId)
+    {
+        var groupMember = await _context.GroupMembers
+            .FirstOrDefaultAsync(gm => gm.GroupId == groupId && gm.UserId == userId);
+
+        if (groupMember != null)
+        {
+            _context.GroupMembers.Remove(groupMember);
+            await _context.SaveChangesAsync();
+        }
+    }
 }

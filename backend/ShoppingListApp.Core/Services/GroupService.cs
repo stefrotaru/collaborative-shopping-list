@@ -100,4 +100,52 @@
         // Delete the group from the database
         await _groupRepository.DeleteAsync(group);
     }
+
+    public async Task AddUserToGroupAsync(int groupId, int userId, string role)
+    {
+        // Check if the group exists
+        var group = await _groupRepository.GetByIdAsync(groupId);
+        if (group == null)
+        {
+            throw new ArgumentException("Group not found.");
+        }
+
+        // Check if the user exists
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        // Create a new GroupMember entity
+        var groupMember = new GroupMember
+        {
+            GroupId = groupId,
+            UserId = userId,
+            Role = role
+        };
+
+        // Add the user to the group
+        await _groupRepository.AddUserToGroupAsync(groupMember);
+    }
+
+    public async Task RemoveUserFromGroupAsync(int groupId, int userId)
+    {
+        // Check if the group exists
+        var group = await _groupRepository.GetByIdAsync(groupId);
+        if (group == null)
+        {
+            throw new ArgumentException("Group not found.");
+        }
+
+        // Check if the user exists
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        // Remove the user from the group
+        await _groupRepository.RemoveUserFromGroupAsync(groupId, userId);
+    }
 }
