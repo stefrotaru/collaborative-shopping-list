@@ -1,3 +1,9 @@
 
 .codegpt
 /backend/.vs
+
+bin/
+obj/
+
+/client/.vscode
+node_modules
