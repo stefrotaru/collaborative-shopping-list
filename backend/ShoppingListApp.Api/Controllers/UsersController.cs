@@ -14,6 +14,11 @@ public class UsersController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterUserDto registerUserDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var user = await _userService.RegisterUserAsync(registerUserDto.Username, registerUserDto.Email, registerUserDto.Password);
         return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
@@ -21,6 +26,11 @@ public class UsersController : ControllerBase
     [HttpPost("authenticate")]
     public async Task<ActionResult<UserDto>> Authenticate(AuthenticateUserDto authenticateUserDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var user = await _userService.AuthenticateUserAsync(authenticateUserDto.Email, authenticateUserDto.Password);
         return Ok(user);
     }
@@ -28,6 +38,11 @@ public class UsersController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetById(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var user = await _userService.GetUserByIdAsync(id);
         return Ok(user);
     }

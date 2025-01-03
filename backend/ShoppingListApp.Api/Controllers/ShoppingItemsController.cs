@@ -14,6 +14,11 @@ public class ShoppingItemsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ShoppingItemDto>> Create(CreateShoppingItemDto createShoppingItemDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var shoppingItem = await _shoppingItemService.AddShoppingItemAsync(createShoppingItemDto.Name, createShoppingItemDto.Quantity, createShoppingItemDto.ShoppingListId, createShoppingItemDto.CreatedById);
         return CreatedAtAction(nameof(GetById), new { id = shoppingItem.Id }, shoppingItem);
     }
@@ -21,6 +26,11 @@ public class ShoppingItemsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ShoppingItemDto>> GetById(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var shoppingItem = await _shoppingItemService.GetShoppingItemByIdAsync(id);
         return Ok(shoppingItem);
     }
@@ -28,6 +38,11 @@ public class ShoppingItemsController : ControllerBase
     [HttpGet("shoppinglist/{shoppingListId}")]
     public async Task<ActionResult<IEnumerable<ShoppingItemDto>>> GetByShoppingListId(int shoppingListId)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var shoppingItems = await _shoppingItemService.GetShoppingItemsByShoppingListIdAsync(shoppingListId);
         return Ok(shoppingItems);
     }
@@ -35,6 +50,11 @@ public class ShoppingItemsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdateShoppingItemDto updateShoppingItemDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         await _shoppingItemService.UpdateShoppingItemAsync(id, updateShoppingItemDto.Name, updateShoppingItemDto.Quantity, updateShoppingItemDto.IsChecked);
         return NoContent();
     }
@@ -42,6 +62,11 @@ public class ShoppingItemsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         await _shoppingItemService.DeleteShoppingItemAsync(id);
         return NoContent();
     }

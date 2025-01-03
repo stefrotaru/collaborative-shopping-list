@@ -14,6 +14,11 @@ public class GroupMembersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddUserToGroup(int groupId, int userId, string role)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         await _groupService.AddUserToGroupAsync(groupId, userId, role);
         return Ok();
     }
@@ -21,6 +26,11 @@ public class GroupMembersController : ControllerBase
     [HttpDelete("{groupId}/{userId}")]
     public async Task<IActionResult> RemoveUserFromGroup(int groupId, int userId)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         await _groupService.RemoveUserFromGroupAsync(groupId, userId);
         return Ok();
     }

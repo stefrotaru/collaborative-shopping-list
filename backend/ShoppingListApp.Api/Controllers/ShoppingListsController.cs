@@ -14,6 +14,11 @@ public class ShoppingListsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ShoppingListDto>> Create(CreateShoppingListDto createShoppingListDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var shoppingList = await _shoppingListService.CreateShoppingListAsync(createShoppingListDto.Name, createShoppingListDto.GroupId, createShoppingListDto.CreatedById);
         return CreatedAtAction(nameof(GetById), new { id = shoppingList.Id }, shoppingList);
     }
@@ -21,6 +26,11 @@ public class ShoppingListsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ShoppingListDto>> GetById(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var shoppingList = await _shoppingListService.GetShoppingListByIdAsync(id);
         return Ok(shoppingList);
     }
@@ -28,6 +38,11 @@ public class ShoppingListsController : ControllerBase
     [HttpGet("group/{groupId}")]
     public async Task<ActionResult<IEnumerable<ShoppingListDto>>> GetByGroupId(int groupId)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var shoppingLists = await _shoppingListService.GetShoppingListsByGroupIdAsync(groupId);
         return Ok(shoppingLists);
     }
@@ -35,6 +50,11 @@ public class ShoppingListsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdateShoppingListDto updateShoppingListDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         await _shoppingListService.UpdateShoppingListAsync(id, updateShoppingListDto.Name);
         return NoContent();
     }
@@ -42,6 +62,11 @@ public class ShoppingListsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         await _shoppingListService.DeleteShoppingListAsync(id);
         return NoContent();
     }
