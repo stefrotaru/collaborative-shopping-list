@@ -46,4 +46,16 @@ public class UsersController : ControllerBase
         var user = await _userService.GetUserByIdAsync(id);
         return Ok(user);
     }
+    //TODO: Implement the Edit and Delete methods
+    // Edit should only edit the username and email of the user
+    //[HttpPut("edit/{id}")]
+    //public async Task<ActionResult<UserDto>> Edit(int id, RegisterUserDto registerUserDto)
+    //{
+    //    if (!ModelState.IsValid)
+    //    {
+    //        return BadRequest(ModelState);
+    //    }
+    //    var user = await _userService.EditUserAsync(id, registerUserDto.Username, registerUserDto.Email, registerUserDto.Password);
+    //    return Ok(user);
+    //}
 }

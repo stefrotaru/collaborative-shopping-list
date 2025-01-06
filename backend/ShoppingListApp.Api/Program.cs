@@ -40,6 +40,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors(policy =>
+    policy
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
 app.Run();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

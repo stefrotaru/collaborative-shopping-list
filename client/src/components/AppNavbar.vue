@@ -1,7 +1,7 @@
 <template>
   <nav class="app-navbar">
     <div class="app-navbar__logo">
-      <img src="../assets/vue.svg" alt="Logo" />
+      <img src="../assets/vue.svg" alt="Logo" @click="$router.push('/home')"/>
     </div>
     <div class="app-navbar__user-profile">
       <Avatar @click="globalStore.toggleSidebar()"/>
@@ -26,6 +26,8 @@ const globalStore = useGlobalStore();
   background-color: #18181b;
 
   &__logo {
+    cursor: pointer;
+    
     img {
       height: 40px;
     }

@@ -4,6 +4,7 @@ import { ref } from "vue";
 export const useGlobalStore = defineStore("globalStore", () => {
   const isSidebarVisible = ref(false);
   const breadcrumbs = ref([]);
+  const isAuthenticated = ref(false);
 
   const toggleSidebar = () => {
     isSidebarVisible.value = !isSidebarVisible.value;
@@ -34,6 +35,8 @@ export const useGlobalStore = defineStore("globalStore", () => {
     setBreadcrumbs,
     clearBreadcrumbs,
     addCrumb,
-    removeCrumb
+    removeCrumb,
+
+    isAuthenticated,
   };
 });
