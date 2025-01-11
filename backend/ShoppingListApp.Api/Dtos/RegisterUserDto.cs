@@ -12,4 +12,6 @@ public class RegisterUserDto
     [Required]
     [StringLength(100)]
     public string Password { get; set; }
+
+    public string Avatar { get; set; }
 }

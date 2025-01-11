@@ -19,7 +19,7 @@ public class UsersController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var user = await _userService.RegisterUserAsync(registerUserDto.Username, registerUserDto.Email, registerUserDto.Password);
+        var user = await _userService.RegisterUserAsync(registerUserDto.Username, registerUserDto.Email, registerUserDto.Password, registerUserDto.Avatar);
         return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
@@ -47,7 +47,7 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
     //TODO: Implement the Edit and Delete methods
-    // Edit should only edit the username and email of the user
+    // Edit should only edit the username and email of the user | + avatar when implemented
     //[HttpPut("edit/{id}")]
     //public async Task<ActionResult<UserDto>> Edit(int id, RegisterUserDto registerUserDto)
     //{

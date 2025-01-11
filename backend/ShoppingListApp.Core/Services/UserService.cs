@@ -7,7 +7,7 @@
         _userRepository = userRepository;
     }
 
-    public async Task<UserDto> RegisterUserAsync(string username, string email, string password)
+    public async Task<UserDto> RegisterUserAsync(string username, string email, string password, string avatar)
     {
         // Check if a user with the same email already exists
         var existingUser = await _userRepository.GetByEmailAsync(email);
@@ -22,6 +22,7 @@
             Username = username,
             Email = email,
             PasswordHash = HashPassword(password),
+            Avatar = avatar,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -33,7 +34,8 @@
         {
             Id = user.Id,
             Username = user.Username,
-            Email = user.Email
+            Email = user.Email,
+            Avatar = user.Avatar
         };
     }
 
@@ -57,7 +59,8 @@
         {
             Id = user.Id,
             Username = user.Username,
-            Email = user.Email
+            Email = user.Email,
+            Avatar = user.Avatar
         };
     }
 
@@ -75,7 +78,8 @@
         {
             Id = user.Id,
             Username = user.Username,
-            Email = user.Email
+            Email = user.Email,
+            Avatar = user.Avatar
         };
     }
     private string HashPassword(string password)
