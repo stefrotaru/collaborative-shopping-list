@@ -2,7 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../pages/HomePage.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import RegisterPage from '../pages/RegistrationPage.vue';
-import UserProfile from '../pages/UserProfile.vue';
+import UserProfilePage from '../pages/UserProfilePage.vue';
+
+import ShoppingLists from '../pages/ShoppingListsPage.vue';
+import ShoppingListPage from '../pages/ShoppingListPage.vue';
 
 const routes = [
   {
@@ -23,7 +26,17 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: UserProfile,
+    component: UserProfilePage,
+  },
+  {
+    path: '/shoppinglists',
+    name: 'ShoppingLists',
+    component: ShoppingLists,
+  },
+  {
+    path: '/shoppinglists/:id',
+    name: 'ShoppingList',
+    component: ShoppingListPage,
   },
 ];
 
