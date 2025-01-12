@@ -14,7 +14,7 @@
         </div>
         <div class="card__form-group">
           <label for="password">Password</label>
-          <Password id="password" v-model="password" required />
+          <Password id="password" v-model="password" :feedback="false" required />
         </div>
         <Button type="submit" label="Login" class="card__submit-btn" />
       </form>
