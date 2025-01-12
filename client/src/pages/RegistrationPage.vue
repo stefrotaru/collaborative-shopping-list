@@ -42,10 +42,11 @@ const username = ref("");
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const avatar = 'default_avatar.png'; //TODO: Add avatar selection
 const router = useRouter();
 
 const handleRegistration = async () => {
-  const registerResponse = await authStore.register(username.value, email.value, password.value);
+  const registerResponse = await authStore.register(username.value, email.value, password.value, avatar);
   
   if (!registerResponse) {
     return;

@@ -35,17 +35,17 @@ export const useAuthStore = defineStore("authStore", () => {
     return false;
   }
 
-  const register = async (username, email, password) => {
+  const register = async (username, email, password, avatar) => {
       try {
         const response = await fetch('CollaborativeShoppingListAPI/Users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username, email, password }),
+          body: JSON.stringify({ username, email, password, avatar }),
         });
 
-        console.log(JSON.stringify({ username, email, password }))
+        console.log(JSON.stringify({ username, email, password, avatar }))
   
         if (!response.ok) {
           throw new Error('Registration failed');
