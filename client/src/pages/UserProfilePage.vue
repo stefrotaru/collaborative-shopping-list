@@ -2,6 +2,7 @@
   <div class="user-profile">
     <h2>User Profile</h2>
     <div class="profile-info">
+      <Avatar size="100px" />
       <div class="info-item">
         <label>Username: </label>
         <span>{{ authStore.authenticatedUser?.username }}</span>
@@ -26,6 +27,7 @@ import { ref, onMounted } from "vue";
 import { useAuthStore } from "../store/auth";
 import Button from "primevue/button";
 
+import Avatar from "../components/Avatar.vue";
 import EditProfileModal from '../components/EditProfileModal.vue';
 
 
@@ -48,5 +50,19 @@ const updateUser = (updatedUser) => {
 .user-profile {
   text-align: center;
   margin-top: 2rem;
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .info-item {
+      display: flex;
+      gap: 0.5rem;
+
+      font-size: 1.15rem;
+    }
+  }
 }
 </style>
