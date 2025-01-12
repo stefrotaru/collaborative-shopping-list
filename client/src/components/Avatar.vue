@@ -1,18 +1,50 @@
 <template>
   <div class="avatar">
-    <img src="../assets/user-icon-svgrepo.svg" alt="User Avatar" />
+    <img :src="imageString" :style="{ width: props.size, height: props.size }" alt="User Avatar" />
   </div>
 </template>
 
+<script setup>
+import { onMounted, ref, watch } from "vue";
+import { useAuthStore } from "../store/auth.js";
+
+//TODO: add withDefaults to props
+const props = defineProps({
+  size: {
+    type: String,
+    default: '40px'
+  }
+})
+
+const pathToAvatars = "../../public/avatars/"; // ../assets/avatars/user-icon-svgrepo.svg
+let imageString = ref(pathToAvatars + 'user-icon-svgrepo.svg'); // default image
+
+//update imageString when authenticatedUser changes
+watch(() => useAuthStore().authenticatedUser, (newVal) => {
+  if (newVal && newVal.avatar && newVal.avatar !== "") {
+    imageString.value = pathToAvatars + newVal.avatar;
+  } else {
+    imageString.value = pathToAvatars + 'user-icon-svgrepo.svg';
+  }
+});
+
+onMounted(() => {
+  const authenticatedUser = useAuthStore().authenticatedUser;
+  if (authenticatedUser && authenticatedUser.avatar && authenticatedUser.avatar !== "") {
+    imageString.value = pathToAvatars + authenticatedUser.avatar;
+  }
+});
+</script>
+
 <style scoped lang="scss">
 .avatar {
-  display: flex;
+  display: inline-flex;
   padding: .25rem;
   border-radius: 50%;
   background-color: #34d399;
 
   img {
-    height: 32px;
+    height: 40px;
     border-radius: 50%;
   }
 }
