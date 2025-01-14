@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 export const useAuthStore = defineStore("authStore", () => {
   const authenticatedUser = ref(null);
+  const userGroups = ref([]);
 
   const login = async (email, password) => {
     try {
@@ -69,10 +70,36 @@ export const useAuthStore = defineStore("authStore", () => {
     authenticatedUser.value = null;
   }
 
+  const getUserGroups = async () => {
+    if (!authenticatedUser.value) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`CollaborativeShoppingListAPI/Groups/user/${authenticatedUser.value.id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user groups');
+      }
+
+      userGroups.value = await response.json();
+
+      return userGroups.value;
+    } catch (error) {}
+  }
+
   return {
     authenticatedUser,
     login,
     register,
     logout,
+
+    userGroups,
+    getUserGroups
   };
 });

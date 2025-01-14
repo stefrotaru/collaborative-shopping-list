@@ -1,5 +1,5 @@
 <template>
-  <div class="group-list">
+  <div class="group-list" v-if="groups.length > 0">
     <h3>My Groups</h3>
     <ul>
       <li v-for="group in groups" :key="group.id">
@@ -10,14 +10,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import GroupItem from "./GroupItem.vue";
 
-const groups = ref([
-  { id: 1, name: "Family" },
-  { id: 2, name: "Friends" },
-  { id: 3, name: "Work" },
-]);
+import { useAuthStore } from "../store/auth";
+const authStore = useAuthStore();
+
+const groups = ref(authStore.userGroups);
+
+// onMounted(() => {
+//   authStore.fetchUserGroups();
+// });
+watch(authStore, (newValue) => {
+  groups.value = newValue.userGroups;
+});
 </script>
 
 <style scoped>

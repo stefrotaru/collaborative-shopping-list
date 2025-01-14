@@ -29,6 +29,11 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 
+import { useShoppingListsStore } from "../store/shoppingLists";
+import { useAuthStore } from "../store/auth";
+const shoppingListsStore = useShoppingListsStore();
+const authStore = useAuthStore();
+
 const emit = defineEmits(["update:visible", "list-created"]);
 
 const props = defineProps({
@@ -44,9 +49,23 @@ const closeDialog = () => {
   emit("update:visible", false);
 };
 
-const createList = () => {
-  emit("list-created", listName.value);
+const createList = async () => {
+  console.log(authStore.authenticatedUser)
+  let userId = authStore.authenticatedUser.id;
+  let groupId = authStore.userGroups[0].id; //TODO: replace hardcoded group id
+
+  if (!userId) {
+    return;
+  }
+  
+  try {
+    await shoppingListsStore.createNewList(listName.value, groupId, userId);
+  } catch (error) {
+    console.error("Error creating list", error);
+  }
+  
   listName.value = "";
+  emit("list-created", listName.value);
   closeDialog();
 };
 </script>
