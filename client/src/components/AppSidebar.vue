@@ -2,7 +2,7 @@
   <SidebarHandle />
   <aside class="app-sidebar" v-if="globalStore.isSidebarVisible">
     <UserProfile />
-    <ShoppingListsList />
+    <MyShoppingLists />
     <GroupList />
 
     <!-- <Button
@@ -19,7 +19,7 @@
 
 <script setup>
 import UserProfile from "./UserProfile.vue";
-import ShoppingListsList from "./ShoppingListsList.vue";
+import MyShoppingLists from "./MyShoppingLists.vue";
 import GroupList from "./GroupList.vue";
 // import Button from "primevue/button";
 
