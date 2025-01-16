@@ -24,7 +24,8 @@ public class ShoppingListRepository : IShoppingListRepository
     {
         return (IEnumerable<ShoppingList>)await _context.ShoppingLists
             .Include(sl => sl.ShoppingItems)
-            .FirstOrDefaultAsync(sl => sl.GroupId == groupId);
+            .Where(sl => sl.GroupId == groupId)
+            .ToListAsync();
     }
     public async Task AddAsync(ShoppingList shoppingList)
     {

@@ -6,7 +6,7 @@ public class CreateShoppingListDto
     [StringLength(100)]
     public string Name { get; set; }
 
-    [StringLength(500)]
+    [Range(1, int.MaxValue)]
     public int GroupId { get; set; }
 
     [Range(1, int.MaxValue)]

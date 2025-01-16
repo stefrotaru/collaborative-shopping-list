@@ -27,8 +27,8 @@ public class GroupRepository : IGroupRepository
     public async Task<IEnumerable<Group>> GetByUserIdAsync(int userId)
     {
         return await _context.Groups
-            .Where(g => g.GroupMembers.Any(gm => gm.UserId == userId))
             .Include(g => g.GroupMembers)
+            .Where(g => g.CreatedById == userId)
             .ToListAsync();
     }
 
