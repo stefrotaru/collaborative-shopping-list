@@ -59,7 +59,7 @@
 
     public async Task<IEnumerable<GroupDto>> GetGroupsByUserIdAsync(int userId)
     {
-        // Retrieve the groups associated with the user
+        // Retrieve the groups created by the user
         var groups = await _groupRepository.GetByUserIdAsync(userId);
 
         // Map the group entities to DTOs and return them
@@ -68,7 +68,7 @@
             Id = group.Id,
             Name = group.Name,
             Description = group.Description
-        });
+        }).ToList();
     }
 
     public async Task UpdateGroupAsync(int groupId, string name, string description)
