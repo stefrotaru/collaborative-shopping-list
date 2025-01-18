@@ -16,6 +16,9 @@
             throw new ArgumentException("A user with this email already exists.");
         }
 
+        // Generate a unique token
+        string token = GenerateToken();
+
         // Create a new user entity
         var user = new User
         {
@@ -23,6 +26,7 @@
             Email = email,
             PasswordHash = HashPassword(password),
             Avatar = avatar,
+            Token = token,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -35,7 +39,8 @@
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            Avatar = user.Avatar
+            Avatar = user.Avatar,
+            Token = user.Token
         };
     }
 
@@ -60,7 +65,8 @@
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            Avatar = user.Avatar
+            Avatar = user.Avatar,
+            Token = user.Token
         };
     }
 
@@ -82,6 +88,27 @@
             Avatar = user.Avatar
         };
     }
+
+    public async Task<UserDto> GetUserInfoAsync(string token)
+    {
+        // Find the user by token
+        var user = await _userRepository.GetByTokenAsync(token);
+        if (user == null)
+        {
+            throw new ArgumentException("Invalid token.");
+        }
+
+        // Map the user entity to a DTO and return it
+        return new UserDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            Avatar = user.Avatar,
+            Token = user.Token
+        };
+    }
+
     private string HashPassword(string password)
     {
         // TODO: Implement password hashing logic
@@ -96,5 +123,11 @@
         // Compare the provided password with the hashed password
         // For simplicity, we'll just compare the strings directly
         return password == hashedPassword;
+    }
+
+    private string GenerateToken()
+    {
+        // Generate a unique token, e.g., using a GUID
+        return Guid.NewGuid().ToString("N");
     }
 }

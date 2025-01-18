@@ -22,6 +22,10 @@ public class UserRepository : IUserRepository
     {
         return _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
+    public Task<User> GetByTokenAsync(string token)
+    {
+        return _context.Users.FirstOrDefaultAsync(u => u.Token == token);
+    }
 
     public async Task AddAsync(User user)
     {

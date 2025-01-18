@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
@@ -44,6 +45,17 @@ public class UsersController : ControllerBase
         }
 
         var user = await _userService.GetUserByIdAsync(id);
+        return Ok(user);
+    }
+    [HttpGet("userinfo")]
+    //[Authorize] // TODO: configure authentication
+    public async Task<ActionResult<UserDto>> GetUserInfo(string token)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var user = await _userService.GetUserInfoAsync(token);
         return Ok(user);
     }
     //TODO: Implement the Edit and Delete methods
