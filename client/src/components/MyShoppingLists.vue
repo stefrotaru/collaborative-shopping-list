@@ -2,20 +2,15 @@
   <div class="shopping-lists-list">
     <div>
       <h3>My Shopping Lists</h3>
-      <!-- <Button
-        icon="pi pi-chevron-down"
-        severity="contrast"
-        variant="text"
-        rounded
-        aria-label="Star"
-      /> -->
     </div>
     <ul>
       <div class="group-item">
         <router-link to="/shoppinglists">Show all</router-link>
       </div>
       <li v-for="shoppingList in shoppingLists" :key="shoppingLists.id">
-        <GroupItem :group="group" />
+        <div class="group-item">
+          <router-link :to="'/shoppinglists/' + shoppingList.id">{{ shoppingList.name }}</router-link>
+        </div>
       </li>
     </ul>
   </div>
@@ -46,10 +41,12 @@ watch(() => shoppingListsStore.userShoppingLists, (newVal) => {
 </script>
 
 <style lang="scss" scoped>
-/* duplicate from GroupItem.vue */
-.group-list {
-  margin-top: 1rem;
+// duplicate from GroupItem.vue
+.group-item {
+  padding: 0.5rem;
+  cursor: pointer;
 }
+
 .group-item:hover {
   background-color: rgba(52, 211, 153, .5);
   border-radius: .2rem;
@@ -58,12 +55,7 @@ watch(() => shoppingListsStore.userShoppingLists, (newVal) => {
     color: #fff;
   }
 }
-/* duplicate from GroupItem.vue */
-
-.group-item {
-  padding: 0.5rem;
-  cursor: pointer;
-}
+//---
 
 ul {
   list-style: none;

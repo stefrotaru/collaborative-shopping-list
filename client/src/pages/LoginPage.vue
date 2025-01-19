@@ -71,6 +71,8 @@ const handleLogin = async () => {
   email.value = "";
   password.value = "";
 
+  authStore.getUserGroups();
+
   // TODO: Navigate to appropriate page after successful login
   router.push("/home");
 };
