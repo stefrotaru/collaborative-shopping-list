@@ -47,14 +47,16 @@ public class UsersController : ControllerBase
         var user = await _userService.GetUserByIdAsync(id);
         return Ok(user);
     }
-    [HttpGet("userinfo")]
+    [HttpPost("userinfo")]
     //[Authorize] // TODO: configure authentication
-    public async Task<ActionResult<UserDto>> GetUserInfo(string token)
+    public async Task<ActionResult<UserDto>> GetUserInfo(GetUserInfoDto  getUserInfoDto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+
+        var token = getUserInfoDto.Token;
         var user = await _userService.GetUserInfoAsync(token);
         return Ok(user);
     }

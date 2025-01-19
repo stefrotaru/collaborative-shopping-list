@@ -18,13 +18,13 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.ToListAsync();
     }
-    public Task<User> GetByEmailAsync(string email)
+    public async Task<User> GetByEmailAsync(string email)
     {
-        return _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
-    public Task<User> GetByTokenAsync(string token)
+    public async Task<User> GetByTokenAsync(string token)
     {
-        return _context.Users.FirstOrDefaultAsync(u => u.Token == token);
+        return  await _context.Users.FirstOrDefaultAsync(u => u.Token == token);
     }
 
     public async Task AddAsync(User user)
