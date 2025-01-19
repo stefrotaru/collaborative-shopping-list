@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import AppNavbar from "./components/AppNavbar.vue";
-import AppSidebar from "./components/AppSidebar.vue";
-import Toast from 'primevue/toast';
-</script>
-
 <template>
   <div id="app">
     <AppNavbar />
@@ -16,6 +10,25 @@ import Toast from 'primevue/toast';
   </div>
   <Toast />
 </template>
+
+<script setup lang="ts">
+import AppNavbar from "./components/AppNavbar.vue";
+import AppSidebar from "./components/AppSidebar.vue";
+import Toast from "primevue/toast";
+import { onMounted } from "vue";
+import { useAuthStore } from "./store/auth";
+import { useShoppingListsStore } from "./store/shoppingLists";
+
+const authStore = useAuthStore();
+const shoppingListsStore = useShoppingListsStore();
+
+onMounted(() => {
+  console.log("App.vue mounted");
+  authStore.checkAuth();
+  authStore.populateStore();
+  shoppingListsStore.populateStore();
+});
+</script>
 
 <style lang="scss" scoped>
 // .logo {
