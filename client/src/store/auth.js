@@ -14,16 +14,17 @@ export const useAuthStore = defineStore("authStore", () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
-      console.log(JSON.stringify({ email, password }))
   
       if (!response.ok) {
-        console.log(response);
         throw new Error('Authentication failed');
       }
   
       const user = await response.json();
       authenticatedUser.value = user;
+
+      // Save the token in local storage
+      console.log(user);
+      localStorage.setItem('token', user.token);
 
       return true;
     } catch (error) {
@@ -35,6 +36,35 @@ export const useAuthStore = defineStore("authStore", () => {
 
     return false;
   }
+
+  const checkAuth = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      console.log('Token found in local storage:', token);	
+      try {
+        const response = await fetch(`CollaborativeShoppingListAPI/Users/userinfo`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        });
+
+        console.log(response);
+  
+        if (response.ok) {
+          console.log('User is authenticated');
+          const user = await response.json();
+          authenticatedUser.value = user;
+        } else {
+          // Token is invalid or expired, remove it from local storage
+          // localStorage.removeItem('token');
+        }
+      } catch (error) {
+        console.error('Error retrieving user info:', error);
+      }
+    }
+  };
 
   const register = async (username, email, password, avatar) => {
       try {
@@ -54,7 +84,8 @@ export const useAuthStore = defineStore("authStore", () => {
   
         const user = await response.json();
         authenticatedUser.value = user;
-
+        localStorage.setItem('token', user.token);
+        
         return true;
       } catch (error) {
         // TODO: Handle registration error
@@ -68,6 +99,7 @@ export const useAuthStore = defineStore("authStore", () => {
 
   const logout = () => {
     authenticatedUser.value = null;
+    localStorage.removeItem('token');
   }
 
   const getUserGroups = async () => {
@@ -93,13 +125,21 @@ export const useAuthStore = defineStore("authStore", () => {
     } catch (error) {}
   }
 
+  const populateStore = async () => {
+    await checkAuth();
+    await getUserGroups();
+  }
+
   return {
     authenticatedUser,
     login,
+    checkAuth,
     register,
     logout,
 
     userGroups,
-    getUserGroups
+    getUserGroups,
+
+    populateStore
   };
 });
