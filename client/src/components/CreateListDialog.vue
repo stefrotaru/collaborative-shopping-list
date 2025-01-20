@@ -3,7 +3,13 @@
     <template #header>
       <h3>Create Shopping List</h3>
     </template>
-
+    
+    <div class="p-fluid">
+      <div class="field">
+        <label for="group">group</label>
+        <InputText id="group" v-model="listGroup" />
+      </div>
+    </div>
     <div class="p-fluid">
       <div class="field">
         <label for="name">Name</label>
@@ -43,6 +49,7 @@ const props = defineProps({
   },
 });
 
+const listGroup = ref("");
 const listName = ref("");
 
 const closeDialog = () => {
@@ -50,16 +57,21 @@ const closeDialog = () => {
 };
 
 const createList = async () => {
-  console.log(authStore.authenticatedUser)
+  let group = authStore.userGroups.find((group) => group.name === listGroup.value);
   let userId = authStore.authenticatedUser.id;
-  let groupId = authStore.userGroups[0].id; //TODO: replace hardcoded group id
+  // if there is no group, create group first
+  if (!group) {
+    return alert("Group not found");
+  }
+
+  console.log(group.id);
 
   if (!userId) {
     return;
   }
   
   try {
-    await shoppingListsStore.createNewList(listName.value, groupId, userId);
+    await shoppingListsStore.createNewList(listName.value, group.id, userId);
   } catch (error) {
     console.error("Error creating list", error);
   }
