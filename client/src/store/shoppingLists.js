@@ -113,6 +113,59 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     } catch (error) {}
   };
 
+  const getShoppingListName = async (listId) => {
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/ShoppingLists/${listId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch shopping list name");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching shopping list name:", error);
+    }
+  }
+
+  const addListItem = async (listId, itemName, quantity, userId) => {
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/ShoppingItems`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            name: itemName,
+            quantity,
+            shoppingListId: listId,
+            createdById: userId,
+          }),
+        }
+      );
+
+      console.log("Added the following item to the shopping list:", itemName, " x ", quantity);
+
+      if (!response.ok) {
+        throw new Error("Failed to add item to shopping list");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error adding item to shopping list:", error);
+    }
+  }
+
   const populateStore = async () => {
     await fetchGroupShoppingLists(4); // TODO: Should fetch all groupId's for logged user
   }
@@ -126,6 +179,8 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     deleteList,
 
     getListItems,
+    getShoppingListName,
+    addListItem,
 
     populateStore
   };
