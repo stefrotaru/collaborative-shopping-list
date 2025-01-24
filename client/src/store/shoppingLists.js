@@ -166,8 +166,12 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   }
 
-  const populateStore = async () => {
-    await fetchGroupShoppingLists(4); // TODO: Should fetch all groupId's for logged user
+  // TODO: add list rename service
+
+  const populateStore = async (groupId) => {
+    //Should receive an array of groupdId's ti display all Shopping Lists
+    console.log('Shopping List populateStore 🛒🛒🛒', groupId)
+    await fetchGroupShoppingLists(groupId); // TODO: Should fetch all groupId's for logged user
   }
 
   return {

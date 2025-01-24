@@ -40,9 +40,9 @@ export const useAuthStore = defineStore("authStore", () => {
   const checkAuth = async () => {
     const token = localStorage.getItem('token');
     if (token) {
-      console.log('Token found in local storage:', token);	
+      console.log('🗼 Token found in local storage:', token);	
       try {
-        const response = await fetch(`CollaborativeShoppingListAPI/Users/userinfo`, {
+        const response = await fetch(`/CollaborativeShoppingListAPI/Users/userinfo`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
