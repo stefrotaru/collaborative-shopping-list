@@ -4,16 +4,6 @@
     <UserProfile />
     <MyShoppingLists />
     <GroupList />
-
-    <!-- <Button
-      rounded
-      raised
-      icon="pi pi-angle-left"
-      aria-label="Close Sidebar"
-      variant="outlined"
-      class="app-sidebar__close-btn"
-      @click="globalStore.toggleSidebar()"
-    /> -->
   </aside>
 </template>
 

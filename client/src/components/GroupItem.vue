@@ -1,7 +1,5 @@
 <template>
-  <div class="group-item">
-    <router-link :to="'/groups/' + group.id">{{ group.name }}</router-link>
-  </div>
+    <router-link class="group-item" :to="'/groups/' + group.id">{{ group.name }}</router-link>
 </template>
 
 <script setup>
@@ -17,8 +15,9 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .group-item {
-  padding: 0.5rem;
+  padding: .8rem .5rem;
   cursor: pointer;
+  display: block;
 }
 
 .group-item:hover {

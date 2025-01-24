@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
 import { useToast } from "primevue/usetoast";
@@ -76,6 +76,12 @@ const handleLogin = async () => {
   // TODO: Navigate to appropriate page after successful login
   router.push("/home");
 };
+
+// onMounted(() => {
+//   if (authStore.authenticatedUser) {
+//     router.push('/home');
+//   }
+// });
 </script>
 
 <style lang="scss" scoped>
