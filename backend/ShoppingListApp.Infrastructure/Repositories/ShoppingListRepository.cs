@@ -14,10 +14,10 @@ public class ShoppingListRepository : IShoppingListRepository
             .Include(sl => sl.ShoppingItems)
             .FirstOrDefaultAsync(sl => sl.Id == id);
     }
-    public async Task<IEnumerable<ShoppingList>> GetAllAsync()
+    public async Task<IEnumerable<ShoppingList>> GetByGroupIdsAsync(int[] groupIds)
     {
         return await _context.ShoppingLists
-            .Include(sl => sl.ShoppingItems)
+            .Where(sl => groupIds.Contains(sl.GroupId))
             .ToListAsync();
     }
     public async Task<IEnumerable<ShoppingList>> GetByGroupIdAsync(int groupId)

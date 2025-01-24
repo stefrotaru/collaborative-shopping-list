@@ -80,6 +80,20 @@
         });
     }
 
+    public async Task<IEnumerable<ShoppingListDto>> GetShoppingListsByGroupIdsAsync(int[] groupIds)
+    {
+        // Retrieve the shopping lists by group IDs
+        var shoppingLists = await _shoppingListRepository.GetByGroupIdsAsync(groupIds);
+
+        // Map the shopping list entities to DTOs and return them
+        return shoppingLists.Select(sl => new ShoppingListDto
+        {
+            Id = sl.Id,
+            Name = sl.Name,
+            GroupId = sl.GroupId
+        }).ToList();
+    }
+
     public async Task UpdateShoppingListAsync(int shoppingListId, string name)
     {
         // Retrieve the shopping list by ID

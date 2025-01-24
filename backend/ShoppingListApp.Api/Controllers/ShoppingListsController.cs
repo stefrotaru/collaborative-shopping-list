@@ -47,6 +47,19 @@ public class ShoppingListsController : ControllerBase
         return Ok(shoppingLists);
     }
 
+    [HttpGet("allgroups")]
+    public async Task<ActionResult<IEnumerable<ShoppingListDto>>> GetByGroups([FromQuery(Name = "groupIds")] string groupIdsString)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        int[] groupIds = groupIdsString.Split(',').Select(int.Parse).ToArray();
+        var shoppingLists = await _shoppingListService.GetShoppingListsByGroupIdsAsync(groupIds);
+        return Ok(shoppingLists);
+    }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdateShoppingListDto updateShoppingListDto)
     {
