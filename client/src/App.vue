@@ -15,19 +15,24 @@
 import AppNavbar from "./components/AppNavbar.vue";
 import AppSidebar from "./components/AppSidebar.vue";
 import Toast from "primevue/toast";
-import { onMounted } from "vue";
+
 import { useAuthStore } from "./store/auth";
 import { useShoppingListsStore } from "./store/shoppingLists";
 
 const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
 
-onMounted(() => {
-  console.log("App.vue mounted");
-  authStore.checkAuth();
-  authStore.populateStore();
-  shoppingListsStore.populateStore();
-});
+const init = async () => {
+  console.log("✅ App.vue mounted and initialised stores");
+  await authStore.populateStore();
+  await authStore.checkAuth();
+
+  //Todo GetByGroups: use GetByGroups which will accept an array of group id's 
+  let groupId = 4;
+  await shoppingListsStore.populateStore(groupId);
+};
+
+init();
 </script>
 
 <style lang="scss" scoped>
