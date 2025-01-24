@@ -4,5 +4,6 @@
     Task<ShoppingItemDto> GetShoppingItemByIdAsync(int shoppingItemId);
     Task<IEnumerable<ShoppingItemDto>> GetShoppingItemsByShoppingListIdAsync(int shoppingListId);
     Task UpdateShoppingItemAsync(int shoppingItemId, string name, int quantity, bool isChecked);
+    Task UpdateShoppingItemCheckedAsync(int shoppingItemId, bool isChecked);
     Task DeleteShoppingItemAsync(int shoppingItemId);
 }

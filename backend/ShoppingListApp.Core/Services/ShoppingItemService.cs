@@ -1,4 +1,6 @@
-﻿public class ShoppingItemService : IShoppingItemService
+﻿using System.Xml.Linq;
+
+public class ShoppingItemService : IShoppingItemService
 {
     private readonly IShoppingItemRepository _shoppingItemRepository;
     private readonly IShoppingListRepository _shoppingListRepository;
@@ -102,6 +104,21 @@
         // Update the shopping item properties
         shoppingItem.Name = name;
         shoppingItem.Quantity = quantity;
+        shoppingItem.IsChecked = isChecked;
+
+        // Save the changes to the database
+        await _shoppingItemRepository.UpdateAsync(shoppingItem);
+    }
+    public async Task UpdateShoppingItemCheckedAsync(int shoppingItemId, bool isChecked)
+    {
+        // Retrieve the shopping item by ID
+        var shoppingItem = await _shoppingItemRepository.GetByIdAsync(shoppingItemId);
+        if (shoppingItem == null)
+        {
+            throw new ArgumentException("Shopping item not found.");
+        }
+
+        // Update the shopping item properties
         shoppingItem.IsChecked = isChecked;
 
         // Save the changes to the database

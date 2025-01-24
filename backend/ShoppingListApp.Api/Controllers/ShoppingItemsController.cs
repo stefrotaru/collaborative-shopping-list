@@ -47,15 +47,27 @@ public class ShoppingItemsController : ControllerBase
         return Ok(shoppingItems);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, UpdateShoppingItemDto updateShoppingItemDto)
+    [HttpPut("updateItem/{id}")]
+    public async Task<IActionResult> Update(int id, string name, int quantity, bool isChecked)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        await _shoppingItemService.UpdateShoppingItemAsync(id, updateShoppingItemDto.Name, updateShoppingItemDto.Quantity, updateShoppingItemDto.IsChecked);
+        await _shoppingItemService.UpdateShoppingItemAsync(id, name, quantity, isChecked);
+        return NoContent();
+    }
+
+    [HttpPut("updateItemChecked/{id}")]
+    public async Task<IActionResult> UpdateItemChecked(int id, bool isChecked)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        await _shoppingItemService.UpdateShoppingItemCheckedAsync(id, isChecked);
         return NoContent();
     }
 
