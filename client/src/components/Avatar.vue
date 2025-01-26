@@ -6,9 +6,9 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import { useAuthStore } from "../store/auth.js";
+import { useAuthStore } from "../store/auth.ts";
 
-//TODO: add withDefaults to props
+//TODO: add withDefaults
 const props = defineProps({
   size: {
     type: String,
@@ -16,7 +16,7 @@ const props = defineProps({
   }
 })
 
-const pathToAvatars = "../../public/avatars/"; // ../assets/avatars/user-icon-svgrepo.svg
+const pathToAvatars = "/avatars/";
 let imageString = ref(pathToAvatars + 'user-icon-svgrepo.svg'); // default image
 
 //update imageString when authenticatedUser changes

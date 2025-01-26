@@ -35,17 +35,25 @@
 import Avatar from "./Avatar.vue";
 import Button from "primevue/button";
 
-import { useAuthStore } from "../store/auth.js";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../store/auth.ts";
+import { useShoppingListsStore } from "../store/shoppingLists.ts";
 
-const authStore = useAuthStore();
 const router = useRouter();
+const authStore = useAuthStore();
+const shoppingListsStore = useShoppingListsStore();
+
 
 const goToProfilePage = () => {
   router.push("/profile");
 };
 const handleLogout = () => {
   authStore.logout();
+  
+  //clear store state
+  authStore.resetStore();
+  shoppingListsStore.resetStore();
+  
   router.push("/login");
 };
 </script>

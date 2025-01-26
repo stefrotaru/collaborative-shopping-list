@@ -1,4 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory  } from "vue-router";
+import type { RouteRecordRaw } from 'vue-router';
+
 import HomePage from "../pages/HomePage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 import RegisterPage from "../pages/RegistrationPage.vue";
@@ -7,11 +9,13 @@ import UserProfilePage from "../pages/UserProfilePage.vue";
 import ShoppingLists from "../pages/ShoppingListsPage.vue";
 import ShoppingListPage from "../pages/ShoppingListPage.vue";
 
-import { useAuthStore } from "../store/auth.js";
-// import { useGlobalStore } from "../store/global.js";
-import { useShoppingListsStore } from "../store/shoppingLists.js";
+import { useAuthStore } from "../store/auth.ts";
 
-const routes = [
+const routes: RouteRecordRaw[] = [
+  {
+    path: "/",
+    redirect: "/home"
+  },
   {
     path: "/home",
     name: "Home",
@@ -52,6 +56,8 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
   const publicRoutes = ['/login', '/register'];
+
+  console.log("⬅️🛣️ Before each route, from:", from, "to:", to);
   
   if (!authStore.authenticatedUser && !publicRoutes.includes(to.path)) {
     console.log('🔎🔎🔎check auth needed!')
@@ -61,10 +67,7 @@ router.beforeEach(async (to, from, next) => {
   console.log("change route");
   console.log(authStore.authenticatedUser);
 
-  if (
-    to.path === "/login" ||
-    (to.path === "/register" && authStore.authenticatedUser)
-  ) {
+  if ( (to.path === "/login" || to.path === "/register") && authStore.authenticatedUser ) {
     next("/home");
   } else {
     next();

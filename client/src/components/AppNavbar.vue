@@ -11,7 +11,7 @@
 
 <script setup>
 import Avatar from "./Avatar.vue";
-import { useGlobalStore } from "../store/global.js";
+import { useGlobalStore } from "../store/global.ts";
 
 const globalStore = useGlobalStore();
 </script>

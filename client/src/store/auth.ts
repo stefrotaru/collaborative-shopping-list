@@ -1,11 +1,32 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useAuthStore = defineStore("authStore", () => {
-  const authenticatedUser = ref(null);
-  const userGroups = ref([]);
+//TODO: Create separate file for interfaces
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  avatar: string;
+  token: string;
+}
 
-  const login = async (email, password) => {
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface RegisterCredentials {
+  username: string;
+  email: string;
+  password: string;
+  avatar?: string;
+}
+
+export const useAuthStore = defineStore("authStore", () => {
+  const authenticatedUser = ref<User | null>(null);
+  const userGroups = ref<any[]>([]); //TODO: Create interface for group
+
+  const login = async ({email, password}: LoginCredentials) => {
     try {
       const response = await fetch('CollaborativeShoppingListAPI/Users/authenticate', {
         method: 'POST',
@@ -59,6 +80,7 @@ export const useAuthStore = defineStore("authStore", () => {
         } else {
           // Token is invalid or expired, remove it from local storage
           // localStorage.removeItem('token');
+          console.log('checkAuth ❌ !response.ok:', response);
         }
       } catch (error) {
         console.error('Error retrieving user info:', error);
@@ -66,7 +88,7 @@ export const useAuthStore = defineStore("authStore", () => {
     }
   };
 
-  const register = async (username, email, password, avatar) => {
+  const register = async ({username, email, password, avatar}: RegisterCredentials) => {
       try {
         const response = await fetch('CollaborativeShoppingListAPI/Users/register', {
           method: 'POST',
@@ -108,7 +130,7 @@ export const useAuthStore = defineStore("authStore", () => {
     }
 
     try {
-      const response = await fetch(`CollaborativeShoppingListAPI/Groups/user/${authenticatedUser.value.id}`, {
+      const response = await fetch(`/CollaborativeShoppingListAPI/Groups/user/${authenticatedUser.value.id}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -122,13 +144,25 @@ export const useAuthStore = defineStore("authStore", () => {
       userGroups.value = await response.json();
 
       return userGroups.value;
-    } catch (error) {}
+      } catch (error) {
+        console.log('User ID:', authenticatedUser.value.id);
+        console.log('Token:', localStorage.getItem('token'));
+        console.error("Error fetching user groups:", error);
+      }
   }
 
   const populateStore = async () => {
     await checkAuth();
-    await getUserGroups();
+    if (authenticatedUser.value) {
+      await getUserGroups();
+    }
   }
+
+  const resetStore = () => {
+    authenticatedUser.value = null;
+    userGroups.value = [];
+    localStorage.removeItem('token');
+  };
 
   return {
     authenticatedUser,
@@ -140,6 +174,7 @@ export const useAuthStore = defineStore("authStore", () => {
     userGroups,
     getUserGroups,
 
-    populateStore
+    populateStore,
+    resetStore
   };
 });

@@ -26,6 +26,31 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     } catch (error) {}
   };
 
+  const fetchAllGroupsShoppingLists = async (groupIds) => {
+    if (!groupIds) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/ShoppingLists/allgroups?groupIds=${groupIds.join(",")}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+   
+      if (!response.ok) {
+        throw new Error("Failed to fetch shopping lists");
+      }
+   
+      userShoppingLists.value = await response.json();
+      return userShoppingLists.value;
+    } catch (error) {}
+   };
+
   const createNewList = async (listName, groupId, userId) => {
     try {
       const response = await fetch(
@@ -166,6 +191,57 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   }
 
+  const removeListItem = async (itemId) => {
+    try {
+      const response = await fetch(
+      `/CollaborativeShoppingListAPI/ShoppingItems/${itemId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error()
+      }
+
+      return response;
+    } catch {
+
+    }
+  }
+
+  const updateItemCheckedState = async (itemId, checkedState) => {
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/ShoppingItems/updateItemChecked/${itemId}?isChecked=${checkedState}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            id: itemId,
+            isChecked: checkedState
+          })
+        }
+      );
+
+      console.log("Added the following item to the shopping list:", itemName, " x ", quantity);
+
+      if (!response.ok) {
+        throw new Error("Failed to add item to shopping list");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error adding item to shopping list:", error);
+    }
+  }
+
   // TODO: add list rename service
 
   const populateStore = async (groupId) => {
@@ -174,9 +250,14 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     await fetchGroupShoppingLists(groupId); // TODO: Should fetch all groupId's for logged user
   }
 
+  const resetStore = () => {
+    userShoppingLists.value = [];
+  }
+
   return {
     userShoppingLists,
     fetchGroupShoppingLists,
+    fetchAllGroupsShoppingLists,
 
     createGroup,
     createNewList,
@@ -185,7 +266,10 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     getListItems,
     getShoppingListName,
     addListItem,
+    removeListItem,
+    updateItemCheckedState,
 
-    populateStore
+    populateStore,
+    resetStore
   };
 });

@@ -1,6 +1,6 @@
 <template>
   <SidebarHandle />
-  <aside class="app-sidebar" v-if="globalStore.isSidebarVisible">
+  <aside class="app-sidebar" v-show="globalStore.isSidebarVisible" >
     <UserProfile />
     <MyShoppingLists />
     <GroupList />
@@ -10,12 +10,12 @@
 <script setup>
 import UserProfile from "./UserProfile.vue";
 import MyShoppingLists from "./MyShoppingLists.vue";
-import GroupList from "./GroupList.vue";
+import GroupList from "./MyGroupsList.vue";
 // import Button from "primevue/button";
 
 import SidebarHandle from "./AppSidebarHandle.vue";
 
-import { useGlobalStore } from "../store/global.js";
+import { useGlobalStore } from "../store/global.ts";
 
 const globalStore = useGlobalStore();
 </script>

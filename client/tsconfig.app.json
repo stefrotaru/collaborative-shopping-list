@@ -29,5 +29,5 @@
     //   "skipLibCheck": true,
     //   "noEmit": true
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js"]
+  "include": ["env.d.ts", "src/**/*", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.ts"]
 }
