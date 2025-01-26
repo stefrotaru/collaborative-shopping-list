@@ -8,7 +8,26 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+    //   "emitDeclarationOnly": true,
+    //   "noImplicitAny": false,
+    //   "allowJs": true,
+    //   "target": "ESNext",
+    //   "useDefineForClassFields": true,
+    //   "module": "ESNext",
+    //   "moduleResolution": "Node",
+    //   "jsx": "preserve",
+    //   "resolveJsonModule": true,
+    //   "isolatedModules": true,
+    //   "esModuleInterop": true,
+    //   "lib": ["ESNext", "DOM"],
+    //   "skipLibCheck": true,
+    //   "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js"]
+  "include": ["env.d.ts", "src/**/*", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js"]
 }
