@@ -16,10 +16,3 @@ const navigateToGroups = () => {
   router.push("/groups");
 };
 </script>
-
-<style scoped>
-.home-page {
-  text-align: center;
-  margin-top: 2rem;
-}
-</style>

@@ -15,26 +15,3 @@ import { useGlobalStore } from "../store/global.ts";
 
 const globalStore = useGlobalStore();
 </script>
-
-<style lang="scss" scoped>
-.app-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  /* background-color: #f8f9fa; */
-  background-color: #18181b;
-
-  &__logo {
-    cursor: pointer;
-    
-    img {
-      height: 40px;
-    }
-  }
-
-  &__user-profile {
-    cursor: pointer;
-  }
-}
-</style>

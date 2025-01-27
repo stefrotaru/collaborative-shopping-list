@@ -1,0 +1,26 @@
+@use 'primeicons/primeicons.css';
+
+//base
+@use 'base/reset';
+@use 'base/typography';	
+@use 'base/variables';
+
+//components
+@use 'components/GroupItem';
+@use 'components/AppNavbar';
+@use 'components/AppSidebar';
+@use 'components/Avatar';
+@use 'components/Dialog';
+@use 'components/UserProfile';
+
+//pages
+@use 'pages/HomePage';
+@use 'pages/LoginPage';
+@use 'pages/RegistrationPage';
+@use 'pages/ShoppingListPage';
+@use 'pages/ShoppingListsPage';
+@use 'pages/UserProfilePage';
+
+//utils
+@use 'utils/mixins';
+

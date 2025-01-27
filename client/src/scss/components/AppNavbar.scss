@@ -1,0 +1,19 @@
+.app-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #18181b;
+
+  &__logo {
+    cursor: pointer;
+
+    img {
+      height: 40px;
+    }
+  }
+
+  &__user-profile {
+    cursor: pointer;
+  }
+}

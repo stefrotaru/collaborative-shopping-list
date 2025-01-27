@@ -1,0 +1,15 @@
+// duplicate from GroupItem.vue
+.group-item {
+  padding: 0.8rem 0.5rem;
+  cursor: pointer;
+  display: block;
+}
+
+.group-item:hover {
+  background-color: rgba(52, 211, 153, 0.5);
+  border-radius: 0.2rem;
+
+  a {
+    color: #fff;
+  }
+}

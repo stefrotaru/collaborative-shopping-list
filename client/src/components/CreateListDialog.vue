@@ -1,7 +1,7 @@
 <template>
   <Dialog :visible="visible" @update:visible="$emit('update:visible', $event)">
     <template #header>
-      <h3>Create Shopping List</h3>
+      <p>Create Shopping List</p>
     </template>
     
     <div class="p-fluid">

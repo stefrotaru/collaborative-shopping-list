@@ -49,7 +49,7 @@
         <ul>
           <li v-for="list in shoppingLists" :key="list.id">
             <div class="shopping-lists__list__item">
-              <div class="shopping-lists__list__item-name">{{ list.name }}</div>
+              <div class="shopping-lists__list__item-name">{{ list.name }} (Group ID: {{ list.groupId }})</div>
               <div class="shopping-lists__list__item-actions">
                 <Button
                   icon="pi pi-eye"
@@ -169,16 +169,12 @@ const fetchData = async () => {
   //TODO: first I should get all the groups and then fetch the shopping lists for all groups
   if (authStore.authenticatedUser) {
     try {
-      const [groupsData, listsData] = await Promise.all([
-        authStore.getUserGroups(),
-        shoppingListsStore.fetchGroupShoppingLists(authStore.userGroups[0].id), //TODO: fetch shopping lists for all groups
-      ]);
+      const groupsData = await authStore.getUserGroups();
+      const userGroupArr = groupsData.map(group => group.id);
+      const listsData = await shoppingListsStore.fetchAllGroupsShoppingLists(userGroupArr);
 
       userGroups.value = groupsData;
       shoppingLists.value = listsData;
-
-      console.log("userGroups", userGroups.value);
-      console.log("shoppingLists", shoppingLists.value);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -198,60 +194,3 @@ watch(
   { immediate: true }
 );
 </script>
-
-<style lang="scss" scoped>
-.shopping-lists-page {
-  text-align: center;
-}
-
-.shopping-lists,
-.user-groups {
-  &__container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  &__list {
-    margin-top: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    &-header {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
-
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-
-      h3 {
-        margin: 0;
-      }
-    }
-
-    &__item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 1rem;
-      border-bottom: 1px solid #ccc;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      &-name {
-        font-size: 1.2rem;
-      }
-
-      &-actions {
-        display: flex;
-        gap: 0.5rem;
-      }
-    }
-  }
-}
-</style>

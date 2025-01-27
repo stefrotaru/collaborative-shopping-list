@@ -1,0 +1,40 @@
+.page-content {
+  .shopping-list-page__list {
+    list-style: none;
+
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid #ccc;
+
+      &--checked {
+        background-color: indianred;
+      }
+      &__checkmark {
+        margin-right: 8px;
+      }
+
+      &__name {
+        flex: 1;
+      }
+
+      &__quantity {
+        width: 100px;
+        text-align: center;
+      }
+
+      &__checked {
+        width: 100px;
+        text-align: center;
+      }
+
+      &__actions {
+        width: 100px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

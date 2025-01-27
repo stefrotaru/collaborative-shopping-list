@@ -25,14 +25,3 @@ watch(authStore, (newValue) => {
   groups.value = newValue.userGroups;
 });
 </script>
-
-<style scoped>
-.group-list {
-  margin-top: 1rem;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-</style>

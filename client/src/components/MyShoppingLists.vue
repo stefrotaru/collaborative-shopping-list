@@ -23,7 +23,10 @@ import { ref, watch } from "vue";
 import GroupItem from "./GroupItem.vue";
 // import { Button } from "primevue";
 
+import { useAuthStore } from "../store/auth";
 import { useShoppingListsStore } from "../store/shoppingLists";
+
+const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
 const shoppingLists = ref(shoppingListsStore.userShoppingLists);
 
@@ -38,28 +41,13 @@ watch(
   },
   // { immediate: true }
 );
-</script>
 
-<style lang="scss" scoped>
-// duplicate from GroupItem.vue
-.group-item {
-  padding: 0.8rem 0.5rem;
-  cursor: pointer;
-  display: block;
-}
-
-.group-item:hover {
-  background-color: rgba(52, 211, 153, 0.5);
-  border-radius: 0.2rem;
-
-  a {
-    color: #fff;
+const fetchShoppingLists = async () => {
+  if (authStore.userGroups?.length > 0) {
+    const groupIds = authStore.userGroups.map(group => group.id);
+    await shoppingListsStore.fetchAllGroupsShoppingLists(groupIds);
   }
-}
-//---
+};
 
-ul {
-  list-style: none;
-  padding: 0;
-}
-</style>
+fetchShoppingLists();
+</script>

@@ -1,0 +1,12 @@
+.app-sidebar {
+  width: 250px;
+  position: relative;
+  background-color: #18181b;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #e4e4e7;
+
+  @media screen and (max-width: 768px) {
+    width: 150px;
+  }
+}

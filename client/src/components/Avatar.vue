@@ -35,17 +35,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style scoped lang="scss">
-.avatar {
-  display: inline-flex;
-  padding: .25rem;
-  border-radius: 50%;
-  background-color: #34d399;
-
-  img {
-    height: 40px;
-    border-radius: 50%;
-  }
-}
-</style>

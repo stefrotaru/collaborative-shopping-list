@@ -45,24 +45,3 @@ const updateUser = (updatedUser) => {
   user.value = updatedUser;
 };
 </script>
-
-<style lang="scss" scoped>
-.user-profile {
-  text-align: center;
-  margin-top: 2rem;
-
-  .profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-
-    .info-item {
-      display: flex;
-      gap: 0.5rem;
-
-      font-size: 1.15rem;
-    }
-  }
-}
-</style>
