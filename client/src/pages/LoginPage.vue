@@ -50,7 +50,7 @@ const password = ref("");
 const isInvalidUser = ref(false);
 
 const handleLogin = async () => {
-  const registerResponse = await authStore.login(email.value, password.value);
+  const registerResponse = await authStore.login({email: email.value, password: password.value});
 
   console.log("registerResponse", registerResponse);
   if (!registerResponse) {

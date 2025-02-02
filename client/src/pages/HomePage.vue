@@ -13,6 +13,6 @@ import Button from "primevue/button";
 const router = useRouter();
 
 const navigateToGroups = () => {
-  router.push("/groups");
+  router.push("/shoppinglists");
 };
 </script>

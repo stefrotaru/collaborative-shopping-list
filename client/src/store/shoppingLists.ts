@@ -230,13 +230,13 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
         }
       );
 
-      console.log("Added the following item to the shopping list:", itemName, " x ", quantity);
+      console.log(response)
 
       if (!response.ok) {
         throw new Error("Failed to add item to shopping list");
       }
 
-      return await response.json();
+      return;
     } catch (error) {
       console.error("Error adding item to shopping list:", error);
     }
@@ -259,7 +259,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     fetchGroupShoppingLists,
     fetchAllGroupsShoppingLists,
 
-    createGroup,
+    createGroup, // move to groups store
     createNewList,
     deleteList,
 

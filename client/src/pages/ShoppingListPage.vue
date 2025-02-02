@@ -86,7 +86,6 @@ const toggleCheckShoppingListItem = async (item) => {
       itemId,
       checkedState
     );
-    console.log("Item checked state response:", response);
 
     // Remove item from current position and add to end
     // if (checkedState) {
