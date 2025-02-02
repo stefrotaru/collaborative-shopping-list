@@ -68,7 +68,7 @@ public class ShoppingItemsController : ControllerBase
         }
 
         await _shoppingItemService.UpdateShoppingItemCheckedAsync(id, isChecked);
-        return NoContent();
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -80,6 +80,6 @@ public class ShoppingItemsController : ControllerBase
         }
 
         await _shoppingItemService.DeleteShoppingItemAsync(id);
-        return NoContent();
+        return Ok();
     }
 }
