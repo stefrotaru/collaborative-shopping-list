@@ -27,6 +27,8 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 
+//TODO: not used anymore. Remove it or make it a general component
+
 const props = defineProps({
   user: {
     type: Object,
