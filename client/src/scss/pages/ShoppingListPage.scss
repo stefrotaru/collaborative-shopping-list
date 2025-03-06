@@ -222,22 +222,6 @@
   }
 }
 
-/* Transitions */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .shopping-list {
