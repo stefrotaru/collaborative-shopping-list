@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <AppNavbar />
-    <div class="main-content">
+    <div class="main-container">
       <AppSidebar />
-      <div class="page-content">
+      <main class="page-content">
         <router-view></router-view>
-      </div>
+      </main>
     </div>
+    <AppFooter />
   </div>
   <Toast />
 </template>
@@ -18,6 +19,7 @@ import Toast from "primevue/toast";
 
 import { useAuthStore } from "./store/auth";
 import { useShoppingListsStore } from "./store/shoppingLists";
+import AppFooter from "./components/AppFooter.vue";
 
 const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
@@ -38,6 +40,3 @@ const init = async () => {
 
 init();
 </script>
-
-<style lang="scss" scoped>
-</style>
