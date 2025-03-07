@@ -1,12 +1,14 @@
 @use 'primeicons/primeicons.css';
 
 //base
+@use 'base/app';
 @use 'base/reset';
 @use 'base/typography';	
 @use 'base/variables';
 
 //components
 @use 'components/GroupItem';
+@use 'components/AppFooter';
 @use 'components/AppNavbar';
 @use 'components/AppSidebar';
 @use 'components/Avatar';
