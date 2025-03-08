@@ -1,73 +1,135 @@
 <template>
   <div class="shopping-lists-page">
-    <h1>My Shopping Lists</h1>
+    <h1 class="page-title">My Shopping Lists</h1>
 
-    <div class="user-groups__container">
-      <div class="user-groups__list">
-        <div class="user-groups__list-header">
-          <h3>My Groups</h3>
-          <Button
-            label="Create Group"
-            icon="pi pi-plus"
-            @click="openCreateGroupDialog"
-          />
-        </div>
-        <div class="user-groups__list__create-group">
-          <InputText
-            v-if="showCreateGroupDialog"
-            id="group-name"
-            v-model="newGroupName"
-            @keyup.enter="createGroup"
-          />
-        </div>
-        <ul>
-          <li
-            v-for="group in userGroups"
-            :key="group.id"
-          >
-            <div class="user-groups__list__item">
-              <div class="user-groups__list__item-name">{{ group.name }}</div>
-              <div class="user-groups__list__item-actions">
-                <router-link :to="'/groups/' + group.id">Manage</router-link>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="shopping-lists__container">
-      <div class="shopping-lists__list">
-        <div class="shopping-lists__list-header">
-          <h3>My Shopping Lists</h3>
-          <Button
-            label="Create List"
-            icon="pi pi-plus"
-            @click="openCreateListDialog"
-          />
-        </div>
-        <ul>
-          <li v-for="list in shoppingLists" :key="list.id">
-            <div class="shopping-lists__list__item">
-              <div class="shopping-lists__list__item-name">{{ list.name }} (Group ID: {{ list.groupId }})</div>
-              <div class="shopping-lists__list__item-actions">
+    <div class="content-container">
+      <!-- Groups Section -->
+      <div class="card-container">
+        <!-- <div class="card"> -->
+          <div class="card-header">
+            <h3 class="card-title">All Groups</h3>
+            <Button
+              label="Create Group"
+              icon="pi pi-plus"
+              class="p-button-rounded create-button"
+              @click="openCreateGroupDialog"
+            />
+          </div>
+          
+          <!-- Create Group Input -->
+          <div v-if="showCreateGroupDialog" class="create-input-container">
+            <div class="create-input-wrapper">
+              <i class="pi pi-users input-icon"></i>
+              <InputText
+                id="group-name"
+                v-model="newGroupName"
+                placeholder="Enter group name"
+                class="create-input"
+                @keyup.enter="createGroup"
+              />
+              <div class="create-input-actions">
                 <Button
-                  icon="pi pi-eye"
-                  class="p-button-rounded p-button-info mr-2"
-                  @click="viewList(list)"
+                  icon="pi pi-check"
+                  class="p-button-rounded p-button-sm p-button-success action-btn"
+                  @click="createGroup"
                 />
                 <Button
-                  icon="pi pi-trash"
-                  class="p-button-rounded p-button-danger"
-                  @click="confirmDeleteList(list)"
+                  icon="pi pi-times"
+                  class="p-button-rounded p-button-sm p-button-danger action-btn"
+                  @click="showCreateGroupDialog = false"
                 />
               </div>
             </div>
-          </li>
-        </ul>
+          </div>
+          
+          <!-- Groups List -->
+          <TransitionGroup name="list" tag="ul" class="item-list" v-if="userGroups.length > 0">
+            <li v-for="group in userGroups" :key="group.id" class="list-item-container">
+              <div class="list-item">
+                <div class="item-content">
+                  <i class="pi pi-users item-icon"></i>
+                  <div class="item-name">{{ group.name }}</div>
+                </div>
+                <div class="item-actions">
+                  <Button
+                    icon="pi pi-cog"
+                    class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
+                    @click="$router.push('/groups/' + group.id)"
+                  />
+                </div>
+              </div>
+            </li>
+          </TransitionGroup>
+
+          <!-- Empty State for Groups -->
+          <div v-else class="empty-list">
+            <i class="pi pi-users empty-icon"></i>
+            <p>You don't have any groups yet</p>
+            <p class="empty-subtext">Create a group to share shopping lists with others</p>
+          </div>
+        <!-- </div> -->
+      </div>
+
+      <!-- Shopping Lists Section -->
+      <div class="card-container">
+        <!-- <div class="card"> -->
+          <div class="card-header">
+            <h3 class="card-title">All Shopping Lists</h3>
+            <Button
+              label="Create List"
+              icon="pi pi-plus"
+              class="p-button-rounded create-button"
+              @click="openCreateListDialog"
+            />
+          </div>
+          
+          <!-- Shopping Lists -->
+          <TransitionGroup name="list" tag="ul" class="item-list" v-if="shoppingLists.length > 0">
+            <li v-for="list in shoppingLists" :key="list.id" class="list-item-container">
+              <div class="list-item">
+                <div class="item-content" @click="viewList(list)">
+                  <i class="pi pi-shopping-cart item-icon"></i>
+                  <div class="item-details">
+                    <div class="item-name">{{ list.name }}</div>
+                    <div class="item-meta">Group: {{ getGroupName(list.groupId) }}</div>
+                  </div>
+                </div>
+                <div class="item-actions">
+                  <Button
+                    icon="pi pi-eye"
+                    class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
+                    @click="viewList(list)"
+                  />
+                  <Button
+                    icon="pi pi-trash"
+                    class="p-button-rounded p-button-outlined p-button-sm p-button-danger action-button"
+                    @click="confirmDeleteList(list)"
+                  />
+                </div>
+              </div>
+            </li>
+          </TransitionGroup>
+
+          <!-- Empty State for Lists -->
+          <div v-else class="empty-list">
+            <i class="pi pi-shopping-bag empty-icon"></i>
+            <p>You don't have any shopping lists yet</p>
+            <p class="empty-subtext">Create a shopping list to get started</p>
+          </div>
+        <!-- </div> -->
       </div>
     </div>
 
+    <!-- Delete Confirmation Dialog -->
+    <Dialog v-model:visible="deleteDialog" header="Confirm Delete" :style="{width: '90vw', maxWidth: '400px'}" :modal="true">
+      <p>Are you sure you want to delete <strong>{{ listToDelete?.name }}</strong>?</p>
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
+        <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDelete" />
+      </template>
+    </Dialog>
+
+    <!-- Create List Dialog -->
     <CreateListDialog
       :visible="showCreateListDialog"
       @update:visible="showCreateListDialog = $event"
@@ -77,43 +139,83 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
-import Button from "primevue/button";
-import CreateListDialog from "../components/CreateListDialog.vue";
 import { useShoppingListsStore } from "../store/shoppingLists";
-
+import { useToast } from "primevue/usetoast";
+import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import Dialog from "primevue/dialog";
+import CreateListDialog from "../components/CreateListDialog.vue";
+// import './ImprovedShoppingListsPage.scss';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
+const toast = useToast();
 
 const userGroups = ref([]);
 const shoppingLists = ref([]);
 const showCreateListDialog = ref(false);
-
 const showCreateGroupDialog = ref(false);
 const newGroupName = ref("");
+const deleteDialog = ref(false);
+const listToDelete = ref(null);
+
+// Get group name by ID
+const getGroupName = (groupId) => {
+  const group = userGroups.value.find(g => g.id === groupId);
+  return group ? group.name : 'Personal';
+};
 
 const openCreateGroupDialog = () => {
   showCreateGroupDialog.value = true;
 };
-const createGroup = () => {
-  shoppingListsStore.createGroup(newGroupName.value, 'description', authStore.authenticatedUser.id);
-  newGroupName.value = "";
-  showCreateGroupDialog.value = false;
 
-  // fetch data again to get the updated list of groups
-  setTimeout(() => {
+const createGroup = async () => {
+  if (!newGroupName.value.trim()) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Empty Name',
+      detail: 'Please enter a group name',
+      life: 3000
+    });
+    return;
+  }
+
+  try {
+    await shoppingListsStore.createGroup(
+      newGroupName.value, 
+      'description', 
+      authStore.authenticatedUser.id
+    );
+    
+    toast.add({
+      severity: 'success',
+      summary: 'Group Created',
+      detail: `Group "${newGroupName.value}" has been created`,
+      life: 2000
+    });
+    
+    newGroupName.value = "";
+    showCreateGroupDialog.value = false;
     fetchData();
-  }, 1000);
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Could not create group',
+      life: 3000
+    });
+    console.error("Error creating group:", error);
+  }
 };
 
 const openCreateListDialog = () => {
   showCreateListDialog.value = true;
 };
+
 const onListCreated = async (listName) => {
   try {
     const response = await fetch(
@@ -133,40 +235,64 @@ const onListCreated = async (listName) => {
 
     const createdList = await response.json();
     shoppingLists.value.push(createdList);
-  } catch (error) {
-    // console.error("Error creating shopping list:", error);
-  }
-
-  // fetch data again to get the updated list of groups
-  setTimeout(() => {
+    
+    toast.add({
+      severity: 'success',
+      summary: 'List Created',
+      detail: `List "${listName}" has been created`,
+      life: 2000
+    });
+    
     fetchData();
-  }, 1000);
-
-  //TODO: navigate to the created list
-};
-
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString();
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Could not create shopping list',
+      life: 3000
+    });
+    console.error("Error creating shopping list:", error);
+  }
 };
 
 const viewList = (list) => {
-  // Navigate to the shopping list page for the selected list
   router.push(`/shoppinglists/${list.id}`);
 };
 
 const confirmDeleteList = (list) => {
-  // TODO: Implement delete list confirmation and functionality
-  console.log("Delete list:", list);
-  shoppingListsStore.deleteList(list.id);
+  listToDelete.value = list;
+  deleteDialog.value = true;
+};
 
-  // fetch data again to get the updated list of groups
-  setTimeout(() => {
+const confirmDelete = async () => {
+  if (!listToDelete.value) return;
+  
+  try {
+    await shoppingListsStore.deleteList(listToDelete.value.id);
+    
+    toast.add({
+      severity: 'info',
+      summary: 'List Deleted',
+      detail: `${listToDelete.value.name} has been deleted`,
+      life: 2000
+    });
+    
     fetchData();
-  }, 1000);
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Could not delete shopping list',
+      life: 3000
+    });
+    console.error("Error deleting list:", error);
+  } finally {
+    deleteDialog.value = false;
+    listToDelete.value = null;
+  }
 };
 
 const fetchData = async () => {
-  //TODO: first I should get all the groups and then fetch the shopping lists for all groups
   if (authStore.authenticatedUser) {
     try {
       const groupsData = await authStore.getUserGroups();
@@ -177,6 +303,12 @@ const fetchData = async () => {
       shoppingLists.value = listsData;
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Could not load your data',
+        life: 3000
+      });
     }
   }
 };
