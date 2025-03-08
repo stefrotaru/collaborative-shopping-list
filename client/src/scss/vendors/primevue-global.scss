@@ -1,0 +1,62 @@
+/* Global PrimeVue utility styles 
+ * These styles need to be available globally, not scoped to components
+ */
+
+/* Float Label - make sure this works in all contexts */
+.p-float-label {
+  display: block !important;
+  position: relative !important;
+
+  label {
+    position: absolute !important;
+    pointer-events: none !important;
+    top: 50% !important;
+    margin-top: -0.5rem !important;
+    transition: all 0.2s ease !important;
+    line-height: 1 !important;
+    left: 0.75rem !important;
+    color: #9ca3af !important;
+  }
+
+  input:focus ~ label,
+  input.p-filled ~ label,
+  textarea:focus ~ label,
+  textarea.p-filled ~ label,
+  .p-inputwrapper-focus ~ label,
+  .p-inputwrapper-filled ~ label {
+    top: -0.75rem !important;
+    font-size: 0.75rem !important;
+    color: #34d399 !important;
+  }
+
+//   input,
+//   textarea {
+//     padding-top: 1.25rem !important;
+//     padding-bottom: 0.25rem !important;
+//   }
+}
+
+/* Essential utility classes */
+.w-full {
+  width: 100% !important;
+}
+
+.mt-4 {
+  margin-top: 1rem !important;
+}
+
+/* Dialog content styling */
+.dialog-content {
+  padding: 0.5rem 0 !important;
+
+  .p-inputtext {
+    background-color: #1e1e1e !important;
+    border-color: #4b5563 !important;
+    color: #e5e7eb !important;
+
+    &:focus {
+      border-color: #34d399 !important;
+      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
+    }
+  }
+}
