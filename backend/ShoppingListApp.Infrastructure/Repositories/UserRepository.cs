@@ -21,7 +21,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetByEmailAsync(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-    }
+    } 
     public async Task<User> GetByTokenAsync(string token)
     {
         return  await _context.Users.FirstOrDefaultAsync(u => u.Token == token);
@@ -35,7 +35,7 @@ public class UserRepository : IUserRepository
 
     public async Task UpdateAsync(User user)
     {
-        _context.Entry(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
 

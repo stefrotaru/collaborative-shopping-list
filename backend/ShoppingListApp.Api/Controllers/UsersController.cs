@@ -24,6 +24,35 @@ public class UsersController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
+    [HttpPut("update")]
+    public async Task<ActionResult<UserDto>> Update(UpdateUserDto updateUserDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var user = await _userService.UpdateUserAsync(
+                updateUserDto.Id,
+                updateUserDto.Username,
+                updateUserDto.Email,
+                updateUserDto.Avatar,
+                updateUserDto.Token);
+
+            return Ok(user);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An error occurred while updating the user.");
+        }
+    }
+
     [HttpPost("authenticate")]
     public async Task<ActionResult<UserDto>> Authenticate(AuthenticateUserDto authenticateUserDto)
     {

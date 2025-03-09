@@ -70,6 +70,44 @@
         };
     }
 
+    public async Task<UserDto> UpdateUserAsync(int userId, string username, string email, string avatar, string token)
+    {
+        // Retrieve the user by ID
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        // Check if email is being changed and if it's already in use by another user
+        if (email != user.Email)
+        {
+            var existingUser = await _userRepository.GetByEmailAsync(email);
+            if (existingUser != null && existingUser.Id != userId)
+            {
+                throw new ArgumentException("A user with this email already exists.");
+            }
+        }
+
+        // Update user properties
+        user.Username = username;
+        user.Email = email;
+        user.Avatar = avatar;
+
+        // Save the changes
+        await _userRepository.UpdateAsync(user);
+
+        // Map the user entity to a DTO and return it
+        return new UserDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            Avatar = user.Avatar,
+            Token = user.Token
+        };
+    }
+
     public async Task<UserDto> GetUserByIdAsync(int userId)
     {
         // Retrieve the user by ID
