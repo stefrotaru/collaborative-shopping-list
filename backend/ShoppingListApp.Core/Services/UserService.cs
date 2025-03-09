@@ -162,6 +162,30 @@
         };
     }
 
+    public async Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
+    {
+        // Retrieve the user by ID
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        // Verify the old password
+        if (!VerifyPassword(oldPassword, user.PasswordHash))
+        {
+            throw new ArgumentException("Current password is incorrect.");
+        }
+
+        // Hash the new password
+        user.PasswordHash = HashPassword(newPassword);
+
+        // Save the changes
+        await _userRepository.UpdateAsync(user);
+
+        return true;
+    }
+
     private string HashPassword(string password)
     {
         // TODO: Implement password hashing logic

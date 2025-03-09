@@ -53,6 +53,33 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpPut("changePassword")]
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            await _userService.ChangePasswordAsync(
+                changePasswordDto.UserId,
+                changePasswordDto.OldPassword,
+                changePasswordDto.NewPassword);
+
+            return Ok(new { message = "Password changed successfully" });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { message = "An error occurred while changing the password." });
+        }
+    }
+
     [HttpDelete("delete")]
     public async Task<ActionResult> Delete(DeleteUserDto deleteUserDto)
     {
