@@ -24,7 +24,9 @@ public class ShoppingListContext : DbContext
             entity.Property(u => u.Username).IsRequired();
             entity.Property(u => u.Email).IsRequired();
             entity.Property(u => u.PasswordHash).IsRequired();
+            entity.Property(u => u.Token);
             entity.Property(u => u.CreatedAt).IsRequired();
+            //entity.HasIndex(u => u.Email).IsUnique();
         });
 
         modelBuilder.Entity<Group>(entity =>
@@ -34,7 +36,7 @@ public class ShoppingListContext : DbContext
             entity.Property(g => g.CreatedAt).IsRequired();
 
             entity.HasOne(g => g.CreatedBy)
-                .WithMany()
+                .WithMany(u => u.CreatedGroups)
                 .HasForeignKey(g => g.CreatedById)
                 .OnDelete(DeleteBehavior.Restrict);
         });
