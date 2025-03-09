@@ -108,6 +108,21 @@
         };
     }
 
+    public async Task<bool> DeleteUserAsync(int userId)
+    {
+        // Retrieve the user by ID
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        // Delete the user
+        await _userRepository.DeleteAsync(user);
+
+        return true;
+    }
+
     public async Task<UserDto> GetUserByIdAsync(int userId)
     {
         // Retrieve the user by ID

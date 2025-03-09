@@ -53,6 +53,29 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpDelete("delete")]
+    public async Task<ActionResult> Delete(DeleteUserDto deleteUserDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            await _userService.DeleteUserAsync(deleteUserDto.Id);
+            return Ok(new { message = "User deleted successfully" });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An error occurred while deleting the user.");
+        }
+    }
+
     [HttpPost("authenticate")]
     public async Task<ActionResult<UserDto>> Authenticate(AuthenticateUserDto authenticateUserDto)
     {
@@ -89,16 +112,4 @@ public class UsersController : ControllerBase
         var user = await _userService.GetUserInfoAsync(token);
         return Ok(user);
     }
-    //TODO: Implement the Edit and Delete methods
-    // Edit should only edit the username and email of the user | + avatar when implemented
-    //[HttpPut("edit/{id}")]
-    //public async Task<ActionResult<UserDto>> Edit(int id, RegisterUserDto registerUserDto)
-    //{
-    //    if (!ModelState.IsValid)
-    //    {
-    //        return BadRequest(ModelState);
-    //    }
-    //    var user = await _userService.EditUserAsync(id, registerUserDto.Username, registerUserDto.Email, registerUserDto.Password);
-    //    return Ok(user);
-    //}
 }
