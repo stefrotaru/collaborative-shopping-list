@@ -49,6 +49,7 @@ public class GroupRepository : IGroupRepository
         _context.Groups.Remove(group);
         await _context.SaveChangesAsync();
     }
+    
     public async Task AddUserToGroupAsync(GroupMember groupMember)
     {
         _context.GroupMembers.Add(groupMember);
@@ -65,5 +66,13 @@ public class GroupRepository : IGroupRepository
             _context.GroupMembers.Remove(groupMember);
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task<IEnumerable<GroupMember>> GetGroupMembersAsync(int groupId)
+    {
+        return await _context.GroupMembers
+            .Include(gm => gm.User)
+            .Where(gm => gm.GroupId == groupId)
+            .ToListAsync();
     }
 }

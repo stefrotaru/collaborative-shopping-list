@@ -12,15 +12,30 @@ public class GroupMembersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddUserToGroup(int groupId, int userId, string role)
+    public async Task<IActionResult> AddUserToGroup([FromBody] AddGroupMemberDto addGroupMemberDto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        await _groupService.AddUserToGroupAsync(groupId, userId, role);
-        return Ok();
+        try
+        {
+            await _groupService.AddUserToGroupAsync(
+                addGroupMemberDto.GroupId,
+                addGroupMemberDto.UserId,
+                addGroupMemberDto.Role);
+
+            return Ok(new { message = "User added to group successfully" });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { message = "An error occurred while adding the user to the group." });
+        }
     }
 
     [HttpDelete("{groupId}/{userId}")]

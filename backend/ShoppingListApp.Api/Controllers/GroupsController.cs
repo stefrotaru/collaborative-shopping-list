@@ -47,6 +47,29 @@ public class GroupsController : ControllerBase
         return Ok(groups);
     }
 
+    [HttpGet("{groupId}/members")]
+    public async Task<ActionResult<IEnumerable<GroupMemberDto>>> GetMembers(int groupId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var members = await _groupService.GetGroupMembersAsync(groupId);
+            return Ok(members);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { message = "An error occurred while retrieving group members." });
+        }
+    }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdateGroupDto updateGroupDto)
     {

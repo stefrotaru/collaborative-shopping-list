@@ -7,4 +7,6 @@
     Task DeleteGroupAsync(int groupId);
     Task AddUserToGroupAsync(int groupId, int userId, string role);
     Task RemoveUserFromGroupAsync(int groupId, int userId);
+
+    Task<IEnumerable<GroupMemberDto>> GetGroupMembersAsync(int groupId);
 }

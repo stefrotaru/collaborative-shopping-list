@@ -88,6 +88,32 @@
         await _groupRepository.UpdateAsync(group);
     }
 
+    public async Task<IEnumerable<GroupMemberDto>> GetGroupMembersAsync(int groupId)
+    {
+        // Check if the group exists
+        var group = await _groupRepository.GetByIdAsync(groupId);
+        if (group == null)
+        {
+            throw new ArgumentException("Group not found.");
+        }
+
+        // Get all members of the group, including their user information
+        var groupMembers = await _groupRepository.GetGroupMembersAsync(groupId);
+
+        // Map to DTOs
+        var memberDtos = groupMembers.Select(member => new GroupMemberDto
+        {
+            UserId = member.UserId,
+            Username = member.User.Username,
+            Email = member.User.Email,
+            Avatar = member.User.Avatar,
+            Role = member.Role,
+            JoinedAt = member.JoinedAt
+        }).ToList();
+
+        return memberDtos;
+    }
+
     public async Task DeleteGroupAsync(int groupId)
     {
         // Retrieve the group by ID
