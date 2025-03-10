@@ -142,6 +142,26 @@
         };
     }
 
+    public async Task<UserDto> GetUserByEmailAsync(string email)
+    {
+        // Retrieve the user by email
+        var user = await _userRepository.GetByEmailAsync(email);
+        if (user == null)
+        {
+            throw new ArgumentException($"No user found with email: {email}");
+        }
+
+        // Map the user entity to a DTO and return it
+        return new UserDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            Avatar = user.Avatar,
+            Token = user.Token // Include if needed by your UserDto
+        };
+    }
+
     public async Task<UserDto> GetUserInfoAsync(string token)
     {
         // Find the user by token

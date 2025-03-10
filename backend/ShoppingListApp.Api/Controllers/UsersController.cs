@@ -126,6 +126,7 @@ public class UsersController : ControllerBase
         var user = await _userService.GetUserByIdAsync(id);
         return Ok(user);
     }
+
     [HttpPost("userinfo")]
     //[Authorize] // TODO: configure authentication
     public async Task<ActionResult<UserDto>> GetUserInfo(GetUserInfoDto  getUserInfoDto)
@@ -138,5 +139,28 @@ public class UsersController : ControllerBase
         var token = getUserInfoDto.Token;
         var user = await _userService.GetUserInfoAsync(token);
         return Ok(user);
+    }
+
+    [HttpGet("getByEmail")]
+    public async Task<ActionResult<UserDto>> GetByEmail([FromQuery] string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return BadRequest("Email is required");
+        }
+
+        try
+        {
+            var user = await _userService.GetUserByEmailAsync(email);
+            return Ok(user);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An error occurred while retrieving the user.");
+        }
     }
 }
