@@ -1,6 +1,6 @@
 <template>
   <div class="avatar">
-    <img :src="imageString" :style="{ width: props.size, height: props.size }" alt="User Avatar" />
+    <img :src="imageString" :style="{ width: `${props.size}px`, height: `${props.size}px` }" alt="User Avatar" />
   </div>
 </template>
 
@@ -11,8 +11,8 @@ import { useAuthStore } from "../store/auth.ts";
 //TODO: add withDefaults
 const props = defineProps({
   size: {
-    type: String,
-    default: '40px'
+    type: Number,
+    default: 40
   }
 })
 
