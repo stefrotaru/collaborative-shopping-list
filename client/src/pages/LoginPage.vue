@@ -1,38 +1,88 @@
 <template>
-  <div class="login-page">
-    <div class="login-page__header">
-      <img src="../assets/vue.svg" alt="Vue Shopping List" />
-      <h1>Vue Shopping List Login</h1>
-    </div>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="brand-header">
+        <div class="logo-container">
+          <img
+            src="../assets/vue.svg"
+            alt="Vue Shopping List"
+            class="logo-image"
+          />
+        </div>
+        <h1 class="brand-title">Shopping List</h1>
+        <p class="brand-subtitle">Sign in to your account</p>
+      </div>
 
-    <div class="card">
-      <!-- <h2 class="card__title">Login</h2> -->
-      <form @submit.prevent="handleLogin">
-        <div class="card__form-group">
+      <form @submit.prevent="handleLogin" class="login-form">
+        <div class="form-group">
           <label for="email">Email</label>
-          <InputText id="email" v-model="email" type="email" required />
+          <div class="input-wrapper">
+            <i class="pi pi-envelope input-icon"></i>
+            <InputText
+              id="email"
+              v-model="email"
+              type="email"
+              class="w-full"
+              :class="{ 'p-invalid': isInvalidUser }"
+              placeholder="Enter your email address"
+              required
+            />
+          </div>
         </div>
-        <div class="card__form-group">
-          <label for="password">Password</label>
-          <Password id="password" v-model="password" :feedback="false" required />
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <router-link to="/forgot-password" class="forgot-link"
+              >Forgot password?</router-link
+            >
+          </div>
+          <div class="input-wrapper">
+            <i class="pi pi-lock input-icon"></i>
+            <Password
+              id="password"
+              v-model="password"
+              :feedback="false"
+              :toggleMask="true"
+              class="w-full"
+              :class="{ 'p-invalid': isInvalidUser }"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
         </div>
-        <Button type="submit" label="Login" class="card__submit-btn" />
+
+        <small v-if="isInvalidUser" class="p-error error-message">
+          <i class="pi pi-exclamation-circle"></i> Invalid email or password
+        </small>
+
+        <Button
+          type="submit"
+          label="Sign In"
+          icon="pi pi-sign-in"
+          class="login-btn p-button-lg"
+          :loading="loading"
+        />
+
+        <div class="form-separator">
+          <div class="separator-line"></div>
+          <span class="separator-text">or</span>
+          <div class="separator-line"></div>
+        </div>
+
+        <div class="register-option">
+          <span>Don't have an account?</span>
+          <router-link to="/register" class="register-link"
+            >Create Account</router-link
+          >
+        </div>
       </form>
-    </div>
-
-    <div v-if="isInvalidUser" class="p-error">Invalid email or password 😕</div>
-
-    <div>
-      <p>
-        Don't have an account?
-        <router-link to="/register">Register</router-link>
-      </p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
 import { useToast } from "primevue/usetoast";
@@ -48,38 +98,95 @@ const toast = useToast();
 const email = ref("");
 const password = ref("");
 const isInvalidUser = ref(false);
+const loading = ref(false);
 
 const handleLogin = async () => {
-  const registerResponse = await authStore.login({email: email.value, password: password.value});
+  loading.value = true;
+  isInvalidUser.value = false;
 
-  console.log("registerResponse", registerResponse);
-  if (!registerResponse) {
-    console.log("Login failed", registerResponse);
-    isInvalidUser.value = true;
-
-    //TODO: create toast service
-    toast.add({
-      severity: "error",
-      summary: "Login failed",
-      detail: "Invalid email or password",
-      life: 3000,
+  try {
+    const loginResponse = await authStore.login({
+      email: email.value,
+      password: password.value,
     });
 
-    return;
+    if (!loginResponse) {
+      isInvalidUser.value = true;
+
+      toast.add({
+        severity: "error",
+        summary: "Login Failed",
+        detail: "Invalid email or password",
+        life: 3000,
+      });
+
+      loading.value = false;
+      return;
+    }
+
+    // Success
+    toast.add({
+      severity: "success",
+      summary: "Login Successful",
+      detail: "Welcome back!",
+      life: 2000,
+    });
+
+    // Clear form
+    email.value = "";
+    password.value = "";
+
+    // Get user data and navigate
+    await authStore.getUserGroups();
+    router.push("/home");
+  } catch (error) {
+    console.error("Login error:", error);
+    toast.add({
+      severity: "error",
+      summary: "Login Error",
+      detail: "An unexpected error occurred",
+      life: 3000,
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.input-wrapper {
+  :deep(.p-inputtext) {
+    padding-left: 2.5rem !important;
+    background-color: #1e1e1e !important;
+    border-color: #4b5563 !important;
+    color: #e5e7eb !important;
+    width: 100%;
+
+    &:focus {
+      border-color: #34d399 !important;
+      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
+    }
+
+    &.p-invalid {
+      border-color: #f87171 !important;
+    }
   }
 
-  email.value = "";
-  password.value = "";
+  :deep(.p-password-input) {
+    width: 100%;
+    padding-left: 2.5rem !important;
+  }
 
-  authStore.getUserGroups();
+  :deep(.p-password) {
+    width: 100%;
 
-  // TODO: Navigate to appropriate page after successful login
-  router.push("/home");
-};
+    .p-icon {
+      color: #9ca3af;
 
-// onMounted(() => {
-//   if (authStore.authenticatedUser) {
-//     router.push('/home');
-//   }
-// });
-</script>
+      &:hover {
+        color: #e5e7eb;
+      }
+    }
+  }
+}
+</style>
