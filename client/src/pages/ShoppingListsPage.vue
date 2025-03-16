@@ -46,7 +46,7 @@
           <TransitionGroup name="list" tag="ul" class="item-list" v-if="userGroups.length > 0">
             <li v-for="group in userGroups" :key="group.id" class="list-item-container">
               <div class="list-item">
-                <div class="item-content">
+                <div class="item-content" @click="$router.push('/groups/' + group.id)">
                   <i class="pi pi-users item-icon"></i>
                   <div class="item-name">{{ group.name }}</div>
                 </div>
