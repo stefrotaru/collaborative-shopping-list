@@ -7,7 +7,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
   const fetchGroupShoppingLists = async (groupId) => {
     try {
       const response = await fetch(
-        `CollaborativeShoppingListAPI/ShoppingLists/group/${groupId}`,
+        `/CollaborativeShoppingListAPI/ShoppingLists/group/${groupId}`,
         {
           method: "GET",
           headers: {
@@ -94,7 +94,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   }
 
-  const createGroup = async (groupName, description, createdById) => {
+  const createGroup = async (groupName, description, createdById) => { //TODO: Move to groups store
     try {
       const response = await fetch(`CollaborativeShoppingListAPI/Groups`, {
         method: "POST",
