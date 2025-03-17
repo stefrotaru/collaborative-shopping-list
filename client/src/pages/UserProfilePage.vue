@@ -369,7 +369,7 @@ async function saveProfileChanges() {
     };
     
     // Mock API call - replace with actual update
-    await authStore.update(updatedUser);
+    await authStore.updateUser(updatedUser);
     console.log("Profile changes to be saved:", updatedUser);
     
     // Update local user state

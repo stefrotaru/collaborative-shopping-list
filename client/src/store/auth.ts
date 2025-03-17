@@ -88,7 +88,7 @@ export const useAuthStore = defineStore("authStore", () => {
     }
   };
 
-  const register = async ({username, email, password, avatar}: RegisterCredentials) => {
+  const registerUser = async ({username, email, password, avatar}: RegisterCredentials) => {
       try {
         const response = await fetch('CollaborativeShoppingListAPI/Users/register', {
           method: 'POST',
@@ -117,6 +117,53 @@ export const useAuthStore = defineStore("authStore", () => {
       }
 
       return false;
+  }
+
+  const updateUser = async (user: User) => {
+    try {
+      const response = await fetch('CollaborativeShoppingListAPI/Users/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+          // Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update user profile');
+      }
+
+      authenticatedUser.value = await response.json();
+      return true;
+    }
+    catch (error) {
+      console.error('Error updating user profile:', error);
+    }
+  }
+
+  const changePassword = async (passwordData: { UserId: number, OldPassword: string, NewPassword: string }) => {
+    try {
+      const response = await fetch('CollaborativeShoppingListAPI/Users/changePassword', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+          // Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(passwordData),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to change password');
+      }
+  
+      return true;
+    }
+    catch (error) {
+      console.error('Error changing password:', error);
+      throw error;
+    }
   }
 
   const logout = () => {
@@ -168,7 +215,9 @@ export const useAuthStore = defineStore("authStore", () => {
     authenticatedUser,
     login,
     checkAuth,
-    register,
+    registerUser,
+    updateUser,
+    changePassword,
     logout,
 
     userGroups,

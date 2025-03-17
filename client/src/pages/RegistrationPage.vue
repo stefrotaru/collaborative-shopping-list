@@ -341,7 +341,7 @@ const handleRegistration = async () => {
   loading.value = true;
 
   try {
-    const registerResponse = await authStore.register({
+    const registerResponse = await authStore.registerUser({
       username: formData.username,
       email: formData.email,
       password: formData.password,
