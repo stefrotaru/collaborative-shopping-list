@@ -9,6 +9,8 @@ import UserProfilePage from "../pages/UserProfilePage.vue";
 import ShoppingLists from "../pages/ShoppingListsPage.vue";
 import ShoppingListPage from "../pages/ShoppingListPage.vue";
 
+import GroupPage from "../pages/GroupPage.vue";
+
 import { useAuthStore } from "../store/auth.ts";
 
 const routes: RouteRecordRaw[] = [
@@ -46,6 +48,11 @@ const routes: RouteRecordRaw[] = [
     name: "ShoppingList",
     component: ShoppingListPage,
   },
+  {
+    path: "/groups/:id",
+    name: "Group",
+    component: GroupPage,
+  }
 ];
 
 const router = createRouter({
