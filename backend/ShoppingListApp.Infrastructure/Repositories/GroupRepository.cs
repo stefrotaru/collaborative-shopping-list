@@ -32,6 +32,29 @@ public class GroupRepository : IGroupRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Group>> GetGroupMembershipsByUserIdAsync(int userId)
+    {
+        // Get the groups where the user is a member
+        var groupIds = await _context.GroupMembers
+            .Where(gm => gm.UserId == userId)
+            .Select(gm => gm.GroupId)
+            .ToListAsync();
+
+        // Then fetch the actual Group objects for these IDs
+        var groups = await _context.Groups
+            .Include(g => g.GroupMembers)
+            .Where(g => groupIds.Contains(g.Id))
+            .ToListAsync();
+
+        return groups;
+    }
+    public async Task<IEnumerable<GroupMember>> GetUserGroupMembershipsAsync(int userId)
+    {
+        return await _context.GroupMembers
+            .Where(gm => gm.UserId == userId)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Group group)
     {
         _context.Groups.Add(group);

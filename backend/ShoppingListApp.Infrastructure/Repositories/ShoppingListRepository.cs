@@ -42,4 +42,10 @@ public class ShoppingListRepository : IShoppingListRepository
         _context.ShoppingLists.Remove(shoppingList);
         await _context.SaveChangesAsync();
     }
+    public async Task<List<ShoppingList>> GetByCreatedByIdAsync(int createdById)
+    {
+        return await _context.ShoppingLists
+            .Where(sl => sl.CreatedById == createdById)
+            .ToListAsync();
+    }
 }

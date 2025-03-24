@@ -10,4 +10,6 @@
     Task RemoveUserFromGroupAsync(int groupId, int userId);
 
     Task<IEnumerable<GroupMember>> GetGroupMembersAsync(int groupId);
+    Task<IEnumerable<Group>> GetGroupMembershipsByUserIdAsync(int userId);
+
 }

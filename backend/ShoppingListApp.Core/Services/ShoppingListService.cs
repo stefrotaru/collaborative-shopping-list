@@ -62,7 +62,8 @@
         {
             Id = shoppingList.Id,
             Name = shoppingList.Name,
-            GroupId = shoppingList.GroupId
+            GroupId = shoppingList.GroupId,
+            CreatedById = shoppingList.CreatedById
         };
     }
 
@@ -91,6 +92,20 @@
             Id = sl.Id,
             Name = sl.Name,
             GroupId = sl.GroupId
+        }).ToList();
+    }
+
+    public async Task<List<ShoppingListDto>> GetShoppingListsByCreatedByIdAsync(int createdById)
+    {
+        var shoppingLists = await _shoppingListRepository.GetByCreatedByIdAsync(createdById);
+
+        // Map entities to DTOs - adjust this according to your mapping approach
+        return shoppingLists.Select(sl => new ShoppingListDto
+        {
+            Id = sl.Id,
+            Name = sl.Name,
+            GroupId = sl.GroupId,
+            CreatedById = sl.CreatedById
         }).ToList();
     }
 

@@ -4,6 +4,7 @@
     Task<ShoppingListDto> GetShoppingListByIdAsync(int shoppingListId);
     Task<IEnumerable<ShoppingListDto>> GetShoppingListsByGroupIdAsync(int groupId);
     Task<IEnumerable<ShoppingListDto>> GetShoppingListsByGroupIdsAsync(int[] groupIds);
+    Task<List<ShoppingListDto>> GetShoppingListsByCreatedByIdAsync(int createdById);
     Task UpdateShoppingListAsync(int shoppingListId, string name);
     Task DeleteShoppingListAsync(int shoppingListId);
 }
