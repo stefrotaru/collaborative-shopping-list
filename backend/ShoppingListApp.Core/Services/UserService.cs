@@ -1,10 +1,14 @@
-﻿public class UserService : IUserService
+﻿using ShoppingListApp.Core.Services;
+
+public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITokenService _tokenService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, ITokenService tokenService)
     {
         _userRepository = userRepository;
+        _tokenService = tokenService;
     }
 
     public async Task<UserDto> RegisterUserAsync(string username, string email, string password, string avatar)
@@ -16,22 +20,25 @@
             throw new ArgumentException("A user with this email already exists.");
         }
 
-        // Generate a unique token
-        string token = GenerateToken();
-
-        // Create a new user entity
+        // Create a new user entity - we'll generate the token after saving
         var user = new User
         {
             Username = username,
             Email = email,
             PasswordHash = HashPassword(password),
             Avatar = avatar,
-            Token = token,
             CreatedAt = DateTime.UtcNow
         };
 
-        // Save the user to the database
+        // Save the user to the database to get an ID
         await _userRepository.AddAsync(user);
+
+        // Generate a token using the TokenService
+        string token = _tokenService.GenerateToken(user.Id, user.Username, user.Email);
+
+        // Store the token for backward compatibility
+        user.Token = token;
+        await _userRepository.UpdateAsync(user);
 
         // Map the user entity to a DTO and return it
         return new UserDto
@@ -40,7 +47,7 @@
             Username = user.Username,
             Email = user.Email,
             Avatar = user.Avatar,
-            Token = user.Token
+            Token = token
         };
     }
 
@@ -59,6 +66,13 @@
             throw new ArgumentException("Invalid email or password.");
         }
 
+        // Generate a fresh token on each login
+        string token = _tokenService.GenerateToken(user.Id, user.Username, user.Email);
+
+        // Update the stored token for backward compatibility
+        user.Token = token;
+        await _userRepository.UpdateAsync(user);
+
         // Map the user entity to a DTO and return it
         return new UserDto
         {
@@ -66,7 +80,7 @@
             Username = user.Username,
             Email = user.Email,
             Avatar = user.Avatar,
-            Token = user.Token
+            Token = token
         };
     }
 
@@ -104,7 +118,7 @@
             Username = user.Username,
             Email = user.Email,
             Avatar = user.Avatar,
-            Token = user.Token
+            Token = token // Use the provided token
         };
     }
 
@@ -164,22 +178,57 @@
 
     public async Task<UserDto> GetUserInfoAsync(string token)
     {
-        // Find the user by token
-        var user = await _userRepository.GetByTokenAsync(token);
-        if (user == null)
+        try
         {
-            throw new ArgumentException("Invalid token.");
-        }
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentNullException(nameof(token), "Token cannot be null or empty");
+            }
 
-        // Map the user entity to a DTO and return it
-        return new UserDto
+            // First try to validate the token with TokenService
+            var userId = _tokenService.ValidateTokenAndGetUserId(token);
+
+            if (userId.HasValue)
+            {
+                // Token is a valid JWT - get user by ID
+                var user = await _userRepository.GetByIdAsync(userId.Value);
+                if (user == null)
+                {
+                    throw new ArgumentException("User not found");
+                }
+
+                return new UserDto
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    Avatar = user.Avatar,
+                    Token = token // Return the same token
+                };
+            }
+
+            // Fall back to legacy token lookup if JWT validation failed
+            var userByToken = await _userRepository.GetByTokenAsync(token);
+            if (userByToken == null)
+            {
+                throw new ArgumentException("Invalid token");
+            }
+
+            return new UserDto
+            {
+                Id = userByToken.Id,
+                Username = userByToken.Username,
+                Email = userByToken.Email,
+                Avatar = userByToken.Avatar,
+                Token = token
+            };
+        }
+        catch (Exception ex)
         {
-            Id = user.Id,
-            Username = user.Username,
-            Email = user.Email,
-            Avatar = user.Avatar,
-            Token = user.Token
-        };
+            // Log the error
+            Console.WriteLine($"Error in GetUserInfoAsync: {ex.Message}");
+            throw;
+        }
     }
 
     public async Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
@@ -222,6 +271,8 @@
         return password == hashedPassword;
     }
 
+    // This method is kept for backward compatibility but marked obsolete
+    [Obsolete("Use TokenService.GenerateToken instead")]
     private string GenerateToken()
     {
         // Generate a unique token, e.g., using a GUID
