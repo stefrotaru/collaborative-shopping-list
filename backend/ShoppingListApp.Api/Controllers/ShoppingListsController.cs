@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using ShoppingListApp.Core.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 [ApiController]
 [Route("[controller]")]
 public class ShoppingListsController : ControllerBase
 {
     private readonly IShoppingListService _shoppingListService;
+    private readonly ICurrentUserService _currentUserService;
 
-    public ShoppingListsController(IShoppingListService shoppingListService)
+    public ShoppingListsController(
+        IShoppingListService shoppingListService,
+        ICurrentUserService currentUserService)
     {
         _shoppingListService = shoppingListService;
+        _currentUserService = currentUserService;
     }
 
     [HttpPost]
@@ -19,7 +28,20 @@ public class ShoppingListsController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var shoppingList = await _shoppingListService.CreateShoppingListAsync(createShoppingListDto.Name, createShoppingListDto.GroupId, createShoppingListDto.CreatedById);
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        if (currentUserId == 0)
+        {
+            return Unauthorized(new { message = "User not authenticated" });
+        }
+
+        // Only allow the current user to create lists as themselves
+        createShoppingListDto.CreatedById = currentUserId;
+
+        var shoppingList = await _shoppingListService.CreateShoppingListAsync(
+            createShoppingListDto.Name,
+            createShoppingListDto.GroupId,
+            createShoppingListDto.CreatedById);
+
         return CreatedAtAction(nameof(GetById), new { id = shoppingList.Id }, shoppingList);
     }
 
@@ -29,6 +51,22 @@ public class ShoppingListsController : ControllerBase
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
+        }
+
+        // Get current user
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        if (currentUserId == 0)
+        {
+            return Unauthorized(new { message = "User not authenticated" });
+        }
+
+        // Check if user has access to this shopping list
+        var authService = HttpContext.RequestServices.GetRequiredService<IShoppingListAuthorizationService>();
+        bool canAccess = await authService.CanAccessShoppingListAsync(currentUserId, id);
+
+        if (!canAccess)
+        {
+            return Forbid();
         }
 
         var shoppingList = await _shoppingListService.GetShoppingListByIdAsync(id);
@@ -43,8 +81,35 @@ public class ShoppingListsController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var shoppingLists = await _shoppingListService.GetShoppingListsByGroupIdAsync(groupId);
-        return Ok(shoppingLists);
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        if (currentUserId == 0)
+        {
+            return Unauthorized(new { message = "User not authenticated" });
+        }
+
+        try
+        {
+            // Check if the user is a member of the group
+            var groupService = HttpContext.RequestServices.GetRequiredService<IGroupService>();
+            var isGroupMember = await groupService.IsUserInGroupAsync(currentUserId, groupId);
+
+            if (!isGroupMember)
+            {
+                return Unauthorized(new { message = "You don't have access to this group" });
+                // Use Unauthorized instead of Forbid() if the authentication scheme isn't fully configured
+            }
+
+            var shoppingLists = await _shoppingListService.GetShoppingListsByGroupIdAsync(groupId);
+            return Ok(shoppingLists);
+        }
+        catch (Exception ex)
+        {
+            // Log the error
+            // _logger.LogError(ex, "Error in GetByGroupId for groupId {GroupId}", groupId);
+
+            // Return a meaningful error response
+            return StatusCode(500, new { message = "An error occurred while retrieving shopping lists", error = ex.Message });
+        }
     }
 
     [HttpGet("allgroups")]
@@ -55,8 +120,29 @@ public class ShoppingListsController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        if (currentUserId == 0)
+        {
+            return Unauthorized(new { message = "User not authenticated" });
+        }
+
         int[] groupIds = groupIdsString.Split(',').Select(int.Parse).ToArray();
-        var shoppingLists = await _shoppingListService.GetShoppingListsByGroupIdsAsync(groupIds);
+
+        // Get group service to check membership
+        var groupService = HttpContext.RequestServices.GetRequiredService<IGroupService>();
+        var accessibleGroupIds = new List<int>();
+
+        // Filter to only groups the user is a member of
+        foreach (var groupId in groupIds)
+        {
+            var isGroupMember = await groupService.IsUserInGroupAsync(currentUserId, groupId);
+            if (isGroupMember)
+            {
+                accessibleGroupIds.Add(groupId);
+            }
+        }
+
+        var shoppingLists = await _shoppingListService.GetShoppingListsByGroupIdsAsync(accessibleGroupIds.ToArray());
         return Ok(shoppingLists);
     }
 
@@ -66,6 +152,22 @@ public class ShoppingListsController : ControllerBase
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
+        }
+
+        // Get current user
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        if (currentUserId == 0)
+        {
+            return Unauthorized(new { message = "User not authenticated" });
+        }
+
+        // Check if user has access to this shopping list
+        var authService = HttpContext.RequestServices.GetRequiredService<IShoppingListAuthorizationService>();
+        bool canAccess = await authService.CanAccessShoppingListAsync(currentUserId, id);
+
+        if (!canAccess)
+        {
+            return Forbid();
         }
 
         await _shoppingListService.UpdateShoppingListAsync(id, updateShoppingListDto.Name);
@@ -78,6 +180,22 @@ public class ShoppingListsController : ControllerBase
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
+        }
+
+        // Get current user
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        if (currentUserId == 0)
+        {
+            return Unauthorized(new { message = "User not authenticated" });
+        }
+
+        // Check if user has access to this shopping list
+        var authService = HttpContext.RequestServices.GetRequiredService<IShoppingListAuthorizationService>();
+        bool canAccess = await authService.CanAccessShoppingListAsync(currentUserId, id);
+
+        if (!canAccess)
+        {
+            return Forbid();
         }
 
         await _shoppingListService.DeleteShoppingListAsync(id);
