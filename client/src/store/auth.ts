@@ -171,31 +171,36 @@ export const useAuthStore = defineStore("authStore", () => {
     localStorage.removeItem('token');
   }
 
-  const getUserGroups = async () => {
+  const getUserGroups = async (includeAllAccessible = false) => {
     if (!authenticatedUser.value) {
-      return;
+      return [];
     }
-
+  
     try {
-      const response = await fetch(`/CollaborativeShoppingListAPI/Groups/user/${authenticatedUser.value.id}`, {
+      let url = `/CollaborativeShoppingListAPI/Groups/user/${authenticatedUser.value.id}`;
+      
+      // If we want all accessible groups, add a query parameter
+      if (includeAllAccessible) {
+        url += '?includeAllAccessible=true';
+      }
+      
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to fetch user groups');
       }
-
+  
       userGroups.value = await response.json();
-
       return userGroups.value;
-      } catch (error) {
-        console.log('User ID:', authenticatedUser.value.id);
-        console.log('Token:', localStorage.getItem('token'));
-        console.error("Error fetching user groups:", error);
-      }
+    } catch (error) {
+      console.error("Error fetching user groups:", error);
+      return [];
+    }
   }
 
   const populateStore = async () => {
