@@ -12,6 +12,7 @@ import ShoppingListPage from "../pages/ShoppingListPage.vue";
 import GroupPage from "../pages/GroupPage.vue";
 
 import { useAuthStore } from "../store/auth.ts";
+import { useAccessibleShoppingListsStore } from "../store/accessibleShoppingLists.ts";
 import AccessDeniedPage from "../pages/AccessDeniedPage.vue"; // TODO: create this page
 
 const routes: RouteRecordRaw[] = [

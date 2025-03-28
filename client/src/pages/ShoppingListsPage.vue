@@ -5,124 +5,175 @@
     <div class="content-container">
       <!-- Groups Section -->
       <div class="card-container">
-        <!-- <div class="card"> -->
-          <div class="card-header">
-            <h3 class="card-title">All Groups</h3>
-            <Button
-              label="Create Group"
-              icon="pi pi-plus"
-              class="p-button-rounded create-button"
-              @click="openCreateGroupDialog"
+        <div class="card-header">
+          <h3 class="card-title">All Groups</h3>
+          <Button
+            label="Create Group"
+            icon="pi pi-plus"
+            class="p-button-rounded create-button"
+            @click="openCreateGroupDialog"
+          />
+        </div>
+        
+        <!-- Create Group Input -->
+        <div v-if="showCreateGroupDialog" class="create-input-container">
+          <div class="create-input-wrapper">
+            <i class="pi pi-users input-icon"></i>
+            <InputText
+              id="group-name"
+              v-model="newGroupName"
+              placeholder="Enter group name"
+              class="create-input"
+              @keyup.enter="createGroup"
             />
-          </div>
-          
-          <!-- Create Group Input -->
-          <div v-if="showCreateGroupDialog" class="create-input-container">
-            <div class="create-input-wrapper">
-              <i class="pi pi-users input-icon"></i>
-              <InputText
-                id="group-name"
-                v-model="newGroupName"
-                placeholder="Enter group name"
-                class="create-input"
-                @keyup.enter="createGroup"
+            <div class="create-input-actions">
+              <Button
+                icon="pi pi-check"
+                class="p-button-rounded p-button-sm p-button-success action-btn"
+                @click="createGroup"
               />
-              <div class="create-input-actions">
+              <Button
+                icon="pi pi-times"
+                class="p-button-rounded p-button-sm p-button-danger action-btn"
+                @click="showCreateGroupDialog = false"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Groups List -->
+        <TransitionGroup name="list" tag="ul" class="item-list" v-if="userGroups.length > 0">
+          <li v-for="group in userGroups" :key="group.id" class="list-item-container">
+            <div class="list-item">
+              <div class="item-content" @click="$router.push('/groups/' + group.id)">
+                <i class="pi pi-users item-icon"></i>
+                <div class="item-name">{{ group.name }}</div>
+              </div>
+              <div class="item-actions">
                 <Button
-                  icon="pi pi-check"
-                  class="p-button-rounded p-button-sm p-button-success action-btn"
-                  @click="createGroup"
-                />
-                <Button
-                  icon="pi pi-times"
-                  class="p-button-rounded p-button-sm p-button-danger action-btn"
-                  @click="showCreateGroupDialog = false"
+                  icon="pi pi-cog"
+                  class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
+                  @click="$router.push('/groups/' + group.id)"
                 />
               </div>
             </div>
-          </div>
-          
-          <!-- Groups List -->
-          <TransitionGroup name="list" tag="ul" class="item-list" v-if="userGroups.length > 0">
-            <li v-for="group in userGroups" :key="group.id" class="list-item-container">
-              <div class="list-item">
-                <div class="item-content" @click="$router.push('/groups/' + group.id)">
-                  <i class="pi pi-users item-icon"></i>
-                  <div class="item-name">{{ group.name }}</div>
-                </div>
-                <div class="item-actions">
-                  <Button
-                    icon="pi pi-cog"
-                    class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
-                    @click="$router.push('/groups/' + group.id)"
-                  />
-                </div>
-              </div>
-            </li>
-          </TransitionGroup>
+          </li>
+        </TransitionGroup>
 
-          <!-- Empty State for Groups -->
-          <div v-else class="empty-list">
-            <i class="pi pi-users empty-icon"></i>
-            <p>You don't have any groups yet</p>
-            <p class="empty-subtext">Create a group to share shopping lists with others</p>
-          </div>
-        <!-- </div> -->
+        <!-- Empty State for Groups -->
+        <div v-else class="empty-list">
+          <i class="pi pi-users empty-icon"></i>
+          <p>You don't have any groups yet</p>
+          <p class="empty-subtext">Create a group to share shopping lists with others</p>
+        </div>
       </div>
 
       <!-- Shopping Lists Section -->
       <div class="card-container">
-        <!-- <div class="card"> -->
-          <div class="card-header">
-            <h3 class="card-title">All Shopping Lists</h3>
-            <Button
-              label="Create List"
-              icon="pi pi-plus"
-              class="p-button-rounded create-button"
-              @click="openCreateListDialog"
-            />
-          </div>
-          
-          <!-- Shopping Lists -->
-          <TransitionGroup name="list" tag="ul" class="item-list" v-if="shoppingLists.length > 0">
-            <li v-for="list in shoppingLists" :key="list.id" class="list-item-container">
-              <div class="list-item">
-                <div class="item-content" @click="viewList(list)">
-                  <i class="pi pi-shopping-cart item-icon"></i>
-                  <div class="item-details">
-                    <div class="item-name">{{ list.name }}</div>
-                    <div class="item-meta">Group: {{ getGroupName(list.groupId) }}</div>
+        <div class="card-header">
+          <h3 class="card-title">My Shopping Lists</h3>
+          <Button
+            label="Create List"
+            icon="pi pi-plus"
+            class="p-button-rounded create-button"
+            @click="openCreateListDialog"
+          />
+        </div>
+        
+        <!-- Loading state -->
+        <div v-if="accessibleListsStore.isLoading" class="loading-state">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+          <p>Loading your shopping lists...</p>
+        </div>
+        
+        <!-- Error state -->
+        <div v-else-if="accessibleListsStore.error" class="error-state">
+          <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #ef4444;"></i>
+          <p>{{ accessibleListsStore.error }}</p>
+          <Button 
+            label="Try Again" 
+            icon="pi pi-refresh" 
+            @click="fetchData" 
+            class="p-button-sm p-button-outlined"
+          />
+        </div>
+
+        <!-- Shopping Lists -->
+        <template v-else>
+          <!-- Owned Lists -->
+          <div v-if="ownedLists.length > 0" class="list-section">
+            <h4 class="section-title">Lists I Own</h4>
+            <TransitionGroup name="list" tag="ul" class="item-list">
+              <li v-for="list in ownedLists" :key="list.shoppingListId" class="list-item-container">
+                <div class="list-item">
+                  <div class="item-content" @click="viewList(list)">
+                    <i class="pi pi-shopping-cart item-icon"></i>
+                    <div class="item-details">
+                      <div class="item-name">{{ list.shoppingListName }}</div>
+                      <div class="item-meta">
+                        Group: {{ list.groupName || 'Personal' }}
+                        <span class="badge owner-badge">Owner</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item-actions">
+                    <Button
+                      icon="pi pi-eye"
+                      class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
+                      @click="viewList(list)"
+                    />
+                    <Button
+                      icon="pi pi-trash"
+                      class="p-button-rounded p-button-outlined p-button-sm p-button-danger action-button"
+                      @click="confirmDeleteList(list)"
+                    />
                   </div>
                 </div>
-                <div class="item-actions">
-                  <Button
-                    icon="pi pi-eye"
-                    class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
-                    @click="viewList(list)"
-                  />
-                  <Button
-                    icon="pi pi-trash"
-                    class="p-button-rounded p-button-outlined p-button-sm p-button-danger action-button"
-                    @click="confirmDeleteList(list)"
-                  />
+              </li>
+            </TransitionGroup>
+          </div>
+
+          <!-- Shared Lists -->
+          <div v-if="sharedLists.length > 0" class="list-section">
+            <h4 class="section-title">Shared With Me</h4>
+            <TransitionGroup name="list" tag="ul" class="item-list">
+              <li v-for="list in sharedLists" :key="list.shoppingListId" class="list-item-container">
+                <div class="list-item">
+                  <div class="item-content" @click="viewList(list)">
+                    <i class="pi pi-shopping-cart item-icon"></i>
+                    <div class="item-details">
+                      <div class="item-name">{{ list.shoppingListName }}</div>
+                      <div class="item-meta">
+                        {{ list.accessReason }}
+                        <span class="badge shared-badge">Shared</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item-actions">
+                    <Button
+                      icon="pi pi-eye"
+                      class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
+                      @click="viewList(list)"
+                    />
+                  </div>
                 </div>
-              </div>
-            </li>
-          </TransitionGroup>
+              </li>
+            </TransitionGroup>
+          </div>
 
           <!-- Empty State for Lists -->
-          <div v-else class="empty-list">
+          <div v-if="!ownedLists.length && !sharedLists.length" class="empty-list">
             <i class="pi pi-shopping-bag empty-icon"></i>
             <p>You don't have any shopping lists yet</p>
             <p class="empty-subtext">Create a shopping list to get started</p>
           </div>
-        <!-- </div> -->
+        </template>
       </div>
     </div>
 
     <!-- Delete Confirmation Dialog -->
     <Dialog v-model:visible="deleteDialog" header="Confirm Delete" :style="{width: '90vw', maxWidth: '400px'}" :modal="true">
-      <p>Are you sure you want to delete <strong>{{ listToDelete?.name }}</strong>?</p>
+      <p>Are you sure you want to delete <strong>{{ listToDelete?.shoppingListName }}</strong>?</p>
       <template #footer>
         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
         <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDelete" />
@@ -139,35 +190,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
 import { useShoppingListsStore } from "../store/shoppingLists";
+import { useAccessibleShoppingListsStore } from "../store/accessibleShoppingLists";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
 import CreateListDialog from "../components/CreateListDialog.vue";
-// import './ImprovedShoppingListsPage.scss';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
+const accessibleListsStore = useAccessibleShoppingListsStore();
 const toast = useToast();
 
 const userGroups = ref([]);
-const shoppingLists = ref([]);
 const showCreateListDialog = ref(false);
 const showCreateGroupDialog = ref(false);
 const newGroupName = ref("");
 const deleteDialog = ref(false);
 const listToDelete = ref(null);
 
-// Get group name by ID
-const getGroupName = (groupId) => {
-  const group = userGroups.value.find(g => g.id === groupId);
-  return group ? group.name : 'Personal';
-};
+// Computed properties from the accessible lists store
+const ownedLists = computed(() => accessibleListsStore.getOwnedLists());
+const sharedLists = computed(() => accessibleListsStore.getSharedLists());
 
 const openCreateGroupDialog = () => {
   showCreateGroupDialog.value = true;
@@ -218,23 +267,12 @@ const openCreateListDialog = () => {
 
 const onListCreated = async (listName) => {
   try {
-    const response = await fetch(
-      `/api/users/${authStore.user.id}/shopping-lists`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: listName }),
-      }
+    // Create list with your existing method
+    const response = await shoppingListsStore.createNewList(
+      listName,
+      0, // GroupId 0 for personal lists, or let user select a group
+      authStore.authenticatedUser.id
     );
-
-    if (!response.ok) {
-      throw new Error("Failed to create shopping list");
-    }
-
-    const createdList = await response.json();
-    shoppingLists.value.push(createdList);
     
     toast.add({
       severity: 'success',
@@ -243,6 +281,7 @@ const onListCreated = async (listName) => {
       life: 2000
     });
     
+    // Refresh data to show new list
     fetchData();
   } catch (error) {
     toast.add({
@@ -256,7 +295,7 @@ const onListCreated = async (listName) => {
 };
 
 const viewList = (list) => {
-  router.push(`/shoppinglists/${list.id}`);
+  router.push(`/shoppinglists/${list.shoppingListId}`);
 };
 
 const confirmDeleteList = (list) => {
@@ -268,15 +307,16 @@ const confirmDelete = async () => {
   if (!listToDelete.value) return;
   
   try {
-    await shoppingListsStore.deleteList(listToDelete.value.id);
+    await shoppingListsStore.deleteList(listToDelete.value.shoppingListId);
     
     toast.add({
       severity: 'info',
       summary: 'List Deleted',
-      detail: `${listToDelete.value.name} has been deleted`,
+      detail: `${listToDelete.value.shoppingListName} has been deleted`,
       life: 2000
     });
     
+    // Refresh lists after deletion
     fetchData();
   } catch (error) {
     toast.add({
@@ -295,12 +335,12 @@ const confirmDelete = async () => {
 const fetchData = async () => {
   if (authStore.authenticatedUser) {
     try {
-      const groupsData = await authStore.getUserGroups();
-      const userGroupArr = groupsData.map(group => group.id);
-      const listsData = await shoppingListsStore.fetchAllGroupsShoppingLists(userGroupArr);
-
+      // Fetch groups data
+      const groupsData = await authStore.getUserGroups(true);
       userGroups.value = groupsData;
-      shoppingLists.value = listsData;
+      
+      // Fetch accessible shopping lists using the new store
+      await accessibleListsStore.fetchAccessibleLists();
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.add({
@@ -316,13 +356,46 @@ const fetchData = async () => {
 onMounted(async () => {
   fetchData();
 });
-
-// Watch if the user's shopping lists have changed
-watch(
-  () => shoppingListsStore.userShoppingLists,
-  (newVal) => {
-    shoppingLists.value = newVal || [];
-  },
-  { immediate: true }
-);
 </script>
+
+<style scoped>
+/* Your existing styles */
+.section-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #d1d5db;
+  border-bottom: 1px solid #4b5563;
+  padding-bottom: 0.5rem;
+}
+
+.list-section {
+  margin-bottom: 2rem;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+}
+
+.owner-badge {
+  background-color: #10b981;
+  color: white;
+}
+
+.shared-badge {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #9ca3af;
+  text-align: center;
+}
+</style>
