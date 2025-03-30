@@ -13,6 +13,10 @@ const props = defineProps({
   size: {
     type: Number,
     default: 40
+  },
+  userAvatar: {
+    type: String,
+    default: null
   }
 })
 
@@ -21,7 +25,7 @@ let imageString = ref(pathToAvatars + 'user-icon-svgrepo.svg'); // default image
 
 //update imageString when authenticatedUser changes
 watch(() => useAuthStore().authenticatedUser, (newVal) => {
-  if (newVal && newVal.avatar && newVal.avatar !== "") {
+  if (newVal && newVal.avatar && newVal.avatar !== "" && props.userAvatar === null) {
     imageString.value = pathToAvatars + newVal.avatar;
   } else {
     imageString.value = pathToAvatars + 'user-icon-svgrepo.svg';
@@ -30,8 +34,12 @@ watch(() => useAuthStore().authenticatedUser, (newVal) => {
 
 onMounted(() => {
   const authenticatedUser = useAuthStore().authenticatedUser;
-  if (authenticatedUser && authenticatedUser.avatar && authenticatedUser.avatar !== "") {
+  if (authenticatedUser && authenticatedUser.avatar && authenticatedUser.avatar !== "" && props.userAvatar === null) {
     imageString.value = pathToAvatars + authenticatedUser.avatar;
+  } else if (props.userAvatar && props.userAvatar !== "") {
+    imageString.value = pathToAvatars + props.userAvatar;
+  } else {
+    imageString.value = pathToAvatars + 'user-icon-svgrepo.svg';
   }
 });
 </script>
