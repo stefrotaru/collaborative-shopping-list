@@ -29,7 +29,7 @@ const init = async () => {
   await authStore.checkAuth();
 
   if (authStore.authenticatedUser) {
-    const groups = await authStore.getUserGroups();
+    const groups = await authStore.getUserGroups(true);
 
     if (groups?.length) {
       const groupIds = groups.map((group) => group.id);

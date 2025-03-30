@@ -137,7 +137,7 @@ const handleLogin = async () => {
     password.value = "";
 
     // Get user data and navigate
-    await authStore.getUserGroups();
+    await authStore.getUserGroups(true);
     router.push("/home");
   } catch (error) {
     console.error("Login error:", error);

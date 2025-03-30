@@ -199,7 +199,7 @@ const fetchUserStats = async () => {
   if (authenticatedUser.value) {
     try {
       // Get user groups
-      const groups = await authStore.getUserGroups();
+      const groups = await authStore.getUserGroups(true);
       userStats.groups = groups.length;
       
       // Get user shopping lists
