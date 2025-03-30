@@ -1,5 +1,32 @@
 <template>
   <div class="group-page">
+    <div v-if="loading" class="loading-state">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading group information...</p>
+    </div>
+
+    <div v-else-if="error" class="error-state">
+      <i
+        class="pi pi-exclamation-triangle"
+        style="font-size: 2rem; color: #ef4444"
+      ></i>
+      <p>{{ error }}</p>
+      <div class="error-actions">
+        <Button
+          label="Go Back"
+          icon="pi pi-arrow-left"
+          @click="$router.push('/shoppinglists')"
+          class="p-button-outlined"
+        />
+        <Button
+          label="Try Again"
+          icon="pi pi-refresh"
+          @click="fetchGroupData(route.params.id)"
+          class="p-button-primary"
+        />
+      </div>
+    </div>
+
     <div class="page-header">
       <div class="page-title-wrapper">
         <h1 class="page-title">{{ groupInfo.name || "Group" }}</h1>
@@ -51,7 +78,11 @@
           >
             <div class="member-avatar">
               <!--!!! use Avatar component !!!-->
-              <i class="pi pi-user"></i>
+              <Avatar
+                :userAvatar="member.avatar"
+                :size="40"
+                :isOwner="isOwner(member)"
+              ></Avatar>
               <div
                 v-if="isOwner(member)"
                 class="owner-badge"
@@ -346,6 +377,7 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
 import Tooltip from "primevue/tooltip";
+import Avatar from "../components/Avatar.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -353,6 +385,9 @@ const authStore = useAuthStore();
 const groupStore = useGroupsStore();
 const shoppingListsStore = useShoppingListsStore();
 const toast = useToast();
+
+const loading = ref(true);
+const error = ref(null);
 
 // User info
 const userId = authStore.authenticatedUser.id;
@@ -385,7 +420,9 @@ const canManageMembers = computed(() => {
 
 // Utility functions
 const isOwner = (member) => {
-  return member.id === groupInfo.value?.ownerId;
+  console.log(member, groupInfo.value);
+  // return member.id === groupInfo.value?.ownerId;
+  return member.role === "Admin";
 };
 
 const isCurrentUser = (member) => {
@@ -671,28 +708,34 @@ const navigateToList = (list) => {
 
 // Data fetching
 const fetchGroupData = async (groupId) => {
+  loading.value = true;
+  error.value = null;
+
   try {
     // Fetch group info
     const groupInfoResponse = await groupStore.fetchGroupInfo(groupId);
-    const groupMembersResponse = await groupStore.fetchGroupMembers(groupId);
     groupInfo.value = groupInfoResponse;
+
+    // Fetch group members
+    const groupMembersResponse = await groupStore.fetchGroupMembers(groupId);
     groupMembers.value = groupMembersResponse;
 
     // Fetch group's shopping lists
-    const listsResponse = await shoppingListsStore.fetchGroupShoppingLists(
-      groupId
-    );
+    const listsResponse = await shoppingListsStore.fetchGroupShoppingLists(groupId);
     groupLists.value = listsResponse || [];
 
-    console.log("Group lists:", groupLists.value);
+    console.log("Group data loaded successfully");
   } catch (error) {
     console.error("Error fetching group data:", error);
+    error.value = error.message || "Failed to load group data";
     toast.add({
       severity: "error",
-      summary: "Load Failed",
-      detail: "Could not load group data",
-      life: 3000,
+      summary: "Error",
+      detail: error.message || "Could not load group data",
+      life: 5000,
     });
+  } finally {
+    loading.value = false;
   }
 };
 
