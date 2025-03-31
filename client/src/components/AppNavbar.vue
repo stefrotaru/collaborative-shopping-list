@@ -1,10 +1,13 @@
 <template>
   <nav class="app-navbar">
     <div class="app-navbar__logo">
-      <img src="../assets/vue.svg" alt="Logo" @click="$router.push('/home')"/>
+      <span @click="$router.push('/home')">
+        <img src="../assets/linklist1.svg" alt="Logo" height="60"/>
+        Link-List
+      </span>
     </div>
     <div class="app-navbar__user-profile">
-      <Avatar @click="globalStore.toggleSidebar()"/>
+      <Avatar @click="$router.push('/profile')"/>
     </div>
   </nav>
 </template>

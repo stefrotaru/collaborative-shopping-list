@@ -45,7 +45,10 @@
           <div class="shopping-list-visual">
             <div class="list-paper">
               <div class="list-header">
-                <div class="list-title">My Shopping List</div>
+                <div class="list-title">
+                  <img src="../assets/linklist1.svg" alt="Logo" height="30"/>
+                  Groceries
+                </div>
                 <div class="list-icon"><i class="pi pi-shopping-cart"></i></div>
               </div>
               <div class="list-items">
