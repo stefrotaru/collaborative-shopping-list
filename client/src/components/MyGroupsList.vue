@@ -4,11 +4,18 @@
       <h3>My Groups</h3>
     </div>
     
-    <ul class="groups-container">
+    <div v-if="loading" class="loading-state">
+      <i class="pi pi-spin pi-spinner loading-icon"></i>
+      <span>Loading groups...</span>
+    </div>
+    
+    <ul v-else class="groups-container">
       <li v-for="group in groups" :key="group.id">
         <router-link class="group-item" :to="'/groups/' + group.id">
           <i class="pi pi-users item-icon"></i>
           <span>{{ group.name }}</span>
+          <span v-if="isCreatedByUser(group)" class="owner-badge">Owner</span>
+          <span v-else class="member-badge">Member</span>
         </router-link>
       </li>
       
@@ -21,15 +28,52 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useAuthStore } from "../store/auth";
 
 const authStore = useAuthStore();
-const groups = ref(authStore.userGroups || []);
+const groups = ref([]);
+const loading = ref(true);
 
-watch(authStore, (newValue) => {
-  groups.value = newValue.userGroups || [];
-});
+// Fetch all groups the user has access to
+const fetchGroups = async () => {
+  loading.value = true;
+  try {
+    await authStore.checkAuth();
+    const fetchedGroups = await authStore.getUserGroups(true);
+    groups.value = fetchedGroups || [];
+  } catch (error) {
+    console.error("Error fetching groups:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Function to check if the group was created by the current user
+const isCreatedByUser = (group) => {
+  if (!authStore.authenticatedUser) {
+    return false;
+  }
+  
+  // If you have createdById in your GroupDto, you can use it directly
+  // Otherwise, you may need to modify this check based on your data structure
+  console.log(group);
+  console.log(group.createdById, authStore.authenticatedUser.id);
+  return group.createdById === authStore.authenticatedUser.id;
+};
+
+watch(
+  () => authStore.userGroups,
+  (newVal) => {
+    if (newVal) {
+      groups.value = newVal;
+    } else {
+      groups.value = [];
+    }
+  }
+);
+
+onMounted(fetchGroups);
 </script>
 
 <style lang="scss" scoped>
@@ -95,6 +139,23 @@ watch(authStore, (newValue) => {
   }
 }
 
+.owner-badge, .member-badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.owner-badge {
+  background-color: #10b981;
+  color: white;
+}
+
+.member-badge {
+  background-color: #3b82f6;
+  color: white;
+}
+
 .empty-list {
   display: flex;
   align-items: center;
@@ -106,6 +167,19 @@ watch(authStore, (newValue) => {
   i {
     margin-right: 0.625rem;
     font-size: 0.875rem;
+  }
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  
+  .loading-icon {
+    margin-right: 0.625rem;
+    font-size: 1rem;
   }
 }
 </style>
