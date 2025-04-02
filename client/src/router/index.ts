@@ -39,6 +39,7 @@ const routes: RouteRecordRaw[] = [
     path: "/profile",
     name: "Profile",
     component: UserProfilePage,
+    meta: { requiresAuth: true }
   },
   {
     path: "/shoppinglists",
@@ -74,19 +75,14 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
-  const publicRoutes = ['/login', '/register', '/access-denied'];
+  await authStore.checkAuth();
 
   console.log("⬅️🛣️ Before each route, from:", from, "to:", to);
-  
-  // Check if user is authenticated for protected routes
-  if (!authStore.authenticatedUser && !publicRoutes.includes(to.path)) {
-    console.log('🔎🔎🔎check auth needed!')
-    await authStore.checkAuth();
-  }
 
   // Redirect to login if not authenticated and route requires auth
   if (to.meta.requiresAuth && !authStore.authenticatedUser) {
-    next({ name: 'Login', query: { redirect: to.fullPath } });
+    next({ name: 'Login' });
+    
     return;
   }
 
@@ -118,8 +114,9 @@ router.beforeEach(async (to, from, next) => {
     
     // This assumes your useAuthStore has userGroups
     // Or you could load a specific check from your GroupsStore
-    const userGroups = await authStore.getUserGroups();
-    const hasAccess = userGroups?.some(group => group.id === groupId) ?? false;
+    
+    // const userGroups = await authStore.getUserGroups(true);
+    // const hasAccess = userGroups?.some(group => group.id === groupId) ?? false;
     
     // if (!hasAccess) {
     //   console.log(`Access denied to group ${groupId}`);
