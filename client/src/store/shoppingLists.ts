@@ -12,25 +12,48 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            'Accept': 'application/json'
           },
         }
       );
-
+  
       if (!response.ok) {
-        throw new Error("Failed to fetch shopping lists");
+        // Try to parse error message from JSON response
+        let errorMessage = `Failed to fetch shopping lists (${response.status})`;
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch (e) {
+          // If we can't parse JSON, use the status text
+          errorMessage = `Failed to fetch shopping lists: ${response.statusText}`;
+        }
+        
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
-
+  
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.warn('Response is not JSON:', contentType);
+        return [];
+      }
+  
       userShoppingLists.value = await response.json();
-
       return userShoppingLists.value;
-    } catch (error) {}
-  };
-
-  const fetchAllGroupsShoppingLists = async (groupIds) => {
-    if (!groupIds) {
-      return;
+    } catch (error) {
+      console.error("Error fetching group shopping lists:", error);
+      throw error;
     }
-
+  };
+  
+  const fetchAllGroupsShoppingLists = async (groupIds) => {
+    if (!groupIds || groupIds.length === 0) {
+      userShoppingLists.value = [];
+      return [];
+    }
+  
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingLists/allgroups?groupIds=${groupIds.join(",")}`,
@@ -38,18 +61,41 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            'Accept': 'application/json'
           },
         }
       );
-   
+  
       if (!response.ok) {
-        throw new Error("Failed to fetch shopping lists");
+        // Try to parse error message from JSON response
+        let errorMessage = `Failed to fetch shopping lists (${response.status})`;
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch (e) {
+          // If we can't parse JSON, use the status text
+          errorMessage = `Failed to fetch shopping lists: ${response.statusText}`;
+        }
+        
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
-   
+  
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.warn('Response is not JSON:', contentType);
+        return [];
+      }
+  
       userShoppingLists.value = await response.json();
       return userShoppingLists.value;
-    } catch (error) {}
-   };
+    } catch (error) {
+      console.error("Error fetching all groups shopping lists:", error);
+      throw error;
+    }
+  };
 
   const createNewList = async (listName, groupId, userId) => {
     try {
