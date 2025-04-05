@@ -21,7 +21,7 @@
     margin-bottom: 1rem;
     gap: 1rem;
 
-    @media (min-width: 768px) {
+    @media (min-width: $screen-md) {
       flex-direction: row;
       justify-content: space-between;
     }
@@ -75,7 +75,7 @@
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 
-    @media (min-width: 768px) {
+    @media (min-width: $screen-md) {
       flex-direction: row;
     }
   }
@@ -88,7 +88,7 @@
     background-color: #1e1e1e;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
 
-    @media (min-width: 768px) {
+    @media (min-width: $screen-md) {
       width: 250px;
       flex-shrink: 0;
     }
@@ -293,11 +293,11 @@
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
 
-    @media (min-width: 640px) {
+    @media (min-width: $screen-md) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: $screen-lg) {
       grid-template-columns: repeat(4, 1fr);
     }
   }
@@ -341,7 +341,7 @@
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
 
-    @media (min-width: 640px) {
+    @media (min-width: $screen-md) {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 
@@ -432,7 +432,7 @@
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: $screen-md) {
   .profile-page {
     padding: 1rem;
     .page-title {

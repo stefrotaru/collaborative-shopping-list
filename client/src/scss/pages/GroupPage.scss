@@ -13,7 +13,7 @@
     flex-direction: column;
     margin-bottom: 2rem;
 
-    @media (min-width: 768px) {
+    @media (min-width: $screen-md) {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
@@ -24,7 +24,7 @@
       align-items: center;
       margin-bottom: 1rem;
 
-      @media (min-width: 768px) {
+      @media (min-width: $screen-md) {
         margin-bottom: 0;
       }
     }
@@ -55,7 +55,7 @@
     flex-direction: column;
     gap: 2rem;
 
-    @media (min-width: 1024px) {
+    @media (min-width: $screen-lg) {
       flex-direction: row;
       align-items: flex-start;
     }
@@ -68,7 +68,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     width: 100%;
 
-    @media (min-width: 1024px) {
+    @media (min-width: $screen-lg) {
       width: 50%;
     }
 
@@ -255,7 +255,7 @@
     }
   }  
 
-  @media (max-width: 768px) {
+  @media (max-width: $screen-md) {
     padding: 1rem;
 
     .page-title {
@@ -271,7 +271,7 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: $screen-sm) {
     padding: 0.75rem;
 
     .card {
