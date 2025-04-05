@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .home-container {
   display: flex;
   flex-direction: column;
@@ -45,7 +47,7 @@
   }
 
   .title-accent {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -73,7 +75,7 @@
   }
 
   .get-started-btn {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%) !important;
     border: none !important;
     box-shadow: 0 4px 14px rgba(52, 211, 153, 0.4) !important;
     padding: 0.75rem 1.5rem !important;
@@ -86,8 +88,8 @@
   }
 
   .learn-more-btn {
-    border-color: #34d399 !important;
-    color: #34d399 !important;
+    border-color: $primary-color !important;
+    color: $primary-color !important;
     padding: 0.75rem 1.5rem !important;
 
     &:hover {
@@ -119,7 +121,7 @@
   .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #34d399;
+    color: $primary-color;
   }
 
   .stat-label {
@@ -209,14 +211,14 @@
 
     font-size: 1.25rem;
     font-weight: 600;
-    color: #34d399;
+    color: $primary-color;
   }
 
   .list-icon {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background-color: #34d399;
+    background-color: $primary-color;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -250,8 +252,8 @@
     transition: all 0.2s ease;
 
     &.checked {
-      background-color: #34d399;
-      border-color: #34d399;
+      background-color: $primary-color;
+      border-color: $primary-color;
     }
 
     i {
@@ -284,7 +286,7 @@
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 3rem;
-    color: #34d399;
+    color: $primary-color;
   }
 
   .features-grid {
@@ -336,7 +338,7 @@
 
     i {
       font-size: 1.5rem;
-      color: #34d399;
+      color: $primary-color;
     }
   }
 
@@ -376,7 +378,7 @@
     font-size: 2.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

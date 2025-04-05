@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .group-page {
   display: flex;
   flex-direction: column;
@@ -30,12 +32,12 @@
     .page-title {
       margin: 0;
       font-size: 2rem;
-      color: #34d399;
+      color: $primary-color;
     }
 
     .title-edit-btn {
       margin-left: 0.5rem;
-      color: #34d399 !important;
+      color: $primary-color !important;
 
       &:hover {
         background-color: rgba(52, 211, 153, 0.1) !important;
@@ -79,7 +81,7 @@
       .card-title {
         margin: 0;
         font-size: 1.5rem;
-        color: #34d399;
+        color: $primary-color;
       }
 
       .member-count {
@@ -91,8 +93,8 @@
 
   .add-member-btn,
   .create-list-btn {
-    background-color: #34d399 !important;
-    border-color: #34d399 !important;
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
 
     &:hover {
       background-color: #10b981 !important;
@@ -127,7 +129,7 @@
     padding: 0.75rem 1rem;
     background-color: #1e1e1e;
     border-radius: 8px;
-    border-left: 3px solid #34d399;
+    border-left: 3px solid $primary-color;
     transition: all 0.2s ease;
 
     &:hover {
@@ -139,7 +141,7 @@
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background-color: #34d399;
+    background-color: $primary-color;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -188,7 +190,7 @@
   }
 
   .list-icon {
-    color: #34d399;
+    color: $primary-color;
     font-size: 1.25rem;
     margin-right: 0.75rem;
   }

@@ -1,8 +1,10 @@
+@use '../base/variables.scss' as *;
+
 .avatar {
   display: inline-flex;
   padding: 0.25rem;
   border-radius: 50%;
-  background-color: #34d399;
+  background-color: $primary-color;
 
   img {
     height: 40px;

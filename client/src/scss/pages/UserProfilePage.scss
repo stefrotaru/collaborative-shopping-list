@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .profile-page {
   display: flex;
   flex-direction: column;
@@ -27,12 +29,12 @@
     .page-title {
       margin: 0;
       font-size: 2rem;
-      color: #34d399;
+      color: $primary-color;
     }
 
     .edit-profile-btn {
-      background-color: #34d399 !important;
-      border-color: #34d399 !important;
+      background-color: $primary-color !important;
+      border-color: $primary-color !important;
 
       &:hover {
         background-color: #10b981 !important;
@@ -55,8 +57,8 @@
     }
 
     .save-btn {
-      background-color: #34d399 !important;
-      border-color: #34d399 !important;
+      background-color: $primary-color !important;
+      border-color: $primary-color !important;
 
       &:hover {
         background-color: #10b981 !important;
@@ -137,7 +139,7 @@
       bottom: 0;
       width: 24px;
       height: 24px;
-      background-color: #34d399;
+      background-color: $primary-color;
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -165,7 +167,7 @@
     .carousel-nav-btn {
       width: 36px;
       height: 36px;
-      color: #34d399 !important;
+      color: $primary-color !important;
 
       &:hover:not(:disabled) {
         background-color: rgba(52, 211, 153, 0.1) !important;
@@ -187,7 +189,7 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 3px solid #34d399;
+      border: 3px solid $primary-color;
     }
   }
 
@@ -232,7 +234,7 @@
     padding: 0.75rem 0;
 
     .info-icon {
-      color: #34d399;
+      color: $primary-color;
       font-size: 1.25rem;
     }
 
@@ -269,7 +271,7 @@
 
   .section-title {
     font-size: 1.5rem;
-    color: #34d399;
+    color: $primary-color;
     margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
@@ -281,7 +283,7 @@
       left: 0;
       width: 50px;
       height: 3px;
-      background-color: #34d399;
+      background-color: $primary-color;
       border-radius: 3px;
     }
   }
@@ -316,7 +318,7 @@
     .stat-value {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #34d399;
+      color: $primary-color;
       margin-bottom: 0.5rem;
     }
 
@@ -384,7 +386,7 @@
       align-items: center;
       margin-right: 1rem;
       flex-shrink: 0;
-      color: #34d399;
+      color: $primary-color;
       font-size: 1.25rem;
     }
 
@@ -408,7 +410,7 @@
 
     .option-button {
       margin-left: 1rem;
-      color: #34d399 !important;
+      color: $primary-color !important;
 
       &:hover {
         background-color: rgba(52, 211, 153, 0.1) !important;

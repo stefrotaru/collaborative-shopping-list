@@ -3,6 +3,8 @@
  */
 
 /* Float Label - make sure this works in all contexts */
+@use '../base/variables.scss' as *;
+
 .p-float-label {
   display: block !important;
   position: relative !important;
@@ -26,7 +28,7 @@
   .p-inputwrapper-filled ~ label {
     top: -0.75rem !important;
     font-size: 0.75rem !important;
-    color: #34d399 !important;
+    color: $primary-color !important;
   }
 
 //   input,
@@ -46,7 +48,7 @@
     color: #e5e7eb !important;
 
     &:focus {
-      border-color: #34d399 !important;
+      border-color: $primary-color !important;
       box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
     }
   }

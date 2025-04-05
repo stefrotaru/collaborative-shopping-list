@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .page-content {
   .shopping-list {
     display: flex;
@@ -17,7 +19,7 @@
       &__title {
         margin: 0;
         font-size: 1.75rem;
-        color: #34d399;
+        color: $primary-color;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -36,7 +38,7 @@
       align-items: center;
       background-color: #262626;
       border-radius: 9999px;
-      border: 2px solid #34d399;
+      border: 2px solid $primary-color;
       padding: 0.25rem 0.25rem 0.25rem 3rem;
       transition: all 0.2s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -49,7 +51,7 @@
     &__input-icon {
       position: absolute;
       left: 1.25rem;
-      color: #34d399;
+      color: $primary-color;
       font-size: 1.2rem;
     }
 
@@ -78,7 +80,7 @@
 
       &:hover {
         background-color: #323232;
-        color: #34d399;
+        color: $primary-color;
       }
     }
 
@@ -108,7 +110,7 @@
       min-width: 1.5rem;
       text-align: center;
       font-weight: 600;
-      color: #34d399;
+      color: $primary-color;
     }
 
     &__content {
@@ -140,7 +142,7 @@
       padding: 0.75rem 1rem;
       background-color: #262626;
       border-radius: 8px;
-      border-left: 4px solid #34d399;
+      border-left: 4px solid $primary-color;
       
       &--checked {
         background-color: #1e1e1e;
@@ -181,7 +183,7 @@
     
     &__item-quantity {
       flex-shrink: 0;
-      background-color: #34d399;
+      background-color: $primary-color;
       color: #171717;
       border-radius: 9999px;
       padding: 0.125rem 0.5rem;

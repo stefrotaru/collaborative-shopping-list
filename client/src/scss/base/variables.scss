@@ -1,0 +1,32 @@
+/* Dark theme variables */
+
+// Greens
+$green-400: #34d399;  // primary/success color
+$green-500: #10b981;  // primary hover
+
+// Grays
+$gray-950: #171717;  // background color
+$gray-900: #1e1e1e;  // card dark
+$gray-850: #262626;  // card background
+$gray-600: #4b5563;  // border color
+$gray-400: #9ca3af;  // text muted
+$gray-100: #e5e7eb;  // text color
+
+// Accent colors
+$red-400: #f87171;    // danger color
+$amber-400: #fbbf24;  // warning color
+$blue-400: #38bdf8;   // info color
+
+// Semantic aliases (optional)
+$primary-color: $green-400;
+$primary-hover: $green-500;
+$background-color: $gray-950;
+$card-background: $gray-850;
+$card-dark: $gray-900;
+$text-color: $gray-100;
+$text-muted: $gray-400;
+$border-color: $gray-600;
+$danger-color: $red-400;
+$warning-color: $amber-400;
+$info-color: $blue-400;
+$success-color: $green-400;

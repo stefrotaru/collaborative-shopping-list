@@ -77,6 +77,8 @@ onMounted(fetchGroups);
 </script>
 
 <style lang="scss" scoped>
+@use "../scss/base/variables" as *;
+
 .groups-list {
   display: flex;
   flex-direction: column;
@@ -118,7 +120,7 @@ onMounted(fetchGroups);
   
   &:hover, &.router-link-active {
     background-color: rgba(52, 211, 153, 0.15);
-    color: #34d399;
+    color: $primary-color;
   }
   
   .item-icon {
@@ -129,7 +131,7 @@ onMounted(fetchGroups);
   }
   
   &:hover .item-icon, &.router-link-active .item-icon {
-    color: #34d399;
+    color: $primary-color;
   }
   
   span {

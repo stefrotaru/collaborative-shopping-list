@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .sidebar-wrapper {
   position: sticky;
   top: 0;
@@ -101,7 +103,7 @@
   }
   
   &:hover {
-    background-color: #34d399;
+    background-color: $primary-color;
     
     .handle-arrow i {
       color: #171717;
@@ -119,7 +121,7 @@
     align-items: center;
     
     i {
-      color: #34d399;
+      color: $primary-color;
       font-size: 1rem;
       transition: color 0.3s ease;
     }

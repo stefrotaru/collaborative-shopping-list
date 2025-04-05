@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .app-footer {
   background-color: #121212;
   padding: 2rem 1.5rem;
@@ -21,7 +23,7 @@
 .footer-logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #34d399;
+  color: $primary-color;
 }
 
 .footer-links {
@@ -36,7 +38,7 @@
     transition: color 0.2s ease;
 
     &:hover {
-      color: #34d399;
+      color: $primary-color;
     }
   }
 }

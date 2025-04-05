@@ -1,3 +1,5 @@
+@use '../base/variables.scss' as *;
+
 .user-profile {
   display: flex;
   flex-direction: column;
@@ -22,7 +24,7 @@
         border: 2px solid #18181b;
 
         &.online {
-          background-color: #34d399;
+          background-color: $primary-color;
         }
       }
     }

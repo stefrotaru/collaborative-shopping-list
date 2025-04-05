@@ -34,22 +34,6 @@ body {
   min-height: 100%;
 }
 
-/* Dark theme variables */
-:root {
-  --primary-color: #34d399;
-  --primary-hover: #10b981;
-  --background-color: #171717;
-  --card-background: #262626;
-  --card-dark: #1e1e1e;
-  --text-color: #e5e7eb;
-  --text-muted: #9ca3af;
-  --border-color: #4b5563;
-  --danger-color: #f87171;
-  --warning-color: #fbbf24;
-  --info-color: #38bdf8;
-  --success-color: #34d399;
-}
-
 /* Common component styles */
 .card {
   background-color: var(--card-background);
