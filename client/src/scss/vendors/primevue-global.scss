@@ -17,7 +17,7 @@
     transition: all 0.2s ease !important;
     line-height: 1 !important;
     left: 0.75rem !important;
-    color: #9ca3af !important;
+    color: $text-muted !important;
   }
 
   input:focus ~ label,
@@ -43,9 +43,9 @@
   padding: 0.5rem 0 !important;
 
   .p-inputtext {
-    background-color: #1e1e1e !important;
-    border-color: #4b5563 !important;
-    color: #e5e7eb !important;
+    background-color: $gray-900 !important;
+    border-color: $border-color !important;
+    color: $text-color !important;
 
     &:focus {
       border-color: $primary-color !important;

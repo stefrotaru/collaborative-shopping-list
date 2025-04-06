@@ -6,7 +6,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem 3rem;
-  color: #e5e7eb;
+  color: $text-color;
 
   .profile-container {
     display: flex;
@@ -37,8 +37,8 @@
       border-color: $primary-color !important;
 
       &:hover {
-        background-color: #10b981 !important;
-        border-color: #10b981 !important;
+        background-color: $primary-hover !important;
+        border-color: $primary-hover !important;
       }
     }
 
@@ -48,8 +48,8 @@
     }
 
     .cancel-btn {
-      color: #9ca3af !important;
-      border-color: #9ca3af !important;
+      color: $text-muted !important;
+      border-color: $gray-400 !important;
 
       &:hover {
         background-color: rgba(156, 163, 175, 0.1) !important;
@@ -61,8 +61,8 @@
       border-color: $primary-color !important;
 
       &:hover {
-        background-color: #10b981 !important;
-        border-color: #10b981 !important;
+        background-color: $primary-hover !important;
+        border-color: $primary-hover !important;
       }
     }
   }
@@ -70,7 +70,7 @@
   .profile-card {
     display: flex;
     flex-direction: column;
-    background-color: #262626;
+    background-color: $card-background-color;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -85,7 +85,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem 1.5rem;
-    background-color: #1e1e1e;
+    background-color: $gray-900;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
 
     @media (min-width: $screen-md) {
@@ -144,10 +144,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 2px solid #1e1e1e;
+      border: 2px solid $gray-900;
 
       i {
-        color: #1e1e1e;
+        color: $gray-900;
         font-size: 0.75rem;
       }
     }
@@ -196,13 +196,13 @@
   .user-name {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: $text-color;
     margin-bottom: 0.5rem;
   }
 
   .user-role {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: $text-muted;
   }
 
   .profile-info-section {
@@ -224,7 +224,7 @@
 
   .form-label {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: $text-muted;
   }
 
   .info-display {
@@ -240,7 +240,7 @@
 
     .info-text {
       font-size: 1.125rem;
-      color: #e5e7eb;
+      color: $text-color;
     }
   }
 
@@ -252,14 +252,14 @@
       left: 1rem;
       top: 50%;
       transform: translateY(-50%);
-      color: #9ca3af;
+      color: $text-muted;
       z-index: 1;
     }
   }
 
   .premium-badge {
     background-color: #fcd34d !important;
-    color: #1e1e1e !important;
+    color: $gray-900 !important;
     font-weight: 600;
     margin-left: 1rem;
   }
@@ -303,7 +303,7 @@
   }
 
   .stat-card {
-    background-color: #262626;
+    background-color: $card-background-color;
     border-radius: 12px;
     padding: 1.5rem;
     position: relative;
@@ -324,7 +324,7 @@
 
     .stat-label {
       font-size: 0.875rem;
-      color: #9ca3af;
+      color: $text-muted;
     }
 
     .stat-icon {
@@ -356,7 +356,7 @@
   .option-card {
     display: flex;
     align-items: center;
-    background-color: #262626;
+    background-color: $card-background-color;
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -368,10 +368,10 @@
     }
 
     &.danger {
-      border-left: 3px solid #f87171;
+      border-left: 3px solid $danger-color;
 
       .option-icon {
-        color: #f87171;
+        color: $danger-color;
         background-color: rgba(248, 113, 113, 0.1);
       }
     }
@@ -398,13 +398,13 @@
     .option-title {
       font-size: 1.125rem;
       font-weight: 600;
-      color: #e5e7eb;
+      color: $text-color;
       margin: 0 0 0.25rem 0;
     }
 
     .option-description {
       font-size: 0.875rem;
-      color: #9ca3af;
+      color: $text-muted;
       margin: 0;
     }
 
@@ -421,12 +421,12 @@
   // Dialog styles
   .dialog-content {
     margin: 1rem 0;
-    color: #e5e7eb;
+    color: $text-color;
 
     .form-label {
       display: block;
       margin-bottom: 0.5rem;
-      color: #9ca3af;
+      color: $text-muted;
     }
   }
 }

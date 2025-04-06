@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #171717;
-  color: #e5e7eb;
+  background-color: $gray-950;
+  color: $text-color;
 
   .hero-section {
     display: flex;
@@ -47,7 +47,7 @@
   }
 
   .title-accent {
-    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%);
+    background: linear-gradient(135deg, $primary-color 0%, $green-500 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -57,7 +57,7 @@
   .hero-description {
     font-size: 1.125rem;
     line-height: 1.6;
-    color: #9ca3af;
+    color: $text-muted;
     margin-bottom: 2rem;
     max-width: 550px;
   }
@@ -75,7 +75,7 @@
   }
 
   .get-started-btn {
-    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%) !important;
+    background: linear-gradient(135deg, $primary-color 0%, $green-500 100%) !important;
     border: none !important;
     box-shadow: 0 4px 14px rgba(52, 211, 153, 0.4) !important;
     padding: 0.75rem 1.5rem !important;
@@ -126,7 +126,7 @@
 
   .stat-label {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: $text-muted;
   }
 
   .hero-visual {
@@ -170,7 +170,7 @@
     position: relative;
     width: 85%;
     height: 90%;
-    background-color: #262626;
+    background-color: $gray-850;
     border-radius: 12px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     padding: 1.5rem;
@@ -224,7 +224,7 @@
     align-items: center;
 
     i {
-      color: #171717;
+      color: $gray-950;
       font-size: 1rem;
     }
   }
@@ -257,7 +257,7 @@
     }
 
     i {
-      color: #171717;
+      color: $gray-950;
       font-size: 0.75rem;
     }
   }
@@ -306,7 +306,7 @@
   }
 
   .feature-card {
-    background-color: #262626;
+    background-color: $card-background-color;
     border-radius: 12px;
     padding: 2rem;
     display: flex;
@@ -346,12 +346,12 @@
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #e5e7eb;
+    color: $text-color;
   }
 
   .feature-description {
     font-size: 0.9375rem;
-    color: #9ca3af;
+    color: $text-muted;
     line-height: 1.6;
   }
 
@@ -378,7 +378,7 @@
     font-size: 2.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%);
+    background: linear-gradient(135deg, $primary-color 0%, $green-500 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -391,7 +391,7 @@
 
   .cta-description {
     font-size: 1.125rem;
-    color: #9ca3af;
+    color: $text-muted;
     margin-bottom: 2rem;
   }
 }

@@ -7,7 +7,7 @@
   // min-height: 100vh;
   padding: 2rem 1rem;
   gap: 2rem;
-  background-color: #171717;
+  background-color: $background-color;
 
   @media (min-width: $screen-lg) {
     flex-direction: row;
@@ -18,7 +18,7 @@
   }
 
   .registration-card {
-    background-color: #262626;
+    background-color: $card-background-color;
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     width: 100%;
@@ -35,7 +35,7 @@
   .brand-header {
     padding: 2rem 2rem 1rem;
     text-align: center;
-    background: linear-gradient(135deg, #1e1e1e 0%, #262626 100%);
+    background: linear-gradient(135deg, $gray-900 0%, $gray-850 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
@@ -61,7 +61,7 @@
   .brand-subtitle {
     margin: 0.5rem 0 0;
     font-size: 1rem;
-    color: #9ca3af;
+    color: $text-muted;
   }
 
   .registration-form {
@@ -80,7 +80,7 @@
 
   .section-title {
     font-size: 1.125rem;
-    color: #e5e7eb;
+    color: $text-color;
     margin: 0 0 1rem 0;
     text-align: center;
   }
@@ -118,7 +118,7 @@
     height: 100px;
     border-radius: 50%;
     border: 3px solid $primary-color;
-    background-color: #1e1e1e;
+    background-color: $gray-900;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
@@ -126,13 +126,13 @@
     display: flex;
     align-items: center;
     margin-top: 0.75rem;
-    color: #9ca3af;
+    color: $text-muted;
     font-size: 0.875rem;
   }
 
   .current-page {
     font-weight: 600;
-    color: #e5e7eb;
+    color: $text-color;
   }
 
   .page-divider {
@@ -152,17 +152,17 @@
 
     label {
       font-size: 0.875rem;
-      color: #e5e7eb;
+      color: $text-color;
       font-weight: 500;
     }
 
     .p-inputtext {
-      background-color: #1e1e1e !important;
-      border-color: #4b5563 !important;
-      color: #e5e7eb !important;
+      background-color: $gray-900 !important;
+      border-color: $border-color !important;
+      color: $text-color !important;
 
       &.p-invalid {
-        border-color: #f87171 !important;
+        border-color: $danger-color !important;
       }
 
       &:focus {
@@ -177,7 +177,7 @@
 
     .p-error {
       font-size: 0.75rem;
-      color: #f87171;
+      color: $danger-color;
       margin-top: 0.25rem;
     }
   }
@@ -191,15 +191,15 @@
       left: 0.75rem;
       top: 50%;
       transform: translateY(-50%);
-      color: #9ca3af;
+      color: $text-muted;
       z-index: 1;
     }
 
     :deep(.p-inputtext) {
       padding-left: 2.5rem !important;
-      background-color: #1e1e1e !important;
-      border-color: #4b5563 !important;
-      color: #e5e7eb !important;
+      background-color: $gray-900 !important;
+      border-color: $border-color !important;
+      color: $text-color !important;
       width: 100%;
 
       &:focus {
@@ -218,7 +218,7 @@
 
   .register-btn {
     width: 100%;
-    background: linear-gradient(135deg, $primary-color 0%, #10b981 100%) !important;
+    background: linear-gradient(135deg, $primary-color 0%, $green-500 100%) !important;
     border: none !important;
     padding: 0.75rem !important;
     font-weight: 600 !important;
@@ -244,12 +244,12 @@
   .separator-line {
     flex: 1;
     height: 1px;
-    background-color: #4b5563;
+    background-color: $gray-600;
   }
 
   .separator-text {
     padding: 0 1rem;
-    color: #9ca3af;
+    color: $text-muted;
     font-size: 0.875rem;
   }
 
@@ -257,7 +257,7 @@
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-    color: #9ca3af;
+    color: $text-muted;
     font-size: 0.875rem;
   }
 
@@ -281,7 +281,7 @@
   }
 
   .info-card {
-    background: linear-gradient(135deg, #1e1e1e 0%, #262626 100%);
+    background: linear-gradient(135deg, $card-background-color-dark 0%, $card-background-color 100%);
     border-radius: 16px;
     padding: 2rem;
     height: 100%;
@@ -303,7 +303,7 @@
   .info-title {
     margin: 0;
     font-size: 1.5rem;
-    color: #e5e7eb;
+    color: $text-color;
     font-weight: 600;
   }
 
@@ -328,7 +328,7 @@
       }
 
       span {
-        color: #e5e7eb;
+        color: $text-color;
         font-size: 1rem;
       }
     }
@@ -337,7 +337,7 @@
   .password-requirements {
     p {
       margin: 0.5rem 0;
-      color: #9ca3af;
+      color: $text-muted;
       font-size: 0.75rem;
     }
 
@@ -350,13 +350,13 @@
         display: flex;
         align-items: center;
         margin-bottom: 0.25rem;
-        color: #9ca3af;
+        color: $text-muted;
         font-size: 0.75rem;
 
         &::before {
           content: "•";
           margin-right: 0.5rem;
-          color: #9ca3af;
+          color: $text-muted;
         }
 
         &.requirement-met {
