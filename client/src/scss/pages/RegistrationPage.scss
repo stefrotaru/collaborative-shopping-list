@@ -100,10 +100,10 @@
   .carousel-nav-btn {
     width: 2.5rem;
     height: 2.5rem;
-    color: $primary-color !important;
+    color: $primary-color;
 
     &:hover {
-      background-color: rgba(52, 211, 153, 0.1) !important;
+      background-color: rgba(52, 211, 153, 0.1);
     }
   }
 
@@ -157,17 +157,17 @@
     }
 
     .p-inputtext {
-      background-color: $gray-900 !important;
-      border-color: $border-color !important;
-      color: $text-color !important;
+      background-color: $gray-900;
+      border-color: $border-color;
+      color: $text-color;
 
       &.p-invalid {
-        border-color: $danger-color !important;
+        border-color: $danger-color;
       }
 
       &:focus {
-        border-color: $primary-color !important;
-        box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
       }
     }
 
@@ -194,19 +194,6 @@
       color: $text-muted;
       z-index: 1;
     }
-
-    :deep(.p-inputtext) {
-      padding-left: 2.5rem !important;
-      background-color: $gray-900 !important;
-      border-color: $border-color !important;
-      color: $text-color !important;
-      width: 100%;
-
-      &:focus {
-        border-color: $primary-color !important;
-        box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
-      }
-    }
   }
 
   .form-actions {
@@ -220,18 +207,18 @@
     width: 100%;
     background: linear-gradient(135deg, $primary-color 0%, $green-500 100%) !important;
     border: none !important;
-    padding: 0.75rem !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
+    padding: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
 
     &:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3) !important;
+      box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3);
     }
 
     &:disabled {
       opacity: 0.7;
-      background: linear-gradient(135deg, #94e6c4 0%, #7eddbc 100%) !important;
+      background: linear-gradient(135deg, #94e6c4 0%, #7eddbc 100%);
     }
   }
 

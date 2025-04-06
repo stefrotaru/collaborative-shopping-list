@@ -60,19 +60,19 @@
 }
 
 .p-button-primary {
-  background-color: var($primary-color) !important;
-  border-color: var($primary-color) !important;
+  background-color: $primary-color !important;
+  border-color: $primary-color !important;
 
   &:hover {
-    background-color: var($primary-hover) !important;
-    border-color: var($primary-hover) !important;
+    background-color: $primary-hover !important;
+    border-color: $primary-hover !important;
   }
 }
 
 .p-button-outlined {
   &.p-button-primary {
-    color: var($primary-color) !important;
-    border-color: var($primary-color) !important;
+    color: $primary-color !important;
+    border-color: $primary-color !important;
 
     &:hover {
       background-color: rgba(52, 211, 153, 0.1) !important;
@@ -80,8 +80,8 @@
   }
 
   &.p-button-danger {
-    color: var($danger-color) !important;
-    border-color: var($danger-color) !important;
+    color: $danger-color !important;
+    border-color: $danger-color !important;
 
     &:hover {
       background-color: rgba(248, 113, 113, 0.1) !important;
@@ -90,36 +90,36 @@
 }
 
 .p-inputtext {
-  background-color: var($card-background-color-dark) !important;
-  border-color: var($border-color) !important;
-  color: var($text-color) !important;
+  background-color: $card-background-color-dark !important;
+  border-color: $border-color !important;
+  color: $text-color !important;
 
   &:focus {
-    border-color: var($primary-color) !important;
+    border-color: $primary-color !important;
     box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
   }
 }
 
 .p-toast {
   .p-toast-message {
-    background-color: var($card-background-color);
-    color: var($text-color);
+    background-color: $card-background-color;
+    color: $text-color;
     border-left-width: 6px;
 
     &.p-toast-message-info {
-      border-left-color: var($info-color);
+      border-left-color: $info-color;
     }
 
     &.p-toast-message-success {
-      border-left-color: var($success-color);
+      border-left-color: $success-color;
     }
 
     &.p-toast-message-warn {
-      border-left-color: var($warning-color);
+      border-left-color: $warning-color;
     }
 
     &.p-toast-message-error {
-      border-left-color: var($danger-color);
+      border-left-color: $danger-color;
     }
 
     .p-toast-message-content {

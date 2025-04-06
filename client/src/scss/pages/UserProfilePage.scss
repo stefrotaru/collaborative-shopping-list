@@ -33,12 +33,12 @@
     }
 
     .edit-profile-btn {
-      background-color: $primary-color !important;
-      border-color: $primary-color !important;
+      background-color: $primary-color;
+      border-color: $primary-color;
 
       &:hover {
-        background-color: $primary-hover !important;
-        border-color: $primary-hover !important;
+        background-color: $primary-hover;
+        border-color: $primary-hover;
       }
     }
 
@@ -48,21 +48,21 @@
     }
 
     .cancel-btn {
-      color: $text-muted !important;
-      border-color: $gray-400 !important;
+      color: $text-muted;
+      border-color: $gray-400;
 
       &:hover {
-        background-color: rgba(156, 163, 175, 0.1) !important;
+        background-color: rgba(156, 163, 175, 0.1);
       }
     }
 
     .save-btn {
-      background-color: $primary-color !important;
-      border-color: $primary-color !important;
+      background-color: $primary-color;
+      border-color: $primary-color;
 
       &:hover {
-        background-color: $primary-hover !important;
-        border-color: $primary-hover !important;
+        background-color: $primary-hover;
+        border-color: $primary-hover;
       }
     }
   }
@@ -167,10 +167,10 @@
     .carousel-nav-btn {
       width: 36px;
       height: 36px;
-      color: $primary-color !important;
+      color: $primary-color;
 
       &:hover:not(:disabled) {
-        background-color: rgba(52, 211, 153, 0.1) !important;
+        background-color: rgba(52, 211, 153, 0.1);
       }
 
       &:disabled {
@@ -410,10 +410,10 @@
 
     .option-button {
       margin-left: 1rem;
-      color: $primary-color !important;
+      color: $primary-color;
 
       &:hover {
-        background-color: rgba(52, 211, 153, 0.1) !important;
+        background-color: rgba(52, 211, 153, 0.1);
       }
     }
   }

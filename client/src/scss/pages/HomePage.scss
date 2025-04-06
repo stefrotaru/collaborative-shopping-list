@@ -77,23 +77,23 @@
   .get-started-btn {
     background: linear-gradient(135deg, $primary-color 0%, $green-500 100%) !important;
     border: none !important;
-    box-shadow: 0 4px 14px rgba(52, 211, 153, 0.4) !important;
-    padding: 0.75rem 1.5rem !important;
-    font-weight: 600 !important;
+    box-shadow: 0 4px 14px rgba(52, 211, 153, 0.4);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.5) !important;
+      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.5);
     }
   }
 
   .learn-more-btn {
-    border-color: $primary-color !important;
-    color: $primary-color !important;
-    padding: 0.75rem 1.5rem !important;
+    border-color: $primary-color;
+    color: $primary-color;
+    padding: 0.75rem 1.5rem;
 
     &:hover {
-      background-color: rgba(52, 211, 153, 0.1) !important;
+      background-color: rgba(52, 211, 153, 0.1);
     }
   }
 

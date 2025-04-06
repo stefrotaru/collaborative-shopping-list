@@ -46,12 +46,12 @@
         }
 
         .create-button {
-          background-color: $primary-color !important;
-          border-color: $primary-color !important;
+          background-color: $primary-color;
+          border-color: $primary-color;
 
           &:hover {
-            background-color: $primary-hover !important;
-            border-color: $primary-hover !important;
+            background-color: $primary-hover;
+            border-color: $primary-hover;
           }
         }
       }
@@ -84,14 +84,14 @@
           .create-input {
             flex: 1;
             min-width: 0;
-            background-color: transparent !important;
-            border: none !important;
+            background-color: transparent;
+            border: none;
             box-shadow: none !important;
-            color: $text-color !important;
-            padding: 0.5rem !important;
+            color: $text-color;
+            padding: 0.5rem;
 
             &:focus {
-              outline: none !important;
+              outline: none;
             }
           }
 
@@ -102,8 +102,8 @@
             flex-shrink: 0;
 
             .action-btn {
-              width: 2rem !important;
-              height: 2rem !important;
+              width: 2rem;
+              height: 2rem;
               flex-shrink: 0;
             }
           }

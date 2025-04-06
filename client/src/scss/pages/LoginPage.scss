@@ -1,4 +1,4 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
 .login-container {
   display: flex;
@@ -112,19 +112,15 @@
 
       .login-btn {
         width: 100%;
-        background: linear-gradient(
-          135deg,
-          $primary-color 0%,
-          $green-500 100%
-        ) !important;
-        border: none !important;
-        padding: 0.75rem !important;
-        font-weight: 600 !important;
-        transition: all 0.3s ease !important;
+        background: linear-gradient(135deg, $primary-color 0%, $green-500 100%);
+        border: none;
+        padding: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
 
         &:hover:not(:disabled) {
           transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3) !important;
+          box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3);
         }
       }
 
@@ -166,7 +162,6 @@
     }
   }
 }
-
 
 @media (max-width: $screen-sm) {
   .login-card {
