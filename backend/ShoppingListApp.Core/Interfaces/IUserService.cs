@@ -7,6 +7,7 @@
     Task<UserDto> UpdateUserAsync(int userId, string username, string email, string avatar, string token);
     Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword);
     Task<UserDto> GetUserByEmailAsync(string email);
+    Task<UserStatsDto> GetUserStatsAsync(string token);
 
     Task<bool> DeleteUserAsync(int userId);
 }

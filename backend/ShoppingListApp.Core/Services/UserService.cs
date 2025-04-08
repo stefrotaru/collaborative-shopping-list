@@ -231,6 +231,50 @@ public class UserService : IUserService
         }
     }
 
+    public async Task<UserStatsDto> GetUserStatsAsync(string token)
+    {
+        // First, get the user ID from the token
+        int userId;
+        try
+        {
+            var tokenUserId = _tokenService.ValidateTokenAndGetUserId(token);
+            if (!tokenUserId.HasValue)
+            {
+                // Fall back to legacy token lookup
+                var user = await _userRepository.GetByTokenAsync(token);
+                if (user == null)
+                {
+                    throw new ArgumentException("Invalid token");
+                }
+                userId = user.Id;
+            }
+            else
+            {
+                userId = tokenUserId.Value;
+            }
+        }
+        catch (Exception)
+        {
+            throw new ArgumentException("Invalid token");
+        }
+
+        // Retrieve user stats from the repository using the correct method names
+        var listsCount = await _userRepository.GetUserShoppingListsCountAsync(userId);
+        var groupsCount = await _userRepository.GetUserGroupsCountAsync(userId);
+        var itemsAddedCount = await _userRepository.GetUserItemsAddedCountAsync(userId);
+        var itemsCompletedCount = await _userRepository.GetUserItemsCompletedCountAsync(userId);
+
+        // Map the user stats to a DTO and return it
+        return new UserStatsDto
+        {
+            UserId = userId.ToString(),
+            TotalLists = listsCount,
+            TotalGroups = groupsCount,
+            TotalItemsAdded = itemsAddedCount,
+            TotalItemsCompleted = itemsCompletedCount
+        };
+    }
+
     public async Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
     {
         // Retrieve the user by ID

@@ -7,4 +7,10 @@
     Task AddAsync(User user);
     Task UpdateAsync(User user);
     Task DeleteAsync(User user);
+
+    // User stats
+    Task<int> GetUserShoppingListsCountAsync(int userId);
+    Task<int> GetUserGroupsCountAsync(int userId);
+    Task<int> GetUserItemsAddedCountAsync(int userId);
+    Task<int> GetUserItemsCompletedCountAsync(int userId);
 }

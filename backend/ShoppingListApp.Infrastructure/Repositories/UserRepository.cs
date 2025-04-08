@@ -44,4 +44,36 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
     }
+
+    // User stats
+    public async Task<int> GetUserShoppingListsCountAsync(int userId)
+    {
+        return await _context.ShoppingLists
+            .CountAsync(list => list.CreatedById == userId);
+    }
+
+    public async Task<int> GetUserGroupsCountAsync(int userId)
+    {
+        // Count groups created by user
+        var createdGroups = await _context.Groups
+            .CountAsync(group => group.CreatedById == userId);
+
+        // Count groups where user is a member but not the admin
+        var memberGroups = await _context.GroupMembers
+            .CountAsync(member => member.UserId == userId && member.Role != "Admin");
+
+        return createdGroups + memberGroups;
+    }
+
+    public async Task<int> GetUserItemsAddedCountAsync(int userId)
+    {
+        return await _context.ShoppingItems
+            .CountAsync(item => item.CreatedById == userId);
+    }
+
+    public async Task<int> GetUserItemsCompletedCountAsync(int userId)
+    {
+        return await _context.ShoppingItems
+            .CountAsync(item => item.CreatedById == userId && item.IsChecked);
+    }
 }

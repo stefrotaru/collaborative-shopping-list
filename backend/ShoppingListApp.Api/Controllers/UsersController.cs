@@ -129,7 +129,7 @@ public class UsersController : ControllerBase
 
     [HttpPost("userinfo")]
     //[Authorize] // TODO: configure authentication
-    public async Task<ActionResult<UserDto>> GetUserInfo(GetUserInfoDto  getUserInfoDto)
+    public async Task<ActionResult<UserDto>> GetUserInfo(GetUserInfoDto getUserInfoDto)
     {
         if (!ModelState.IsValid)
         {
@@ -161,6 +161,28 @@ public class UsersController : ControllerBase
         catch (Exception)
         {
             return StatusCode(500, "An error occurred while retrieving the user.");
+        }
+    }
+
+    [HttpGet("getUserStats")]
+    public async Task<ActionResult<UserStatsDto>> GetUserStats([FromQuery] string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            return BadRequest("Token is required");
+        }
+        try
+        {
+            var userStats = await _userService.GetUserStatsAsync(token);
+            return Ok(userStats);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An error occurred while retrieving the user stats.");
         }
     }
 }
