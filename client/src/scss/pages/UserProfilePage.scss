@@ -320,6 +320,10 @@
       font-weight: 700;
       color: $primary-color;
       margin-bottom: 0.5rem;
+
+      &.pi-spinner + .stat-label {
+        margin-top: 5px;
+      }
     }
 
     .stat-label {

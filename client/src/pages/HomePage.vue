@@ -26,15 +26,18 @@
         </div>
         <div class="hero-stats" v-if="authenticatedUser">
           <div class="stat-item">
-            <span class="stat-value">{{ userStats.lists || 0 }}</span>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <span v-else class="stat-value">{{ userStats.lists || 0 }}</span>
             <span class="stat-label">Shopping Lists</span>
           </div>
           <div class="stat-item">
-            <span class="stat-value">{{ userStats.groups || 0 }}</span>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <span v-else class="stat-value">{{ userStats.groups || 0 }}</span>
             <span class="stat-label">Groups</span>
           </div>
           <div class="stat-item">
-            <span class="stat-value">{{ userStats.items || 0 }}</span>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <span v-else class="stat-value">{{ userStats.items || 0 }}</span>
             <span class="stat-label">Items</span>
           </div>
         </div>
@@ -139,7 +142,8 @@ const shoppingListsStore = useShoppingListsStore();
 
 const authenticatedUser = computed(() => authStore.authenticatedUser);
 
-const userStats = reactive({
+const isLoadingStats = ref(false);
+const userStats = ref({
   lists: 0,
   groups: 0,
   items: 0
@@ -201,24 +205,36 @@ const scrollToFeatures = () => {
 const fetchUserStats = async () => {
   if (authenticatedUser.value) {
     try {
-      // Get user groups
-      const groups = await authStore.getUserGroups(true);
-      userStats.groups = groups.length;
-      
-      // Get user shopping lists
-      const userGroupIds = groups.map(group => group.id);
-      const lists = await shoppingListsStore.fetchAllGroupsShoppingLists(userGroupIds);
-      userStats.lists = lists.length;
-      
-      // Count items (this is an example, adjust based on your API)
-      let itemCount = 0;
-      for (const list of lists) {
-        const items = await shoppingListsStore.getListItems(list.id);
-        itemCount += items.length;
+      isLoadingStats.value = true;
+              
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token available');
       }
-      userStats.items = itemCount;
+
+      const response = await fetch(`/CollaborativeShoppingListAPI/Users/getUserStats?token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user stats');
+      }
+
+      const data = await response.json();
+      userStats.value = {
+        lists: data.totalLists,
+        groups: data.totalGroups,
+        items: data.totalItemsAdded
+      };
+      
     } catch (error) {
-      console.error("Error fetching user stats:", error);
+      console.error('Error fetching user stats:', error);
+      userStats.value = null;
+    } finally {
+      isLoadingStats.value = false;
     }
   }
 };

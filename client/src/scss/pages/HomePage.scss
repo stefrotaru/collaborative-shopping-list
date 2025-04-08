@@ -122,6 +122,10 @@
     font-size: 2rem;
     font-weight: 700;
     color: $primary-color;
+
+    &.pi-spinner + .stat-label {
+      margin-top: 5px;
+    }
   }
 
   .stat-label {

@@ -128,25 +128,29 @@
         
         <div class="stats-container">
           <div class="stat-card">
-            <div class="stat-value">{{ userStats.lists }}</div>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <div v-else class="stat-value">{{ userStats.lists }}</div>
             <div class="stat-label">Shopping Lists</div>
             <i class="pi pi-list stat-icon"></i>
           </div>
           
           <div class="stat-card">
-            <div class="stat-value">{{ userStats.groups }}</div>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <div v-else class="stat-value">{{ userStats.groups }}</div>
             <div class="stat-label">Groups</div>
             <i class="pi pi-users stat-icon"></i>
           </div>
           
           <div class="stat-card">
-            <div class="stat-value">{{ userStats.items }}</div>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <div v-else class="stat-value">{{ userStats.items }}</div>
             <div class="stat-label">Items Added</div>
             <i class="pi pi-shopping-cart stat-icon"></i>
           </div>
           
           <div class="stat-card">
-            <div class="stat-value">{{ userStats.completed }}</div>
+            <span v-if="isLoadingStats" class="pi pi-spin pi-spinner stat-value"></span>
+            <div v-else class="stat-value">{{ userStats.completed }}</div>
             <div class="stat-label">Items Completed</div>
             <i class="pi pi-check-circle stat-icon"></i>
           </div>
@@ -310,6 +314,7 @@ const passwordForm = ref({
 const deleteConfirmText = ref('');
 
 // User statistics
+const isLoadingStats = ref(false);
 const userStats = ref({
   lists: 0,
   groups: 0,
@@ -515,13 +520,39 @@ async function deleteAccount() {
 
 // Fetch user statistics
 async function fetchUserStats() {
-  // TODO: (Mock data) replace with actual API calls
-  userStats.value = {
-    lists: 5,
-    groups: 2,
-    items: 37,
-    completed: 24
-  };
+  try {
+    isLoadingStats.value = true;
+            
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token available');
+    }
+
+    const response = await fetch(`/CollaborativeShoppingListAPI/Users/getUserStats?token=${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user stats');
+    }
+
+    const data = await response.json();
+    userStats.value = {
+      lists: data.totalLists,
+      groups: data.totalGroups,
+      items: data.totalItemsAdded,
+      completed: data.totalItemsCompleted
+    };
+    
+  } catch (error) {
+    console.error('Error fetching user stats:', error);
+    userStats.value = null;
+  } finally {
+    isLoadingStats.value = false;
+  }
 }
 
 onMounted(() => {
