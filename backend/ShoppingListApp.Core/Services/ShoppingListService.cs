@@ -91,7 +91,8 @@
         {
             Id = sl.Id,
             Name = sl.Name,
-            GroupId = sl.GroupId
+            GroupId = sl.GroupId,
+            CreatedById = sl.CreatedById
         }).ToList();
     }
 
