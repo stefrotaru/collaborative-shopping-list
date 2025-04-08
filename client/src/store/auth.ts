@@ -10,6 +10,14 @@ interface User {
   token: string;
 }
 
+interface UserStats {
+  userId: string;
+  totalLists: number;
+  totalGroups: number;
+  totalItemsAdded: number;
+  totalItemsCompleted: number;
+}
+
 interface LoginCredentials {
   email: string;
   password: string;
@@ -25,6 +33,7 @@ interface RegisterCredentials {
 export const useAuthStore = defineStore("authStore", () => {
   const authenticatedUser = ref<User | null>(null);
   const userGroups = ref<any[]>([]); //TODO: Create interface for group
+  const userStats = ref<UserStats | null>(null);
 
   const login = async ({email, password}: LoginCredentials) => {
     try {
@@ -203,10 +212,43 @@ export const useAuthStore = defineStore("authStore", () => {
     }
   }
 
+  const getUserStats = async () => {
+    if (!authenticatedUser.value) {
+      userStats.value = null;
+      return null;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token available');
+      }
+
+      const response = await fetch(`CollaborativeShoppingListAPI/Users/getUserStats?token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user stats');
+      }
+
+      const stats = await response.json();
+      userStats.value = stats;
+      return stats;
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+      return null;
+    }
+  };
+
   const populateStore = async () => {
     await checkAuth();
     if (authenticatedUser.value) {
-      await getUserGroups();
+      await getUserGroups(true); // Fetch all accessible groups
+      await getUserStats();
     }
   }
 
@@ -227,6 +269,7 @@ export const useAuthStore = defineStore("authStore", () => {
 
     userGroups,
     getUserGroups,
+    getUserStats,
 
     populateStore,
     resetStore
