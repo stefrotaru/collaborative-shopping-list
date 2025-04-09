@@ -415,7 +415,7 @@ const listToDelete = ref(null);
 // Computed properties
 const canManageMembers = computed(() => {
   // Check if current user is owner or has admin rights
-  return groupInfo.value?.ownerId === userId || groupInfo.value?.isAdmin;
+  return groupInfo.value?.createdById === userId || groupInfo.value?.isAdmin;
 });
 
 // Utility functions
@@ -426,7 +426,7 @@ const isOwner = (member) => {
 };
 
 const isCurrentUser = (member) => {
-  return member.id === userId;
+  return member.userId === userId;
 };
 
 // Dialog handlers
@@ -601,7 +601,7 @@ const removeMember = async () => {
   try {
     await groupStore.removeUserFromGroup(
       groupInfo.value.id,
-      memberToRemove.value.id
+      memberToRemove.value.userId
     );
 
     // Refresh group data
