@@ -38,7 +38,8 @@
         {
             Id = group.Id,
             Name = group.Name,
-            Description = group.Description
+            Description = group.Description,
+            CreatedById = group.CreatedById
         };
     }
 
@@ -56,7 +57,8 @@
         {
             Id = group.Id,
             Name = group.Name,
-            Description = group.Description
+            Description = group.Description,
+            CreatedById = group.CreatedById
         };
     }
 
