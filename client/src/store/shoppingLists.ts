@@ -2,7 +2,9 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
-  const userShoppingLists = ref([]);
+  // const userShoppingLists = ref([]);
+  const allUserShoppingLists = ref([]);
+  const currentGroupShoppingLists = ref([]);
 
   const fetchGroupShoppingLists = async (groupId) => {
     try {
@@ -40,8 +42,8 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
         return [];
       }
   
-      userShoppingLists.value = await response.json();
-      return userShoppingLists.value;
+      currentGroupShoppingLists.value = await response.json();
+      return currentGroupShoppingLists.value;
     } catch (error) {
       console.error("Error fetching group shopping lists:", error);
       throw error;
@@ -50,7 +52,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
   
   const fetchAllGroupsShoppingLists = async (groupIds) => {
     if (!groupIds || groupIds.length === 0) {
-      userShoppingLists.value = [];
+      allUserShoppingLists.value = [];
       return [];
     }
   
@@ -89,8 +91,8 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
         return [];
       }
   
-      userShoppingLists.value = await response.json();
-      return userShoppingLists.value;
+      allUserShoppingLists.value = await response.json();
+      return allUserShoppingLists.value;
     } catch (error) {
       console.error("Error fetching all groups shopping lists:", error);
       throw error;
@@ -297,11 +299,13 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
   }
 
   const resetStore = () => {
-    userShoppingLists.value = [];
+    allUserShoppingLists.value = [];
+    currentGroupShoppingLists.value = [];
   }
 
   return {
-    userShoppingLists,
+    allUserShoppingLists,
+    currentGroupShoppingLists,
     fetchGroupShoppingLists,
     fetchAllGroupsShoppingLists,
 

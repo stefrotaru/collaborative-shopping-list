@@ -3,7 +3,7 @@
     <div class="section-header">
       <h3>My Shopping Lists</h3>
     </div>
-    
+
     <ul class="lists-container">
       <li>
         <router-link class="group-item" to="/shoppinglists">
@@ -11,17 +11,22 @@
           <span>Show all lists</span>
         </router-link>
       </li>
-      
+
       <li v-for="shoppingList in shoppingLists" :key="shoppingList.id">
         <router-link
           class="group-item"
           :to="'/shoppinglists/' + shoppingList.id"
+          :class="
+            shoppingList.createdById === authStore.authenticatedUser?.id
+              ? 'created-by-me'
+              : 'created-by-others'
+          "
         >
           <i class="pi pi-shopping-bag item-icon"></i>
           <span>{{ shoppingList.name }}</span>
         </router-link>
       </li>
-      
+
       <li v-if="shoppingLists.length === 0" class="empty-list">
         <i class="pi pi-info-circle"></i>
         <span>No shopping lists yet</span>
@@ -37,10 +42,10 @@ import { useShoppingListsStore } from "../store/shoppingLists";
 
 const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
-const shoppingLists = ref(shoppingListsStore.userShoppingLists);
+const shoppingLists = ref(shoppingListsStore.allUserShoppingLists);
 
 watch(
-  () => shoppingListsStore.userShoppingLists,
+  () => shoppingListsStore.allUserShoppingLists,
   (newVal) => {
     if (newVal) {
       shoppingLists.value = newVal;
@@ -52,7 +57,7 @@ watch(
 
 const fetchShoppingLists = async () => {
   if (authStore.userGroups?.length > 0) {
-    const groupIds = authStore.userGroups.map(group => group.id);
+    const groupIds = authStore.userGroups.map((group) => group.id);
     await shoppingListsStore.fetchAllGroupsShoppingLists(groupIds);
   }
 };
@@ -61,6 +66,8 @@ fetchShoppingLists();
 </script>
 
 <style lang="scss" scoped>
+@use "../scss/base/variables.scss" as *;
+
 .shopping-lists {
   display: flex;
   flex-direction: column;
@@ -68,7 +75,7 @@ fetchShoppingLists();
 
 .section-header {
   margin-bottom: 0.75rem;
-  
+
   h3 {
     font-size: 0.9375rem;
     text-transform: uppercase;
@@ -99,23 +106,44 @@ fetchShoppingLists();
   text-decoration: none;
   transition: all 0.2s ease;
   font-size: 0.9375rem;
-  
-  &:hover, &.router-link-active {
-    background-color: rgba(52, 211, 153, 0.15);
-    color: #34d399;
+
+  &.created-by-me {
   }
-  
+  &.created-by-others {
+    // color: $info-color;
+  }
+
+  &:hover,
+  &.router-link-active {
+    background-color: $green-400-opacity-15;
+    color: $primary-color;
+
+    &.created-by-others {
+      background-color: $blue-400-opacity-15;
+      color: $info-color;
+    }
+  }
+
   .item-icon {
     margin-right: 0.625rem;
     font-size: 1rem;
-    color: #9ca3af;
-    transition: color 0.2s ease;
   }
-  
-  &:hover .item-icon, &.router-link-active .item-icon {
-    color: #34d399;
+  &.created-by-me .item-icon {
+    color: $primary-color;
   }
-  
+  &.created-by-others .item-icon {
+    color: $info-color;
+  }
+
+  &.created-by-me:hover .item-icon,
+  &.router-link-active .item-icon {
+    color: $primary-color;
+  }
+  &.created-by-others:hover .item-icon,
+  &.created-by-others.router-link-active .item-icon {
+    color: $info-color;
+  }
+
   span {
     white-space: nowrap;
     overflow: hidden;
@@ -130,7 +158,7 @@ fetchShoppingLists();
   color: #9ca3af;
   font-size: 0.875rem;
   font-style: italic;
-  
+
   i {
     margin-right: 0.625rem;
     font-size: 0.875rem;

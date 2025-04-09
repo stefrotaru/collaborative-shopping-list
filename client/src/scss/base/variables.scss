@@ -19,6 +19,10 @@ $red-400: #f87171;    // danger color
 $amber-400: #fbbf24;  // warning color
 $blue-400: #38bdf8;   // info color
 
+// Low opacity
+$green-400-opacity-15: rgba(52, 211, 153, 0.15);
+$blue-400-opacity-15: rgba(56, 189, 248, 0.15);
+
 // Semantic aliases
 $primary-color: $green-400;
 $primary-hover: $green-500;

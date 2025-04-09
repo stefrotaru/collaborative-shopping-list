@@ -3,22 +3,30 @@
     <div class="section-header">
       <h3>My Groups</h3>
     </div>
-    
+
     <div v-if="loading" class="loading-state">
       <i class="pi pi-spin pi-spinner loading-icon"></i>
       <span>Loading groups...</span>
     </div>
-    
+
     <ul v-else class="groups-container">
       <li v-for="group in groups" :key="group.id">
-        <router-link class="group-item" :to="'/groups/' + group.id">
+        <router-link
+          class="group-item"
+          :to="'/groups/' + group.id"
+          :class="
+            group.createdById === authStore.authenticatedUser?.id
+              ? 'created-by-me'
+              : 'created-by-others'
+          "
+        >
           <i class="pi pi-users item-icon"></i>
           <span>{{ group.name }}</span>
           <span v-if="isCreatedByUser(group)" class="owner-badge">Owner</span>
           <span v-else class="member-badge">Member</span>
         </router-link>
       </li>
-      
+
       <li v-if="groups.length === 0" class="empty-list">
         <i class="pi pi-info-circle"></i>
         <span>No groups joined yet</span>
@@ -54,7 +62,7 @@ const isCreatedByUser = (group) => {
   if (!authStore.authenticatedUser) {
     return false;
   }
-  
+
   // If you have createdById in your GroupDto, you can use it directly
   // Otherwise, you may need to modify this check based on your data structure
   console.log(group);
@@ -86,7 +94,7 @@ onMounted(fetchGroups);
 
 .section-header {
   margin-bottom: 0.75rem;
-  
+
   h3 {
     font-size: 0.9375rem;
     text-transform: uppercase;
@@ -117,23 +125,40 @@ onMounted(fetchGroups);
   text-decoration: none;
   transition: all 0.2s ease;
   font-size: 0.9375rem;
-  
-  &:hover, &.router-link-active {
-    background-color: rgba(52, 211, 153, 0.15);
+
+  &:hover,
+  &.router-link-active {
+    background-color: $green-400-opacity-15;
     color: $primary-color;
+
+    &.created-by-others {
+      background-color: $blue-400-opacity-15;
+      color: $info-color;
+    }
   }
-  
+
+
   .item-icon {
     margin-right: 0.625rem;
     font-size: 1rem;
-    color: #9ca3af;
     transition: color 0.2s ease;
   }
-  
-  &:hover .item-icon, &.router-link-active .item-icon {
+  &.created-by-me .item-icon {
     color: $primary-color;
   }
-  
+  &.created-by-others .item-icon {
+    color: $info-color;
+  }
+
+  &:hover .item-icon,
+  &.router-link-active .item-icon {
+    color: $primary-color;
+  }
+  &.created-by-others:hover .item-icon,
+  &.created-by-others.router-link-active .item-icon {
+    color: $info-color;
+  }
+
   span {
     white-space: nowrap;
     overflow: hidden;
@@ -141,7 +166,8 @@ onMounted(fetchGroups);
   }
 }
 
-.owner-badge, .member-badge {
+.owner-badge,
+.member-badge {
   font-size: 0.7rem;
   padding: 0.1rem 0.4rem;
   border-radius: 4px;
@@ -165,7 +191,7 @@ onMounted(fetchGroups);
   color: #9ca3af;
   font-size: 0.875rem;
   font-style: italic;
-  
+
   i {
     margin-right: 0.625rem;
     font-size: 0.875rem;
@@ -178,7 +204,7 @@ onMounted(fetchGroups);
   padding: 0.6rem 0.75rem;
   color: #9ca3af;
   font-size: 0.875rem;
-  
+
   .loading-icon {
     margin-right: 0.625rem;
     font-size: 1rem;
