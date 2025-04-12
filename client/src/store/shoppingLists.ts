@@ -102,7 +102,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
   const createNewList = async (listName, groupId, userId) => {
     try {
       const response = await fetch(
-        `CollaborativeShoppingListAPI/ShoppingLists`,
+        `/CollaborativeShoppingListAPI/ShoppingLists`,
         {
           method: "POST",
           headers: {
@@ -128,15 +128,22 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
   const deleteList = async (listId) => {
     try {
       const response = await fetch(
-        `CollaborativeShoppingListAPI/ShoppingLists/${listId}`,
+        `/CollaborativeShoppingListAPI/ShoppingLists/${listId}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ id: listId }),
         }
       );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete shopping list");
+      }
+      
+      return response;
     } catch (error) {
       console.error("Error deleting list:", error);
     }

@@ -31,6 +31,7 @@
       <div class="page-title-wrapper">
         <h1 class="page-title">{{ groupInfo.name || "Group" }}</h1>
         <Button
+          v-if="canManageGroup"
           icon="pi pi-pencil"
           class="p-button-rounded p-button-text p-button-sm title-edit-btn"
           @click="openEditGroupDialog"
@@ -39,12 +40,14 @@
       </div>
       <div class="page-actions">
         <Button
+          v-if="canManageGroup"
           label="Add Member"
           icon="pi pi-user-plus"
           class="p-button-rounded add-member-btn"
           @click="openAddMemberDialog"
         />
         <Button
+          v-if="canManageGroup"
           icon="pi pi-trash"
           class="p-button-rounded p-button-outlined p-button-danger delete-group-btn"
           @click="confirmDeleteGroup"
@@ -97,7 +100,7 @@
             </div>
             <div class="member-actions">
               <Button
-                v-if="canManageMembers && !isCurrentUser(member)"
+                v-if="canManageGroup && !isCurrentUser(member)"
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-outlined p-button-sm p-button-danger"
                 @click="confirmRemoveMember(member)"
@@ -122,6 +125,7 @@
         <div class="card-header">
           <h2 class="card-title">Shopping Lists</h2>
           <Button
+            v-if="canManageGroup"
             label="Create List"
             icon="pi pi-plus"
             class="p-button-rounded create-list-btn"
@@ -152,9 +156,10 @@
                 v-tooltip.left="'View List'"
               />
               <Button
+                v-if="canManageGroup"
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-outlined p-button-sm p-button-danger"
-                @click="confirmDeleteList(list)"
+                @click="openDeleteListDialog(list)"
                 v-tooltip.left="'Delete List'"
               />
             </div>
@@ -325,7 +330,7 @@
           label="Delete"
           icon="pi pi-trash"
           class="p-button-danger"
-          @click="confirmDeleteList"
+          @click="deleteList"
         />
       </template>
     </Dialog>
@@ -413,7 +418,7 @@ const newListName = ref("");
 const listToDelete = ref(null);
 
 // Computed properties
-const canManageMembers = computed(() => {
+const canManageGroup = computed(() => {
   // Check if current user is owner or has admin rights
   return groupInfo.value?.createdById === userId || groupInfo.value?.isAdmin;
 });
@@ -454,7 +459,7 @@ const openCreateListDialog = () => {
   createListDialog.value = true;
 };
 
-const confirmDeleteList = (list) => {
+const openDeleteListDialog = (list) => {
   listToDelete.value = list;
   deleteListDialog.value = true;
 };
@@ -639,7 +644,7 @@ const createList = async () => {
   }
 
   try {
-    const response = await shoppingListsStore.createShoppingList(
+    const response = await shoppingListsStore.createNewList(
       newListName.value,
       groupInfo.value.id,
       userId
@@ -669,7 +674,9 @@ const createList = async () => {
 };
 
 const deleteList = async () => {
-  if (!listToDelete.value) return;
+  if (!listToDelete.value) {
+    return;
+  }
 
   try {
     await shoppingListsStore.deleteList(listToDelete.value.id);
