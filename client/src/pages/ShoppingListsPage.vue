@@ -181,10 +181,11 @@
     </Dialog>
 
     <!-- Create List Dialog -->
-    <CreateListDialog
+    <ListFormDialog
       :visible="showCreateListDialog"
       @update:visible="showCreateListDialog = $event"
-      @list-created="onListCreated"
+      :groups="userGroups"
+      @submit="onListCreated"
     />
   </div>
 </template>
@@ -199,7 +200,7 @@ import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
-import CreateListDialog from "../components/CreateListDialog.vue";
+import ListFormDialog from "../components/ListFormDialog.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -265,19 +266,19 @@ const openCreateListDialog = () => {
   showCreateListDialog.value = true;
 };
 
-const onListCreated = async (listName) => {
+const onListCreated = async (list) => {
   try {
     // Create list with your existing method
     const response = await shoppingListsStore.createNewList(
-      listName,
-      0, // GroupId 0 for personal lists, or let user select a group
+      list.name,
+      list.groupId, // GroupId 0 for personal lists, or let user select a group
       authStore.authenticatedUser.id
     );
     
     toast.add({
       severity: 'success',
       summary: 'List Created',
-      detail: `List "${listName}" has been created`,
+      detail: `List "${list.name}" has been created`,
       life: 2000
     });
     
