@@ -89,7 +89,7 @@ public class ShoppingListContext : DbContext
             entity.HasOne(si => si.ShoppingList)
                 .WithMany(sl => sl.ShoppingItems)
                 .HasForeignKey(si => si.ShoppingListId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
