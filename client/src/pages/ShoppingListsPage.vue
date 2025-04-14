@@ -79,24 +79,9 @@
             @click="openCreateListDialog"
           />
         </div>
-        
-        <!-- Loading state -->
-        <div v-if="accessibleListsStore.isLoading" class="loading-state">
-          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-          <p>Loading your shopping lists...</p>
-        </div>
-        
-        <!-- Error state -->
-        <div v-else-if="accessibleListsStore.error" class="error-state">
-          <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #ef4444;"></i>
-          <p>{{ accessibleListsStore.error }}</p>
-          <Button 
-            label="Try Again" 
-            icon="pi pi-refresh" 
-            @click="fetchData" 
-            class="p-button-sm p-button-outlined"
-          />
-        </div>
+
+        <LoadingState v-if="accessibleListsStore.isLoading" message="Loading your shopping lists..." />
+        <ErrorState v-else-if="accessibleListsStore.error" :message="accessibleListsStore.error" :showBackButton="false" @retry="fetchData" />
 
         <!-- Shopping Lists -->
         <template v-else>
@@ -207,6 +192,9 @@ const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
 const accessibleListsStore = useAccessibleShoppingListsStore();
 const toast = useToast();
+
+import LoadingState from "../components/common/LoadingState.vue";
+import ErrorState from "../components/common/ErrorState.vue";
 
 const userGroups = ref([]);
 const showCreateListDialog = ref(false);

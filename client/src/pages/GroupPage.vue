@@ -1,31 +1,12 @@
 <template>
   <div class="group-page">
-    <div v-if="loading" class="loading-state">
-      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-      <p>Loading group information...</p>
-    </div>
-
-    <div v-else-if="error" class="error-state">
-      <i
-        class="pi pi-exclamation-triangle"
-        style="font-size: 2rem; color: #ef4444"
-      ></i>
-      <p>{{ error }}</p>
-      <div class="error-actions">
-        <Button
-          label="Go Back"
-          icon="pi pi-arrow-left"
-          @click="$router.push('/shoppinglists')"
-          class="p-button-outlined"
-        />
-        <Button
-          label="Try Again"
-          icon="pi pi-refresh"
-          @click="fetchGroupData(route.params.id)"
-          class="p-button-primary"
-        />
-      </div>
-    </div>
+    <LoadingState v-if="delayedLoading" message="Loading group information..." />
+    <ErrorState
+      v-else-if="error"
+      :message="error"
+      @back="$router.push('/shoppinglists')"
+      @retry="fetchGroupData(route.params.id)"
+    />
 
     <div class="page-header">
       <div class="page-title-wrapper">
@@ -377,6 +358,10 @@ import { useAuthStore } from "../store/auth";
 import { useGroupsStore } from "../store/groups";
 import { useShoppingListsStore } from "../store/shoppingLists";
 import { useToast } from "primevue/usetoast";
+import { useDelayedLoading } from "../components/composables/useDelayedLoading";
+
+import LoadingState from "../components/common/LoadingState.vue";
+import ErrorState from "../components/common/ErrorState.vue";
 
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
@@ -391,7 +376,7 @@ const groupStore = useGroupsStore();
 const shoppingListsStore = useShoppingListsStore();
 const toast = useToast();
 
-const loading = ref(true);
+const { loading, delayedLoading, setLoading } = useDelayedLoading(500);
 const error = ref(null);
 
 // User info
@@ -715,7 +700,7 @@ const navigateToList = (list) => {
 
 // Data fetching
 const fetchGroupData = async (groupId) => {
-  loading.value = true;
+  setLoading(true);
   error.value = null;
 
   try {
@@ -728,7 +713,9 @@ const fetchGroupData = async (groupId) => {
     groupMembers.value = groupMembersResponse;
 
     // Fetch group's shopping lists
-    const listsResponse = await shoppingListsStore.fetchGroupShoppingLists(groupId);
+    const listsResponse = await shoppingListsStore.fetchGroupShoppingLists(
+      groupId
+    );
     groupLists.value = listsResponse || [];
 
     console.log("Group data loaded successfully");
@@ -742,7 +729,7 @@ const fetchGroupData = async (groupId) => {
       life: 5000,
     });
   } finally {
-    loading.value = false;
+    setLoading(false);
   }
 };
 

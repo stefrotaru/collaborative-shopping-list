@@ -4,10 +4,7 @@
       <h3>My Groups</h3>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <i class="pi pi-spin pi-spinner loading-icon"></i>
-      <span>Loading groups...</span>
-    </div>
+    <LoadingState v-if="delayedLoading" message="Loading groups..." />
 
     <ul v-else class="groups-container">
       <li v-for="group in groups" :key="group.id">
@@ -39,13 +36,16 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useAuthStore } from "../store/auth";
 
+import LoadingState from "./common/LoadingState.vue";
+import { useDelayedLoading } from "./composables/useDelayedLoading";
+
 const authStore = useAuthStore();
 const groups = ref([]);
-const loading = ref(true);
+const { loading, delayedLoading, setLoading } = useDelayedLoading(500);
 
 // Fetch all groups the user has access to
 const fetchGroups = async () => {
-  loading.value = true;
+  setLoading(true);
   try {
     await authStore.checkAuth();
     const fetchedGroups = await authStore.getUserGroups(true);
@@ -53,7 +53,7 @@ const fetchGroups = async () => {
   } catch (error) {
     console.error("Error fetching groups:", error);
   } finally {
-    loading.value = false;
+    setLoading(false);
   }
 };
 
