@@ -1,12 +1,22 @@
-﻿public class GroupService : IGroupService
+﻿using ShoppingListApp.Core.Services;
+
+public class GroupService : IGroupService
 {
     private readonly IGroupRepository _groupRepository;
     private readonly IUserRepository _userRepository;
+    private readonly INotificationService _notificationService;
+    private readonly ICurrentUserService _currentUserService;
 
-    public GroupService(IGroupRepository groupRepository, IUserRepository userRepository)
+    public GroupService(
+        IGroupRepository groupRepository,
+        IUserRepository userRepository,
+        INotificationService notificationService,
+        ICurrentUserService currentUserService)
     {
         _groupRepository = groupRepository;
         _userRepository = userRepository;
+        _notificationService = notificationService;
+        _currentUserService = currentUserService;
     }
 
     public async Task<GroupDto> CreateGroupAsync(string name, string description, int createdById)
@@ -189,6 +199,11 @@
 
         // Add the user to the group
         await _groupRepository.AddUserToGroupAsync(groupMember);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string addedBy = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        await _notificationService.NotifyUserAddedToGroup(groupId, userId, addedBy);
     }
 
     public async Task RemoveUserFromGroupAsync(int groupId, int userId)
@@ -209,6 +224,11 @@
 
         // Remove the user from the group
         await _groupRepository.RemoveUserFromGroupAsync(groupId, userId);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string removedBy = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        await _notificationService.NotifyUserRemovedFromGroup(groupId, userId, removedBy);
     }
     public async Task<bool> IsUserInGroupAsync(int userId, int groupId)
     {

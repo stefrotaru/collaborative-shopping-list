@@ -14,5 +14,16 @@ namespace ShoppingListApp.Api.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"shoppingList_{listId}");
         }
+
+
+        public async Task JoinGroupChannel(int groupId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, $"group_{groupId}");
+        }
+
+        public async Task LeaveGroupChannel(int groupId)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"group_{groupId}");
+        }
     }
 }

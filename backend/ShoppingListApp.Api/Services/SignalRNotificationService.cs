@@ -35,5 +35,18 @@ namespace ShoppingListApp.Api.Services
             await _hubContext.Clients.Group($"shoppingList_{listId}")
                 .SendAsync("ShoppingItemRemoved", listId, itemId, removedById);
         }
+
+
+        public async Task NotifyUserAddedToGroup(int groupId, int userId, string addedBy)
+        {
+            await _hubContext.Clients.Group($"group_{groupId}")
+                .SendAsync("UserAddedToGroup", groupId, userId, addedBy);
+        }
+
+        public async Task NotifyUserRemovedFromGroup(int groupId, int userId, string removedBy)
+        {
+            await _hubContext.Clients.Group($"group_{groupId}")
+                .SendAsync("UserRemovedFromGroup", groupId, userId, removedBy);
+        }
     }
 }
