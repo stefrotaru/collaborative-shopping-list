@@ -1,14 +1,26 @@
-﻿public class ShoppingListService : IShoppingListService
+﻿using System.Collections.Generic;
+using ShoppingListApp.Core.Services;
+
+public class ShoppingListService : IShoppingListService
 {
     private readonly IShoppingListRepository _shoppingListRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IUserRepository _userRepository;
+    private readonly INotificationService _notificationService;
+    private readonly ICurrentUserService _currentUserService;
 
-    public ShoppingListService(IShoppingListRepository shoppingListRepository, IGroupRepository groupRepository, IUserRepository userRepository)
+    public ShoppingListService(
+        IShoppingListRepository shoppingListRepository,
+        IGroupRepository groupRepository,
+        IUserRepository userRepository,
+        INotificationService notificationService,
+        ICurrentUserService currentUserService)
     {
         _shoppingListRepository = shoppingListRepository;
         _groupRepository = groupRepository;
         _userRepository = userRepository;
+        _notificationService = notificationService;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ShoppingListDto> CreateShoppingListAsync(string name, int groupId, int createdById)
@@ -112,18 +124,24 @@
 
     public async Task UpdateShoppingListAsync(int shoppingListId, string name)
     {
-        // Retrieve the shopping list by ID
+        // Retrieve the shopping list by ID  
         var shoppingList = await _shoppingListRepository.GetByIdAsync(shoppingListId);
         if (shoppingList == null)
         {
             throw new ArgumentException("Shopping list not found.");
         }
 
-        // Update the shopping list name
+        // Update the shopping list name  
         shoppingList.Name = name;
 
-        // Save the changes to the database
+        // Save the changes to the database  
         await _shoppingListRepository.UpdateAsync(shoppingList);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string updatedById = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        // Notify clients of the update  
+        await _notificationService.NotifyShoppingListUpdated(shoppingListId, updatedById);
     }
 
     public async Task DeleteShoppingListAsync(int shoppingListId)

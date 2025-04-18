@@ -6,11 +6,21 @@ public class ShoppingItemService : IShoppingItemService
     private readonly IShoppingListRepository _shoppingListRepository;
     private readonly IUserRepository _userRepository;
 
-    public ShoppingItemService(IShoppingItemRepository shoppingItemRepository, IShoppingListRepository shoppingListRepository, IUserRepository userRepository)
+    private readonly INotificationService _notificationService;
+    private readonly ICurrentUserService _currentUserService;
+
+    public ShoppingItemService(
+        IShoppingItemRepository shoppingItemRepository,
+        IShoppingListRepository shoppingListRepository,
+        IUserRepository userRepository,
+        INotificationService notificationService,
+        ICurrentUserService currentUserService)
     {
         _shoppingItemRepository = shoppingItemRepository;
         _shoppingListRepository = shoppingListRepository;
         _userRepository = userRepository;
+        _notificationService = notificationService;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ShoppingItemDto> AddShoppingItemAsync(string name, int quantity, int shoppingListId, int createdById)
@@ -42,6 +52,11 @@ public class ShoppingItemService : IShoppingItemService
 
         // Save the shopping item to the database
         await _shoppingItemRepository.AddAsync(shoppingItem);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string addedById = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        await _notificationService.NotifyShoppingItemAdded(shoppingListId, shoppingItem.Id, addedById);
 
         // Map the shopping item entity to a DTO and return it
         return new ShoppingItemDto
@@ -101,6 +116,8 @@ public class ShoppingItemService : IShoppingItemService
             throw new ArgumentException("Shopping item not found.");
         }
 
+        int shoppingListId = shoppingItem.ShoppingListId;
+
         // Update the shopping item properties
         shoppingItem.Name = name;
         shoppingItem.Quantity = quantity;
@@ -108,6 +125,11 @@ public class ShoppingItemService : IShoppingItemService
 
         // Save the changes to the database
         await _shoppingItemRepository.UpdateAsync(shoppingItem);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string updatedById = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        await _notificationService.NotifyShoppingItemUpdated(shoppingListId, shoppingItemId, updatedById); //TODO: need shoppingListId here
     }
     public async Task UpdateShoppingItemCheckedAsync(int shoppingItemId, bool isChecked)
     {
@@ -118,11 +140,18 @@ public class ShoppingItemService : IShoppingItemService
             throw new ArgumentException("Shopping item not found.");
         }
 
+        int shoppingListId = shoppingItem.ShoppingListId;
+
         // Update the shopping item properties
         shoppingItem.IsChecked = isChecked;
 
         // Save the changes to the database
         await _shoppingItemRepository.UpdateAsync(shoppingItem);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string updatedCheckedById = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        await _notificationService.NotifyShoppingItemUpdated(shoppingListId, shoppingItemId, updatedCheckedById);  //TODO: need shoppingListId here
     }
 
     public async Task DeleteShoppingItemAsync(int shoppingItemId)
@@ -134,7 +163,14 @@ public class ShoppingItemService : IShoppingItemService
             throw new ArgumentException("Shopping item not found.");
         }
 
+        int shoppingListId = shoppingItem.ShoppingListId;
+
         // Delete the shopping item from the database
         await _shoppingItemRepository.DeleteAsync(shoppingItem);
+
+        int currentUserId = _currentUserService.GetCurrentUserId();
+        string removedById = currentUserId != 0 ? $"User ID: {currentUserId}" : "Unknown user";
+
+        await _notificationService.NotifyShoppingItemRemoved(shoppingListId, shoppingItemId, removedById); //TODO: need shoppingListId here
     }
 }
