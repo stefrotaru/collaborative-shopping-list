@@ -11,6 +11,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/CollaborativeShoppingListAPI/, ''),
       },
+      '/shoppinglisthub': {
+        target: 'http://localhost:5066',
+        changeOrigin: true,
+        secure: false
+      }
     },
   },
   //TODO: configure Vitest

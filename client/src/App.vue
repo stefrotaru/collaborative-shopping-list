@@ -21,6 +21,9 @@ import { useAuthStore } from "./store/auth";
 import { useShoppingListsStore } from "./store/shoppingLists";
 import AppFooter from "./components/AppFooter.vue";
 
+import signalRService from './services/signalRService';
+
+
 const authStore = useAuthStore();
 const shoppingListsStore = useShoppingListsStore();
 
@@ -29,6 +32,9 @@ const init = async () => {
   await authStore.checkAuth();
 
   if (authStore.authenticatedUser) {
+    await signalRService.start(authStore.authenticatedUser.token);
+    console.log("✅ SignalR connection started");
+
     const groups = await authStore.getUserGroups(true);
 
     if (groups?.length) {
