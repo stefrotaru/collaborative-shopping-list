@@ -229,6 +229,43 @@ export const useGroupsStore = defineStore("groupsStore", () => {
     }
   };
 
+  const getGroupNameById = async (groupId) => {
+    try {
+      // Check if we already have the group in the store
+      if (currentGroup.value && currentGroup.value.id === Number(groupId)) {
+        return currentGroup.value.name;
+      }
+  
+      // Check if it's in the userGroups list
+      const groupInList = userGroups.value.find(group => group.id === Number(groupId));
+      if (groupInList) {
+        return groupInList.name;
+      }
+  
+      // If not found locally, fetch from the API
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/Groups/${groupId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch group info: ${response.statusText}`);
+      }
+  
+      const groupData = await response.json();
+      return groupData.name;
+    } catch (error) {
+      console.error(`Error fetching group name for ID ${groupId}:`, error);
+      return `Group ${groupId}`;  // Fallback value
+    }
+  };
+
   return {
     userGroups,
     fetchUserGroups,
@@ -237,5 +274,7 @@ export const useGroupsStore = defineStore("groupsStore", () => {
     removeUserFromGroup,
     fetchGroupMembers,
     deleteGroup,
+
+    getGroupNameById
   };
 });

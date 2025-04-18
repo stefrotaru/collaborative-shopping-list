@@ -13,6 +13,9 @@ interface CallbackRegistry {
   shoppingItemAdded: Array<(listId: number, itemId: number, addedBy: string) => void>;
   shoppingItemUpdated: Array<(listId: number, itemId: number, updatedBy: string) => void>;
   shoppingItemRemoved: Array<(listId: number, itemId: number, removedBy: string) => void>;
+
+  userAddedToGroup: Array<(groupId: number, userId: number, addedBy: string) => void>;
+  userRemovedFromGroup: Array<(groupId: number, userId: number, removedBy: string) => void>;
 }
 
 class SignalRService {
@@ -26,6 +29,8 @@ class SignalRService {
       shoppingItemAdded: [],
       shoppingItemUpdated: [],
       shoppingItemRemoved: [],
+      userAddedToGroup: [],
+      userRemovedFromGroup: []
     };
   }
 
@@ -75,8 +80,11 @@ class SignalRService {
   }
 
   private registerHandlers(): void {
-    if (!this.connection) return;
+    if (!this.connection) {
+      return;
+    }
     
+    // Shopping List Handlers
     this.connection.on("ShoppingListUpdated", (listId: number, updatedBy: string) => {
       console.log(`Shopping list ${listId} updated by ${updatedBy}`);
       this.callbacks.shoppingListUpdated.forEach((callback) =>
@@ -108,6 +116,22 @@ class SignalRService {
       );
       this.callbacks.shoppingItemRemoved.forEach((callback) =>
         callback(listId, itemId, removedBy)
+      );
+    });
+
+
+    // Group Handlers
+    this.connection.on("UserAddedToGroup", (groupId: number, userId: number, addedBy: string) => {
+      console.log(`User ${userId} added to group ${groupId} by ${addedBy}`);
+      this.callbacks.userAddedToGroup.forEach((callback) =>
+        callback(groupId, userId, addedBy)
+      );
+    });
+  
+    this.connection.on("UserRemovedFromGroup", (groupId: number, userId: number, removedBy: string) => {
+      console.log(`User ${userId} removed from group ${groupId} by ${removedBy}`);
+      this.callbacks.userRemovedFromGroup.forEach((callback) =>
+        callback(groupId, userId, removedBy)
       );
     });
   }
@@ -159,6 +183,51 @@ class SignalRService {
     }
     return false;
   }
+  
+
+  async joinGroupChannel(groupId: string | number): Promise<boolean> {
+    if (this.connection && this.connection.state === "Connected") {
+      try {
+        const groupIdAsInt = typeof groupId === 'string' ? parseInt(groupId, 10) : groupId;
+        
+        if (isNaN(groupIdAsInt)) {
+          console.error(`Invalid group ID: ${groupId} is not a number`);
+          return false;
+        }
+        
+        await this.connection.invoke("JoinGroupChannel", groupIdAsInt);
+        console.log(`Joined group channel ${groupIdAsInt}`);
+        return true;
+      } catch (err) {
+        console.error(`Error joining group channel ${groupId}:`, err);
+        return false;
+      }
+    } else {
+      console.warn("Cannot join group channel: SignalR not connected");
+      return false;
+    }
+  }
+  
+  async leaveGroupChannel(groupId: string | number): Promise<boolean> {
+    if (this.connection && this.connection.state === "Connected") {
+      try {
+        const groupIdAsInt = typeof groupId === 'string' ? parseInt(groupId, 10) : groupId;
+        
+        if (isNaN(groupIdAsInt)) {
+          console.error(`Invalid group ID: ${groupId} is not a number`);
+          return false;
+        }
+        
+        await this.connection.invoke("LeaveGroupChannel", groupIdAsInt);
+        console.log(`Left group channel ${groupIdAsInt}`);
+        return true;
+      } catch (err) {
+        console.error(`Error leaving group channel ${groupId}:`, err);
+        return false;
+      }
+    }
+    return false;
+  }
 
   onShoppingListUpdated(callback: (listId: number, updatedBy: string) => void): void {
     this.callbacks.shoppingListUpdated.push(callback);
@@ -174,6 +243,15 @@ class SignalRService {
 
   onShoppingItemRemoved(callback: (listId: number, itemId: number, removedBy: string) => void): void {
     this.callbacks.shoppingItemRemoved.push(callback);
+  }
+
+
+  onUserAddedToGroup(callback: (groupId: number, userId: number, addedBy: string) => void): void {
+    this.callbacks.userAddedToGroup.push(callback);
+  }
+  
+  onUserRemovedFromGroup(callback: (groupId: number, userId: number, removedBy: string) => void): void {
+    this.callbacks.userRemovedFromGroup.push(callback);
   }
 
   async stop(): Promise<boolean> {
