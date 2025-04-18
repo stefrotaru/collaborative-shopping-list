@@ -244,6 +244,34 @@ export const useAuthStore = defineStore("authStore", () => {
     }
   };
 
+  const getUsernameById = async (userIdString) => {
+    // Extract the numeric ID from the string "User ID: 123"
+    const match = userIdString.match(/User ID: (\d+)/);
+    if (!match) return userIdString; // Return original if no match
+    
+    const userId = match[1];
+    
+    try {
+      // Call your API to get user details
+      const response = await fetch(`/CollaborativeShoppingListAPI/Users/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      
+      if (!response.ok) {
+        return userIdString; // Fallback to the original ID if fetch fails
+      }
+      
+      const userData = await response.json();
+      return userData.username; // Return the username
+    } catch (error) {
+      console.error("Error fetching username:", error);
+      return userIdString; // Fallback to the original ID if there's an error
+    }
+  };
+
   const populateStore = async () => {
     await checkAuth();
     if (authenticatedUser.value) {
@@ -270,6 +298,8 @@ export const useAuthStore = defineStore("authStore", () => {
     userGroups,
     getUserGroups,
     getUserStats,
+
+    getUsernameById,
 
     populateStore,
     resetStore

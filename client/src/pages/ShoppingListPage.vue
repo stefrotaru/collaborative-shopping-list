@@ -170,7 +170,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 import { useShoppingListsStore } from "../store/shoppingLists";
 import { useAuthStore } from "../store/auth";
@@ -185,6 +185,8 @@ import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
+
+import signalRService from '../services/signalRService';
 
 const shoppingListsStore = useShoppingListsStore();
 const authStore = useAuthStore();
@@ -465,7 +467,101 @@ onMounted(async () => {
     return;
   }
 
+  const listId = route.params.id;
+  const currentUserId = authStore.authenticatedUser.id;
+  // Create a user identifier string similar to the one used in notifications
+  const currentUserIdentifier = `User ID: ${currentUserId}`;
+
   // If user has access, load the shopping list data
-  await fetchShoppingListData(route.params.id);
+  await fetchShoppingListData(listId);
+
+  // Join the SignalR group for this shopping list
+  await signalRService.joinShoppingList(listId);
+      
+  // Listen for updates
+  signalRService.onShoppingListUpdated(async (updatedListId, updatedBy) => {
+    if (Number(updatedListId) === Number(listId)) {
+      const username = await authStore.getUsernameById(updatedBy);
+
+      console.log(`🚀🚀🚀🚀🚀🚀List updated by ${updatedBy} (${username})`);
+      
+      // Only show toast if action wasn't performed by current user
+      if (updatedBy !== currentUserIdentifier) {
+        toast.add({
+          severity: "info",
+          summary: "List Updated",
+          detail: `List updated by ${username}`,
+          life: 2000,
+        });
+      }
+      
+      fetchShoppingListData(listId);
+    }
+  });
+  
+  signalRService.onShoppingItemAdded(async (updatedListId, itemId, addedBy) => {
+    if (Number(updatedListId) === Number(listId)) {
+      const username = await authStore.getUsernameById(addedBy);
+
+      console.log(`🚀🚀🚀🚀🚀🚀New item added by ${addedBy} (${username})`);
+      
+      // Only show toast if action wasn't performed by current user
+      if (addedBy !== currentUserIdentifier) {
+        toast.add({
+          severity: "info",
+          summary: "New Item Added",
+          detail: `New item added by ${username}`,
+          life: 2000,
+        });
+      }
+      
+      fetchShoppingListData(listId);
+    }
+  });
+
+  signalRService.onShoppingItemUpdated(async(updatedListId, itemId, updatedBy) => {
+    if (Number(updatedListId) === Number(listId)) {
+      const username = await authStore.getUsernameById(updatedBy);
+
+      console.log(`🚀🚀🚀🚀🚀🚀Item updated by ${updatedBy} (${username})`);
+      
+      // Only show toast if action wasn't performed by current user
+      if (updatedBy !== currentUserIdentifier) {
+        toast.add({
+          severity: "info",
+          summary: "Item Updated",
+          detail: `Item updated by ${username}`,
+          life: 2000,
+        });
+      }
+      
+      fetchShoppingListData(listId);
+    }
+  });
+
+  signalRService.onShoppingItemRemoved(async (updatedListId, itemId, removedBy) => {
+    if (Number(updatedListId) === Number(listId)) {
+      const username = await authStore.getUsernameById(removedBy);
+
+      console.log(`🚀🚀🚀🚀🚀🚀Item removed by ${removedBy} (${username})`);
+      
+      // Only show toast if action wasn't performed by current user
+      if (removedBy !== currentUserIdentifier) {
+        toast.add({
+          severity: "info",
+          summary: "Item Removed",
+          detail: `Item removed by ${username}`,
+          life: 2000,
+        });
+      }
+      
+      fetchShoppingListData(listId);
+    }
+  });
+});
+
+onUnmounted(async () => {
+  // Leave the group when component is unmounted
+  await signalRService.leaveShoppingList(route.params.id);
 });
 </script>
