@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
+using ShoppingListApp.Api.Hubs;
+using ShoppingListApp.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,10 @@ bool useJwtAuth = !string.IsNullOrEmpty(jwtKey) &&
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = builder.Environment.IsDevelopment();
+});
 
 // Configure the database context
 builder.Services.AddHttpContextAccessor();
@@ -37,6 +43,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<IShoppingListService, ShoppingListService>();
 builder.Services.AddScoped<IShoppingItemService, ShoppingItemService>();
+builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
+
 
 // Add HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
@@ -75,6 +83,20 @@ if (useJwtAuth)
         // Handle authentication failures with JSON responses
         options.Events = new JwtBearerEvents
         {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                // If the request is for our hub...
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    path.StartsWithSegments("/shoppinglisthub"))
+                {
+                    // Read the token out of the query string
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            },
             OnChallenge = async context =>
             {
                 // Override the default challenge behavior
@@ -152,6 +174,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5173" // My vue dev server
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials(); // Required for SignalR
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -162,17 +197,27 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+
+// Apply CORS policy
+app.UseCors();
 
 // Enable authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<ShoppingListHub>("/shoppinglisthub");
+});
 
-app.MapControllers();
+//app.MapControllers();
+//app.MapHub<ShoppingListHub>("/shoppinglisthub");
 
-app.UseCors(policy =>
-    policy
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+//app.UseCors(policy =>
+//    policy
+//        .AllowAnyOrigin()
+//        .AllowAnyMethod()
+//        .AllowAnyHeader());
 
 app.Run();
