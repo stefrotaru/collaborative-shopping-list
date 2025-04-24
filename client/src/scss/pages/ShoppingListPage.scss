@@ -82,7 +82,7 @@
       display: flex;
       align-items: center;
       background-color: $gray-850;
-      border-radius: 9999px;
+      border-radius: 30px;
       border: 2px solid $primary-color;
       padding: 0.25rem 0.25rem 0.25rem 3rem;
       transition: all 0.2s ease;
@@ -121,7 +121,7 @@
       display: flex;
       align-items: center;
       background-color: $gray-900;
-      border-radius: 9999px;
+      border-radius: 30px;
       padding: 0.25rem;
       margin-right: 0.5rem;
       border: 1px solid $border-color;
@@ -129,6 +129,10 @@
       &:hover {
         background-color: #323232;
         color: $primary-color;
+      }
+
+      @media screen and (max-width: $screen-sm) {
+        display: none;
       }
     }
 
@@ -233,7 +237,7 @@
       flex-shrink: 0;
       background-color: $primary-color;
       color: $gray-950;
-      border-radius: 9999px;
+      border-radius: 30px;
       padding: 0.125rem 0.5rem;
       font-size: 0.75rem;
       font-weight: 600;
