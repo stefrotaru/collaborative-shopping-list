@@ -198,7 +198,7 @@ const router = useRouter();
 // List data and state
 const shoppingListName = ref("");
 const listItems = ref([]);
-const { loading, delayedLoading, setLoading } = useDelayedLoading(500);
+const { loading, delayedLoading, setLoading } = useDelayedLoading(1000);
 const error = ref(null);
 
 // New item form state
