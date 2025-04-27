@@ -7,4 +7,8 @@
     Task AddAsync(ShoppingList shoppingList);
     Task UpdateAsync(ShoppingList shoppingList);
     Task DeleteAsync(ShoppingList shoppingList);
+
+    Task<ShoppingList> GetByGuidAsync(Guid guid);
+    Task<bool> ExistsByGuidAsync(Guid guid);
+    Task<IEnumerable<ShoppingList>> GetByGroupGuidAsync(Guid groupGuid);
 }

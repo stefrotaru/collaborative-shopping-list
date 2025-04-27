@@ -48,4 +48,23 @@ public class ShoppingListRepository : IShoppingListRepository
             .Where(sl => sl.CreatedById == createdById)
             .ToListAsync();
     }
+    public async Task<ShoppingList> GetByGuidAsync(Guid guid)
+    {
+        return await _context.ShoppingLists
+            .FirstOrDefaultAsync(sl => sl.Guid == guid);
+    }
+
+    public async Task<bool> ExistsByGuidAsync(Guid guid)
+    {
+        return await _context.ShoppingLists
+            .AnyAsync(sl => sl.Guid == guid);
+    }
+
+    public async Task<IEnumerable<ShoppingList>> GetByGroupGuidAsync(Guid groupGuid)
+    {
+        return await _context.ShoppingLists
+            .Include(sl => sl.Group)
+            .Where(sl => sl.Group.Guid == groupGuid)
+            .ToListAsync();
+    }
 }

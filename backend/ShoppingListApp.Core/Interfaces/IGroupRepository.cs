@@ -12,4 +12,7 @@
     Task<IEnumerable<GroupMember>> GetGroupMembersAsync(int groupId);
     Task<IEnumerable<Group>> GetGroupMembershipsByUserIdAsync(int userId);
 
+    Task<Group> GetByGuidAsync(Guid guid);
+    Task<bool> ExistsByGuidAsync(Guid guid);
+
 }

@@ -98,4 +98,16 @@ public class GroupRepository : IGroupRepository
             .Where(gm => gm.GroupId == groupId)
             .ToListAsync();
     }
+
+    public async Task<Group> GetByGuidAsync(Guid guid)
+    {
+        return await _context.Groups
+            .FirstOrDefaultAsync(g => g.Guid == guid);
+    }
+
+    public async Task<bool> ExistsByGuidAsync(Guid guid)
+    {
+        return await _context.Groups
+            .AnyAsync(g => g.Guid == guid);
+    }
 }
