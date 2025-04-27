@@ -12,4 +12,6 @@
     Task<IEnumerable<GroupMemberDto>> GetGroupMembersAsync(int groupId);
     Task<bool> IsUserInGroupAsync(int userId, int groupId);
     Task<bool> IsUserGroupAdminAsync(int userId, int groupId);
+
+    Task<GroupDto> GetGroupByGuidAsync(Guid guid);
 }

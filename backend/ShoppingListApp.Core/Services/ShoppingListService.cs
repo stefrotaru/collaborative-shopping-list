@@ -55,8 +55,10 @@ public class ShoppingListService : IShoppingListService
         return new ShoppingListDto
         {
             Id = shoppingList.Id,
+            Guid = shoppingList.Guid,
             Name = shoppingList.Name,
-            GroupId = shoppingList.GroupId
+            GroupId = shoppingList.GroupId,
+            CreatedById = shoppingList.CreatedById
         };
     }
 
@@ -73,6 +75,7 @@ public class ShoppingListService : IShoppingListService
         return new ShoppingListDto
         {
             Id = shoppingList.Id,
+            Guid = shoppingList.Guid,
             Name = shoppingList.Name,
             GroupId = shoppingList.GroupId,
             CreatedById = shoppingList.CreatedById
@@ -88,8 +91,10 @@ public class ShoppingListService : IShoppingListService
         return shoppingLists.Select(shoppingList => new ShoppingListDto
         {
             Id = shoppingList.Id,
+            Guid = shoppingList.Guid,
             Name = shoppingList.Name,
-            GroupId = shoppingList.GroupId
+            GroupId = shoppingList.GroupId,
+            CreatedById = shoppingList.CreatedById
         });
     }
 
@@ -99,12 +104,13 @@ public class ShoppingListService : IShoppingListService
         var shoppingLists = await _shoppingListRepository.GetByGroupIdsAsync(groupIds);
 
         // Map the shopping list entities to DTOs and return them
-        return shoppingLists.Select(sl => new ShoppingListDto
+        return shoppingLists.Select(shoppingList => new ShoppingListDto
         {
-            Id = sl.Id,
-            Name = sl.Name,
-            GroupId = sl.GroupId,
-            CreatedById = sl.CreatedById
+            Id = shoppingList.Id,
+            Guid = shoppingList.Guid,
+            Name = shoppingList.Name,
+            GroupId = shoppingList.GroupId,
+            CreatedById = shoppingList.CreatedById
         }).ToList();
     }
 
@@ -113,12 +119,13 @@ public class ShoppingListService : IShoppingListService
         var shoppingLists = await _shoppingListRepository.GetByCreatedByIdAsync(createdById);
 
         // Map entities to DTOs - adjust this according to your mapping approach
-        return shoppingLists.Select(sl => new ShoppingListDto
+        return shoppingLists.Select(shoppingList => new ShoppingListDto
         {
-            Id = sl.Id,
-            Name = sl.Name,
-            GroupId = sl.GroupId,
-            CreatedById = sl.CreatedById
+            Id = shoppingList.Id,
+            Guid = shoppingList.Guid,
+            Name = shoppingList.Name,
+            GroupId = shoppingList.GroupId,
+            CreatedById = shoppingList.CreatedById
         }).ToList();
     }
 
@@ -155,5 +162,41 @@ public class ShoppingListService : IShoppingListService
 
         // Delete the shopping list from the database
         await _shoppingListRepository.DeleteAsync(shoppingList);
+    }
+
+    public async Task<ShoppingListDto> GetShoppingListByGuidAsync(Guid guid)
+    {
+        // Retrieve the shopping list by GUID
+        var shoppingList = await _shoppingListRepository.GetByGuidAsync(guid);
+        if (shoppingList == null)
+        {
+            throw new ArgumentException("Shopping list not found.");
+        }
+
+        // Map to DTO
+        return new ShoppingListDto
+        {
+            Id = shoppingList.Id,
+            Guid = shoppingList.Guid,
+            Name = shoppingList.Name,
+            GroupId = shoppingList.GroupId,
+            CreatedById = shoppingList.CreatedById
+        };
+    }
+
+    public async Task<IEnumerable<ShoppingListDto>> GetShoppingListsByGroupGuidAsync(Guid groupGuid)
+    {
+        // Retrieve the shopping lists by group GUID
+        var shoppingLists = await _shoppingListRepository.GetByGroupGuidAsync(groupGuid);
+
+        // Map to DTOs
+        return shoppingLists.Select(sl => new ShoppingListDto
+        {
+            Id = sl.Id,
+            Guid = sl.Guid,
+            Name = sl.Name,
+            GroupId = sl.GroupId,
+            CreatedById = sl.CreatedById
+        }).ToList();
     }
 }

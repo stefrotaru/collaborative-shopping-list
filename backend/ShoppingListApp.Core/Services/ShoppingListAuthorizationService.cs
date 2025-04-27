@@ -82,7 +82,7 @@ namespace ShoppingListApp.Core.Services
                 var ownedLists = await _shoppingListService.GetShoppingListsByCreatedByIdAsync(userId);
 
                 // Get all groups the user is a member of
-                var userGroups = await _groupService.GetGroupsByUserIdAsync(userId);
+                var userGroups = await _groupService.GetAllAccessibleGroupsByUserIdAsync(userId);
 
                 // Add owned lists to the result
                 foreach (var list in ownedLists)
@@ -97,6 +97,7 @@ namespace ShoppingListApp.Core.Services
                     result.Add(new AccessibleShoppingListDto
                     {
                         ShoppingListId = list.Id,
+                        ShoppingListGuid = list.Guid,
                         ShoppingListName = list.Name,
                         GroupId = list.GroupId,
                         GroupName = groupName ?? "Personal",
@@ -124,6 +125,7 @@ namespace ShoppingListApp.Core.Services
                         result.Add(new AccessibleShoppingListDto
                         {
                             ShoppingListId = list.Id,
+                            ShoppingListGuid = list.Guid,
                             ShoppingListName = list.Name,
                             GroupId = list.GroupId,
                             GroupName = group.Name,

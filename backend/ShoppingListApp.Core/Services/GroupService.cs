@@ -47,6 +47,7 @@ public class GroupService : IGroupService
         return new GroupDto
         {
             Id = group.Id,
+            Guid = group.Guid,
             Name = group.Name,
             Description = group.Description,
             CreatedById = group.CreatedById
@@ -66,6 +67,7 @@ public class GroupService : IGroupService
         return new GroupDto
         {
             Id = group.Id,
+            Guid = group.Guid,
             Name = group.Name,
             Description = group.Description,
             CreatedById = group.CreatedById
@@ -81,6 +83,7 @@ public class GroupService : IGroupService
         return groups.Select(group => new GroupDto
         {
             Id = group.Id,
+            Guid = group.Guid,
             Name = group.Name,
             Description = group.Description,
             CreatedById = group.CreatedById
@@ -105,10 +108,10 @@ public class GroupService : IGroupService
                 memberGroups.Add(new GroupDto
                 {
                     Id = group.Id,
+                    Guid = group.Guid,
                     Name = group.Name,
                     Description = group.Description,
                     CreatedById = group.CreatedById
-                    // Add any other properties your GroupDto has
                 });
             }
         }
@@ -268,5 +271,23 @@ public class GroupService : IGroupService
         var groupMembers = await _groupRepository.GetGroupMembersAsync(groupId);
         var member = groupMembers.FirstOrDefault(m => m.UserId == userId);
         return member != null && member.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public async Task<GroupDto> GetGroupByGuidAsync(Guid guid)
+    {
+        var group = await _groupRepository.GetByGuidAsync(guid);
+        if (group == null)
+        {
+            throw new ArgumentException("Group not found.");
+        }
+
+        return new GroupDto
+        {
+            Id = group.Id,
+            Guid = group.Guid,
+            Name = group.Name,
+            Description = group.Description,
+            CreatedById = group.CreatedById
+        };
     }
 }
