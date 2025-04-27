@@ -1,6 +1,7 @@
 ﻿public class ShoppingList
 {
     public int Id { get; set; }
+    public Guid Guid { get; set; } = Guid.NewGuid();
     public string Name { get; set; }
     public int GroupId { get; set; }
     public int CreatedById { get; set; }

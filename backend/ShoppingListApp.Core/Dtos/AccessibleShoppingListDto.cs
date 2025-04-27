@@ -1,6 +1,7 @@
 ﻿public class AccessibleShoppingListDto
 {
     public int ShoppingListId { get; set; }
+    public Guid ShoppingListGuid { get; set; }
     public string ShoppingListName { get; set; }
     public int? GroupId { get; set; }
     public string GroupName { get; set; }
