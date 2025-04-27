@@ -174,4 +174,23 @@ public class GroupsController : ControllerBase
         await _groupService.DeleteGroupAsync(id);
         return NoContent();
     }
+
+    [HttpGet("guid/{guid}")]
+    public async Task<ActionResult<GroupDto>> GetGroupByGuid(string guid)
+    {
+        try
+        {
+            if (!Guid.TryParse(guid, out var groupGuid))
+            {
+                return BadRequest("Invalid GUID format.");
+            }
+
+            var group = await _groupService.GetGroupByGuidAsync(groupGuid);
+            return Ok(group);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 }

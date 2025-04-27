@@ -5,10 +5,14 @@
 public class ShoppingItemsController : ControllerBase
 {
     private readonly IShoppingItemService _shoppingItemService;
+    private readonly IShoppingListService _shoppingListService;
 
-    public ShoppingItemsController(IShoppingItemService shoppingItemService)
+    public ShoppingItemsController(
+        IShoppingItemService shoppingItemService,
+        IShoppingListService shoppingListService)
     {
         _shoppingItemService = shoppingItemService;
+        _shoppingListService = shoppingListService;
     }
 
     [HttpPost]
@@ -45,6 +49,34 @@ public class ShoppingItemsController : ControllerBase
 
         var shoppingItems = await _shoppingItemService.GetShoppingItemsByShoppingListIdAsync(shoppingListId);
         return Ok(shoppingItems);
+    }
+
+    [HttpGet("shoppinglist/guid/{shoppingListGuid}")]
+    public async Task<ActionResult<IEnumerable<ShoppingItemDto>>> GetByShoppingListGuid(Guid shoppingListGuid)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            // First, get the shopping list by GUID
+            var shoppingList = await _shoppingListService.GetShoppingListByGuidAsync(shoppingListGuid);
+
+            // Then get the items using the shopping list's integer ID
+            var shoppingItems = await _shoppingItemService.GetShoppingItemsByShoppingListIdAsync(shoppingList.Id);
+
+            return Ok(shoppingItems);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred while retrieving shopping items: {ex.Message}");
+        }
     }
 
     [HttpPut("updateItem/{id}")]

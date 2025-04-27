@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ShoppingListApp.Core.Services;
 using System.Collections.Generic;
@@ -200,5 +201,61 @@ public class ShoppingListsController : ControllerBase
 
         await _shoppingListService.DeleteShoppingListAsync(id);
         return NoContent();
+    }
+
+    [HttpGet("guid/{guid}")]
+    public async Task<ActionResult<ShoppingListDto>> GetShoppingListByGuid(string guid)
+    {
+        try
+        {
+            if (!Guid.TryParse(guid, out var listGuid))
+            {
+                return BadRequest("Invalid GUID format.");
+            }
+
+            // Get current user
+            int currentUserId = _currentUserService.GetCurrentUserId();
+            if (currentUserId == 0)
+            {
+                return Unauthorized(new { message = "User not authenticated" });
+            }
+
+            var shoppingList = await _shoppingListService.GetShoppingListByGuidAsync(listGuid);
+
+            // Check authorization
+            var authService = HttpContext.RequestServices.GetRequiredService<IShoppingListAuthorizationService>();
+            bool canAccess = await authService.CanAccessShoppingListAsync(currentUserId, shoppingList.Id);
+
+            if (!canAccess)
+            {
+                return Forbid();
+            }
+
+
+            return Ok(shoppingList);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpGet("group/guid/{groupGuid}")]
+    public async Task<ActionResult<IEnumerable<ShoppingListDto>>> GetShoppingListsByGroupGuid(string groupGuid)
+    {
+        try
+        {
+            if (!Guid.TryParse(groupGuid, out var guid))
+            {
+                return BadRequest("Invalid GUID format.");
+            }
+
+            var shoppingLists = await _shoppingListService.GetShoppingListsByGroupGuidAsync(guid);
+            return Ok(shoppingLists);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }
