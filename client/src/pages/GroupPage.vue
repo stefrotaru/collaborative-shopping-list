@@ -595,7 +595,7 @@ const removeMember = async () => {
     );
 
     // Refresh group data
-    await fetchGroupData(groupInfo.value.id);
+    await fetchGroupData(groupInfo.value.guid);
 
     toast.add({
       severity: "info",
@@ -695,26 +695,26 @@ const deleteList = async () => {
 };
 
 const navigateToList = (list) => {
-  router.push(`/shoppinglists/${list.id}`);
+  router.push(`/shoppinglists/${list.guid}`);
 };
 
 // Data fetching
-const fetchGroupData = async (groupId) => {
+const fetchGroupData = async (groupGuid) => {
   setLoading(true);
   error.value = null;
 
   try {
     // Fetch group info
-    const groupInfoResponse = await groupStore.fetchGroupInfo(groupId);
+    const groupInfoResponse = await groupStore.fetchGroupInfoByGuid(groupGuid);
     groupInfo.value = groupInfoResponse;
 
     // Fetch group members
-    const groupMembersResponse = await groupStore.fetchGroupMembers(groupId);
+    const groupMembersResponse = await groupStore.fetchGroupMembers(groupInfoResponse.id);
     groupMembers.value = groupMembersResponse;
 
     // Fetch group's shopping lists
     const listsResponse = await shoppingListsStore.fetchGroupShoppingLists(
-      groupId
+      groupInfoResponse.id
     );
     groupLists.value = listsResponse || [];
 
@@ -740,8 +740,8 @@ onBeforeRouteUpdate(async (to) => {
 });
 
 onMounted(async () => {
-  const groupId = route.params.id;
-  await fetchGroupData(groupId);
+  const groupGuid = route.params.id;
+  await fetchGroupData(groupGuid);
 });
 </script>
 

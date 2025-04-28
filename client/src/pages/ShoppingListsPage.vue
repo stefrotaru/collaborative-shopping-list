@@ -45,7 +45,7 @@
         <TransitionGroup name="list" tag="ul" class="item-list" v-if="userGroups.length > 0">
           <li v-for="group in userGroups" :key="group.id" class="list-item-container">
             <div class="list-item">
-              <div class="item-content" @click="$router.push('/groups/' + group.id)">
+              <div class="item-content" @click="$router.push('/groups/' + group.guid)">
                 <i class="pi pi-users item-icon"></i>
                 <div class="item-name">{{ group.name }}</div>
               </div>
@@ -53,7 +53,7 @@
                 <Button
                   icon="pi pi-cog"
                   class="p-button-rounded p-button-outlined p-button-sm p-button-info action-button"
-                  @click="$router.push('/groups/' + group.id)"
+                  @click="$router.push('/groups/' + group.guid)"
                 />
               </div>
             </div>
@@ -284,7 +284,7 @@ const onListCreated = async (list) => {
 };
 
 const viewList = (list) => {
-  router.push(`/shoppinglists/${list.shoppingListId}`);
+  router.push(`/shoppinglists/${list.shoppingListGuid}`);
 };
 
 const confirmDeleteList = (list) => {

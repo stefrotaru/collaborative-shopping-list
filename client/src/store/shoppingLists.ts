@@ -193,6 +193,29 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     } catch (error) {}
   };
 
+  const getListItemsByGuid = async (guid) => {
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/ShoppingItems/shoppinglist/guid/${guid}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch shopping list items");
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching shopping list items by GUID:", error);
+      throw error;
+    }
+  };
+
   const getShoppingListName = async (listId) => {
     try {
       const response = await fetch(
@@ -214,6 +237,29 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       console.error("Error fetching shopping list name:", error);
     }
   }
+
+  const getShoppingListNameByGuid = async (guid) => {
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/ShoppingLists/guid/${guid}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch shopping list name");
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching shopping list name by GUID:", error);
+      throw error;
+    }
+  };
 
   const addListItem = async (listId, itemName, quantity, userId) => {
     try {
@@ -321,7 +367,9 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     deleteList,
 
     getListItems,
+    getListItemsByGuid,
     getShoppingListName,
+    getShoppingListNameByGuid,
     addListItem,
     removeListItem,
     updateItemCheckedState,

@@ -91,12 +91,22 @@ router.beforeEach(async (to, from, next) => {
     // Only do this check if the user is authenticated
     if (authStore.authenticatedUser) {
       const accessibleShoppingListsStore = useAccessibleShoppingListsStore();
-      const listId = Number(to.params.id);
       
       try {
-        const canAccess = await accessibleShoppingListsStore.canAccessShoppingList(listId);
+        const isGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(to.params.id);
+        
+        let canAccess;
+        if (isGuid) {
+          // Use GUID-based access check
+          canAccess = await accessibleShoppingListsStore.canAccessShoppingListByGuid(to.params.id);
+        } else { //TODO: remove this fallback check after transition period
+          // Fallback to ID-based check during transition period
+          const listId = Number(to.params.id);
+          canAccess = await accessibleShoppingListsStore.canAccessShoppingList(listId);
+        }
+        
         if (!canAccess) {
-          console.log(`Access denied to shopping list ${listId}`);
+          console.log(`Access denied to shopping list ${to.params.id}`);
           next({ name: 'AccessDenied' });
           return;
         }
@@ -111,7 +121,7 @@ router.beforeEach(async (to, from, next) => {
   // Check access for specific group
   if (to.meta.checkGroupAccess && to.params.id && authStore.authenticatedUser) {
     const groupId = Number(to.params.id);
-    
+
     // This assumes your useAuthStore has userGroups
     // Or you could load a specific check from your GroupsStore
     

@@ -86,6 +86,42 @@ export const useGroupsStore = defineStore("groupsStore", () => {
     }
   };
 
+  const fetchGroupInfoByGuid = async (guid) => {
+    try {
+      console.log(`Fetching info for group with GUID ${guid}`);
+  
+      // Fetch the group data using GUID
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/Groups/guid/${guid}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        try {
+          const errorData = await response.json();
+          throw new Error(
+            errorData.message ||
+              `Failed to fetch group info (${response.status})`
+          );
+        } catch (jsonError) {
+          throw new Error(`Failed to fetch group info: ${response.statusText}`);
+        }
+      }
+  
+      currentGroup.value = await response.json();
+      return currentGroup.value;
+    } catch (error) {
+      console.error("Error fetching group info by GUID:", error);
+      throw error;
+    }
+  };
+
   const createGroup = async (groupName) => {};
 
   const addMemberToGroup = async (groupId, userId, role = "member") => {
@@ -168,6 +204,43 @@ export const useGroupsStore = defineStore("groupsStore", () => {
       return groupMembers.value;
     } catch (error) {
       console.error("Error fetching group members:", error);
+      throw error;
+    }
+  };
+
+  const fetchGroupMembersByGuid = async (guid) => {
+    try {
+      const response = await fetch(
+        `/CollaborativeShoppingListAPI/Groups/guid/${guid}/members`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        // Handle errors
+        let errorMessage = `Failed to fetch group members (${response.status})`;
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch (e) {
+          errorMessage = `Failed to fetch group members: ${response.statusText}`;
+        }
+  
+        console.error(errorMessage);
+        throw new Error(errorMessage);
+      }
+  
+      groupMembers.value = await response.json();
+      return groupMembers.value;
+    } catch (error) {
+      console.error("Error fetching group members by GUID:", error);
       throw error;
     }
   };
@@ -270,9 +343,11 @@ export const useGroupsStore = defineStore("groupsStore", () => {
     userGroups,
     fetchUserGroups,
     fetchGroupInfo,
+    fetchGroupInfoByGuid,
     addMemberToGroup,
     removeUserFromGroup,
     fetchGroupMembers,
+    fetchGroupMembersByGuid,
     deleteGroup,
 
     getGroupNameById

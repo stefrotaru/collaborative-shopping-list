@@ -221,12 +221,9 @@ const checkNewItemNameForQuantity = () => {
 };
 
 // Check if the user has access to this shopping list
-const checkListAccess = async (listId) => {
+const checkListAccess = async (listGuid) => {
   try {
-    const normalizedlistId = Number(listId);
-
-    // First, check if user can access this list at all
-    const canAccess = await accessibleListsStore.canAccessShoppingList(normalizedlistId);
+    const canAccess = await accessibleListsStore.canAccessShoppingListByGuid(listGuid);
     if (!canAccess) {
       error.value = "You do not have permission to view this shopping list";
       toast.add({
@@ -241,11 +238,13 @@ const checkListAccess = async (listId) => {
 
     // Get the specific access information for this list
     await accessibleListsStore.fetchAccessibleLists();
+    
+    // Find the list by GUID instead of ID if we're using GUIDs in the URL
+    // Or have a way to find by either GUID or ID
     accessInfo.value = accessibleListsStore.accessibleLists.find(
-      (list) => list.shoppingListId === normalizedlistId
+      (list) => list.shoppingListId === listGuid || list.shoppingListGuid === listGuid
     );
 
-    // Set access control flags
     isOwner.value = accessInfo.value?.accessReason === "Owner";
 
     return true;
@@ -322,7 +321,7 @@ const onItemAdded = async () => {
 
   checkNewItemNameForQuantity();
 
-  let listId = route.params.id;
+  let listId = accessInfo.value.shoppingListId;
   let itemName = newItemName.value.replace(/\s*x\s*\d+$/i, "").trim();
   let quantity = newItemQuantity.value;
   let userId = authStore.authenticatedUser.id;
@@ -425,18 +424,20 @@ const confirmDelete = async () => {
   }
 };
 
-const fetchShoppingListData = async (listId) => {
+const fetchShoppingListData = async (listGuid) => {
   setLoading(true);
   error.value = null;
 
   try {
-    const hasAccess = await checkListAccess(listId);
+    const hasAccess = await checkListAccess(listGuid);
     if (!hasAccess) {
       return;
     }
 
-    const listResponse = await shoppingListsStore.getListItems(listId);
-    const listNameResponse = await shoppingListsStore.getShoppingListName(listId);
+    // When passing the ID to the API, check if it's a GUID or numeric ID
+    // and use the appropriate method
+    const listResponse = await shoppingListsStore.getListItemsByGuid(listGuid);
+    const listNameResponse = await shoppingListsStore.getShoppingListNameByGuid(listGuid);
 
     listItems.value = listResponse;
     shoppingListName.value = listNameResponse.name;
@@ -467,36 +468,37 @@ onMounted(async () => {
     return;
   }
 
-  const listId = route.params.id;
+  const listGuid = route.params.id;
+  const listId = accessInfo.value.shoppingListId; // Use the ID from accessInfo or the GUID directly
   const currentUserId = authStore.authenticatedUser.id;
   // Create a user identifier string similar to the one used in notifications
   const currentUserIdentifier = `User ID: ${currentUserId}`;
 
   // If user has access, load the shopping list data
-  await fetchShoppingListData(listId);
+  await fetchShoppingListData(listGuid);
       
   // Listen for updates to fetch the updated shopping list data
   signalRService.onShoppingListUpdated(async (updatedListId, updatedBy) => {
-    if (Number(updatedListId) === Number(listId)) {
-      fetchShoppingListData(listId);
+    if (updatedListId === listId) {
+      fetchShoppingListData(listGuid);
     }
   });
   
   signalRService.onShoppingItemAdded(async (updatedListId, itemId, addedBy) => {
-    if (Number(updatedListId) === Number(listId)) {
-      fetchShoppingListData(listId);
+    if (updatedListId === listId) {
+      fetchShoppingListData(listGuid);
     }
   });
 
   signalRService.onShoppingItemUpdated(async(updatedListId, itemId, updatedBy) => {
-    if (Number(updatedListId) === Number(listId)) {
-      fetchShoppingListData(listId);
+    if (updatedListId === listId) {
+      fetchShoppingListData(listGuid);
     }
   });
 
   signalRService.onShoppingItemRemoved(async (updatedListId, itemId, removedBy) => {
-    if (Number(updatedListId) === Number(listId)) {
-      fetchShoppingListData(listId);
+    if (updatedListId === listId) {
+      fetchShoppingListData(listGuid);
     }
   });
 });

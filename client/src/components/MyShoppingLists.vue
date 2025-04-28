@@ -15,7 +15,7 @@
       <li v-for="shoppingList in shoppingLists" :key="shoppingList.id">
         <router-link
           class="group-item"
-          :to="'/shoppinglists/' + shoppingList.id"
+          :to="'/shoppinglists/' + shoppingList.guid"
           :class="
             shoppingList.createdById === authStore.authenticatedUser?.id
               ? 'created-by-me'

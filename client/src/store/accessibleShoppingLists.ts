@@ -126,6 +126,27 @@ export const useAccessibleShoppingListsStore = defineStore("accessibleShoppingLi
     }
   };
 
+  const canAccessShoppingListByGuid = async (guid: string): Promise<boolean> => {
+    try {
+      const listResponse = await fetch(`/CollaborativeShoppingListAPI/ShoppingLists/guid/${guid}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Accept': 'application/json'
+        },
+      });
+      
+      if (listResponse.ok) {
+        return true;
+      }
+      
+      return false;
+    } catch (err) {
+      console.error('Error checking shopping list access by GUID:', err);
+      return false;
+    }
+  };
+
   // Get details for all accessible shopping lists
   const fetchAccessibleListDetails = async () => {
     isLoading.value = true;
@@ -188,6 +209,7 @@ export const useAccessibleShoppingListsStore = defineStore("accessibleShoppingLi
     error,
     fetchAccessibleLists,
     canAccessShoppingList,
+    canAccessShoppingListByGuid,
     fetchAccessibleListDetails,
     getOwnedLists,
     getSharedLists,

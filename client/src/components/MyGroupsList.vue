@@ -10,7 +10,7 @@
       <li v-for="group in groups" :key="group.id">
         <router-link
           class="group-item"
-          :to="'/groups/' + group.id"
+          :to="'/groups/' + group.guid"
           :class="
             group.createdById === authStore.authenticatedUser?.id
               ? 'created-by-me'
