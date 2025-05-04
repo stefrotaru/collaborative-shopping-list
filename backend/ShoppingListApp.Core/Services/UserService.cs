@@ -20,25 +20,25 @@ public class UserService : IUserService
             throw new ArgumentException("A user with this email already exists.");
         }
 
-        // Create a new user entity - we'll generate the token after saving
+        var tempUser = new User
+        {
+            Username = username,
+            Email = email
+        };
+
+        string token = _tokenService.GenerateToken(tempUser.Id, tempUser.Username, tempUser.Email);
+
         var user = new User
         {
             Username = username,
             Email = email,
             PasswordHash = HashPassword(password),
             Avatar = avatar,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            Token = token
         };
 
-        // Save the user to the database to get an ID
         await _userRepository.AddAsync(user);
-
-        // Generate a token using the TokenService
-        string token = _tokenService.GenerateToken(user.Id, user.Username, user.Email);
-
-        // Store the token for backward compatibility
-        user.Token = token;
-        await _userRepository.UpdateAsync(user);
 
         // Map the user entity to a DTO and return it
         return new UserDto
