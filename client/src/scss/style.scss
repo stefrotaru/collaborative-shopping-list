@@ -1,9 +1,17 @@
 @use 'primeicons/primeicons.css';
 
+//Layers order (lowest to highest priority)
+// @layer reset, base, vendor, utilities, components, pages;
+
+//reset
+@use 'base/reset';
+
 //base
 @use 'base/app';
-@use 'base/reset';
 @use 'base/typography';	
+
+//vendors
+@use 'vendors/primevue-global';
 
 //components
 @use 'components/GroupItem';
@@ -28,6 +36,3 @@
 @use 'utils/helpers.scss';
 @use 'utils/mixins';
 @use 'utils/transitions.scss';
-
-//vendors
-@use 'vendors/primevue-global';
