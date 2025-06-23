@@ -5,7 +5,8 @@ import router from './router'
 import App from './App.vue'
 
 import PrimeVue from 'primevue/config'
-import Aura from '@primevue/themes/aura';
+import Aura from '@primevue/themes/aura'
+
 import ToastService from 'primevue/toastservice';
 
 const pinia = createPinia()
@@ -17,8 +18,16 @@ app
   .use(router)
   .use(PrimeVue, {
       theme: {
-          preset: Aura
-      }
+          preset: Aura,
+          options: {
+            prefix: 'p',
+            darkModeSelector: 'system',
+            cssLayer: {
+                name: 'primevue',
+                order: 'tailwind-base, primevue, tailwind-utilities'
+            }
+        }
+    }
   })
   .use(ToastService)
   .mount('#app')
