@@ -1,187 +1,193 @@
 @use "../base/variables.scss" as *;
 
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3rem;
-  background-color: $background-color;
+@layer pages {
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    background-color: $background-color;
 
-  .login-card {
-    background-color: $card-background-color;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 420px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    .login-card {
+      background-color: $card-background-color;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
-    .brand-header {
-      padding: 2rem 2rem 1rem;
-      text-align: center;
-      background: linear-gradient(135deg, $gray-900 0%, $gray-850 100%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      .brand-header {
+        padding: 2rem 2rem 1rem;
+        text-align: center;
+        background: linear-gradient(135deg, $gray-900 0%, $gray-850 100%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
-      .logo-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1rem;
+        .logo-container {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 1rem;
 
-        .logo-image {
-          width: 60px;
-          height: 60px;
-          object-fit: contain;
+          .logo-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+          }
+        }
+
+        .brand-title {
+          margin: 0;
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: $primary-color;
+        }
+
+        .brand-subtitle {
+          margin: 0.5rem 0 0;
+          font-size: 1rem;
+          color: $text-muted;
         }
       }
 
-      .brand-title {
-        margin: 0;
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: $primary-color;
-      }
-
-      .brand-subtitle {
-        margin: 0.5rem 0 0;
-        font-size: 1rem;
-        color: $text-muted;
-      }
-    }
-
-    .login-form {
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-
-      .form-group {
+      .login-form {
+        padding: 2rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1.5rem;
 
-        label {
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          label {
+            font-size: 0.875rem;
+            color: $text-color;
+            font-weight: 500;
+          }
+        }
+
+        .label-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .forgot-link {
+          font-size: 0.75rem;
+          color: $text-muted;
+          text-decoration: none;
+          transition: color 0.2s;
+
+          &:hover {
+            color: $primary-color;
+            text-decoration: underline;
+          }
+        }
+
+        .input-wrapper {
+          position: relative;
+          width: 100%;
+
+          .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: $text-muted;
+            z-index: 1;
+          }
+        }
+
+        .error-message {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
           font-size: 0.875rem;
-          color: $text-color;
-          font-weight: 500;
+          color: $danger-color;
+          margin-top: -0.5rem;
+
+          i {
+            font-size: 0.75rem;
+          }
+        }
+
+        .login-btn {
+          width: 100%;
+          background: linear-gradient(
+            135deg,
+            $primary-color 0%,
+            $green-500 100%
+          );
+          border: none;
+          padding: 0.75rem;
+          font-weight: 600;
+          transition: all 0.3s ease;
+
+          &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3);
+          }
+        }
+
+        .form-separator {
+          display: flex;
+          align-items: center;
+          margin: 0.25rem 0;
         }
       }
 
-      .label-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      .separator-line {
+        flex: 1;
+        height: 1px;
+        background-color: $gray-600;
       }
 
-      .forgot-link {
-        font-size: 0.75rem;
+      .separator-text {
+        padding: 0 1rem;
         color: $text-muted;
+        font-size: 0.75rem;
+      }
+
+      .register-option {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        color: $text-muted;
+        font-size: 0.875rem;
+      }
+
+      .register-link {
+        color: $primary-color;
         text-decoration: none;
-        transition: color 0.2s;
+        font-weight: 500;
 
         &:hover {
-          color: $primary-color;
           text-decoration: underline;
         }
       }
-
-      .input-wrapper {
-        position: relative;
-        width: 100%;
-
-        .input-icon {
-          position: absolute;
-          left: 0.75rem;
-          top: 50%;
-          transform: translateY(-50%);
-          color: $text-muted;
-          z-index: 1;
-        }
-      }
-
-      .error-message {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.875rem;
-        color: $danger-color;
-        margin-top: -0.5rem;
-
-        i {
-          font-size: 0.75rem;
-        }
-      }
-
-      .login-btn {
-        width: 100%;
-        background: linear-gradient(135deg, $primary-color 0%, $green-500 100%);
-        border: none;
-        padding: 0.75rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-
-        &:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3);
-        }
-      }
-
-      .form-separator {
-        display: flex;
-        align-items: center;
-        margin: 0.25rem 0;
-      }
-    }
-
-    .separator-line {
-      flex: 1;
-      height: 1px;
-      background-color: $gray-600;
-    }
-
-    .separator-text {
-      padding: 0 1rem;
-      color: $text-muted;
-      font-size: 0.75rem;
-    }
-
-    .register-option {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      color: $text-muted;
-      font-size: 0.875rem;
-    }
-
-    .register-link {
-      color: $primary-color;
-      text-decoration: none;
-      font-weight: 500;
-
-      &:hover {
-        text-decoration: underline;
-      }
     }
   }
-}
 
-@media (max-width: $screen-sm) {
-  .login-card {
-    border-radius: 12px;
-  }
+  @media (max-width: $screen-sm) {
+    .login-card {
+      border-radius: 12px;
+    }
 
-  .brand-header {
-    padding: 1.5rem 1.5rem 1rem;
-  }
+    .brand-header {
+      padding: 1.5rem 1.5rem 1rem;
+    }
 
-  .login-form {
-    padding: 1.5rem;
-  }
+    .login-form {
+      padding: 1.5rem;
+    }
 
-  .logo-image {
-    width: 50px;
-    height: 50px;
-  }
+    .logo-image {
+      width: 50px;
+      height: 50px;
+    }
 
-  .brand-title {
-    font-size: 1.5rem;
+    .brand-title {
+      font-size: 1.5rem;
+    }
   }
 }

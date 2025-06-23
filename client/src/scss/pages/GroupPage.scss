@@ -1,286 +1,288 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.group-page {
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 3rem;
-  color: $text-color;
-
-  .page-header {
+@layer pages {
+  .group-page {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem;
+    color: $text-color;
 
-    @media (min-width: $screen-md) {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .page-title-wrapper {
+    .page-header {
       display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
+      flex-direction: column;
+      margin-bottom: 2rem;
 
       @media (min-width: $screen-md) {
-        margin-bottom: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
       }
-    }
 
-    .page-title {
-      margin: 0;
-      font-size: 2rem;
-      color: $primary-color;
-    }
+      .page-title-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
 
-    .title-edit-btn {
-      margin-left: 0.5rem;
-      color: $primary-color !important;
-
-      &:hover {
-        background-color: rgba(52, 211, 153, 0.1) !important;
+        @media (min-width: $screen-md) {
+          margin-bottom: 0;
+        }
       }
-    }
 
-    .page-actions {
-      display: flex;
-      gap: 0.75rem;
-    }
-  }
-
-  .group-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    @media (min-width: $screen-lg) {
-      flex-direction: row;
-      align-items: flex-start;
-    }
-  }
-
-  .card {
-    background-color: $card-background-color;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    width: 100%;
-
-    @media (min-width: $screen-lg) {
-      width: 50%;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-
-      .card-title {
+      .page-title {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 2rem;
         color: $primary-color;
       }
 
-      .member-count {
-        color: $text-muted;
-        font-size: 0.875rem;
+      .title-edit-btn {
+        margin-left: 0.5rem;
+        color: $primary-color !important;
+
+        &:hover {
+          background-color: rgba(52, 211, 153, 0.1) !important;
+        }
+      }
+
+      .page-actions {
+        display: flex;
+        gap: 0.75rem;
       }
     }
-  }
 
-  .add-member-btn,
-  .create-list-btn {
-    background-color: $primary-color;
-    border-color: $primary-color;
-
-    &:hover {
-      background-color: $primary-hover;
-      border-color: $primary-hover;
-    }
-  }
-
-  .members-list,
-  .lists-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .member-item,
-  .list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    background-color: $gray-900;
-    border-radius: 8px;
-    border-left: 3px solid $primary-color;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background-color: #2a2a2a;
-    }
-  }
-
-  .member-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-color: $primary-color;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 1rem;
-    position: relative;
-    flex-shrink: 0;
-
-    i {
-      color: $gray-900;
-      font-size: 1.25rem;
-    }
-
-    .owner-badge {
-      position: absolute;
-      right: -3px;
-      bottom: -3px;
-      background-color: #fcd34d;
-      color: $gray-900;
-      width: 1rem;
-      height: 1rem;
-      border-radius: 50%;
+    .group-content {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      gap: 2rem;
 
-      i {
-        color: $gray-900;
-        font-size: 0.5rem;
+      @media (min-width: $screen-lg) {
+        flex-direction: row;
+        align-items: flex-start;
       }
     }
-  }
-
-  .member-info,
-  .list-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .list-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .list-icon {
-    color: $primary-color;
-    font-size: 1.25rem;
-    margin-right: 0.75rem;
-  }
-
-  .list-info {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .member-name,
-  .list-name {
-    font-size: 1rem;
-    color: $text-color;
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .member-email,
-  .list-meta {
-    font-size: 0.875rem;
-    color: $text-muted;
-    margin-top: 0.25rem;
-  }
-
-  .member-actions,
-  .list-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1rem;
-    text-align: center;
-    color: $text-muted;
-
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      opacity: 0.5;
-      color: #6b7280;
-    }
-
-    .empty-subtext {
-      margin-top: 0.5rem;
-      font-size: 0.875rem;
-      opacity: 0.7;
-    }
-  }
-
-  .dialog-content {
-    margin: 1rem 0;
-
-    .text-danger {
-      color: $danger-color;
-      font-size: 0.875rem;
-    }
-  }  
-
-  @media (max-width: $screen-md) {
-    padding: 1rem;
-
-    .page-title {
-      font-size: 1.75rem;
-    }
 
     .card {
-      padding: 1.25rem;
+      background-color: $card-background-color;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      width: 100%;
+
+      @media (min-width: $screen-lg) {
+        width: 50%;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+
+        .card-title {
+          margin: 0;
+          font-size: 1.5rem;
+          color: $primary-color;
+        }
+
+        .member-count {
+          color: $text-muted;
+          font-size: 0.875rem;
+        }
+      }
     }
 
-    .card-title {
-      font-size: 1.25rem;
+    .add-member-btn,
+    .create-list-btn {
+      background-color: $primary-color;
+      border-color: $primary-color;
+
+      &:hover {
+        background-color: $primary-hover;
+        border-color: $primary-hover;
+      }
     }
-  }
 
-  @media (max-width: $screen-sm) {
-    padding: 0.75rem;
+    .members-list,
+    .lists-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
 
-    .card {
-      padding: 1rem;
+    .member-item,
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background-color: $gray-900;
+      border-radius: 8px;
+      border-left: 3px solid $primary-color;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #2a2a2a;
+      }
     }
 
     .member-avatar {
-      width: 2rem;
-      height: 2rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: $primary-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1rem;
+      position: relative;
+      flex-shrink: 0;
 
       i {
-        font-size: 1rem;
+        color: $gray-900;
+        font-size: 1.25rem;
       }
+
+      .owner-badge {
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+        background-color: #fcd34d;
+        color: $gray-900;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        i {
+          color: $gray-900;
+          font-size: 0.5rem;
+        }
+      }
+    }
+
+    .member-info,
+    .list-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .list-content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .list-icon {
+      color: $primary-color;
+      font-size: 1.25rem;
+      margin-right: 0.75rem;
+    }
+
+    .list-info {
+      display: flex;
+      flex-direction: column;
     }
 
     .member-name,
     .list-name {
-      font-size: 0.9375rem;
+      font-size: 1rem;
+      color: $text-color;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .member-email,
+    .list-meta {
+      font-size: 0.875rem;
+      color: $text-muted;
+      margin-top: 0.25rem;
+    }
+
+    .member-actions,
+    .list-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+      text-align: center;
+      color: $text-muted;
+
+      .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+        color: #6b7280;
+      }
+
+      .empty-subtext {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        opacity: 0.7;
+      }
+    }
+
+    .dialog-content {
+      margin: 1rem 0;
+
+      .text-danger {
+        color: $danger-color;
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (max-width: $screen-md) {
+      padding: 1rem;
+
+      .page-title {
+        font-size: 1.75rem;
+      }
+
+      .card {
+        padding: 1.25rem;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media (max-width: $screen-sm) {
+      padding: 0.75rem;
+
+      .card {
+        padding: 1rem;
+      }
+
+      .member-avatar {
+        width: 2rem;
+        height: 2rem;
+
+        i {
+          font-size: 1rem;
+        }
+      }
+
+      .member-name,
+      .list-name {
+        font-size: 0.9375rem;
+      }
     }
   }
 }

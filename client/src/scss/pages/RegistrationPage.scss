@@ -1,398 +1,407 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.registration-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  // min-height: 100vh;
-  padding: 2rem 1rem;
-  gap: 2rem;
-  background-color: $background-color;
-
-  @media (min-width: $screen-lg) {
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-    padding: 3rem;
-    gap: 3rem;
-  }
-
-  .registration-card {
-    background-color: $card-background-color;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 500px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    @media (min-width: $screen-md) {
-      width: 500px;
-    }
-  }
-
-  .brand-header {
-    padding: 2rem 2rem 1rem;
-    text-align: center;
-    background: linear-gradient(135deg, $gray-900 0%, $gray-850 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .logo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-
-  .logo-image {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-  }
-
-  .brand-title {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: $primary-color;
-  }
-
-  .brand-subtitle {
-    margin: 0.5rem 0 0;
-    font-size: 1rem;
-    color: $text-muted;
-  }
-
-  .registration-form {
-    padding: 1.5rem 2rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .avatar-selection {
+@layer pages {
+  .registration-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1rem;
-  }
+    // min-height: 100vh;
+    padding: 2rem 1rem;
+    gap: 2rem;
+    background-color: $background-color;
 
-  .section-title {
-    font-size: 1.125rem;
-    color: $text-color;
-    margin: 0 0 1rem 0;
-    text-align: center;
-  }
-
-  .avatar-carousel-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .avatar-carousel {
-    width: 60%;
-    margin: 0 0.5rem;
-  }
-
-  .carousel-nav-btn {
-    width: 2.5rem;
-    height: 2.5rem;
-    color: $primary-color;
-
-    &:hover {
-      background-color: rgba(52, 211, 153, 0.1);
-    }
-  }
-
-  .avatar-item {
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem;
-  }
-
-  .avatar-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid $primary-color;
-    background-color: $gray-900;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .avatar-pages {
-    display: flex;
-    align-items: center;
-    margin-top: 0.75rem;
-    color: $text-muted;
-    font-size: 0.875rem;
-  }
-
-  .current-page {
-    font-weight: 600;
-    color: $text-color;
-  }
-
-  .page-divider {
-    margin: 0 0.25rem;
-  }
-
-  .form-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    label {
-      font-size: 0.875rem;
-      color: $text-color;
-      font-weight: 500;
+    @media (min-width: $screen-lg) {
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+      padding: 3rem;
+      gap: 3rem;
     }
 
-    .p-inputtext {
-      background-color: $gray-900;
-      border-color: $border-color;
-      color: $text-color;
+    .registration-card {
+      background-color: $card-background-color;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
 
-      &.p-invalid {
-        border-color: $danger-color;
-      }
-
-      &:focus {
-        border-color: $primary-color;
-        box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+      @media (min-width: $screen-md) {
+        width: 500px;
       }
     }
 
-    .p-password {
+    .brand-header {
+      padding: 2rem 2rem 1rem;
+      text-align: center;
+      background: linear-gradient(135deg, $gray-900 0%, $gray-850 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .logo-image {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: $primary-color;
+    }
+
+    .brand-subtitle {
+      margin: 0.5rem 0 0;
+      font-size: 1rem;
+      color: $text-muted;
+    }
+
+    .registration-form {
+      padding: 1.5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .avatar-selection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.125rem;
+      color: $text-color;
+      margin: 0 0 1rem 0;
+      text-align: center;
+    }
+
+    .avatar-carousel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
     }
 
-    .p-error {
-      font-size: 0.75rem;
-      color: $danger-color;
-      margin-top: 0.25rem;
-    }
-  }
-
-  .input-wrapper {
-    position: relative;
-    width: 100%;
-
-    .input-icon {
-      position: absolute;
-      left: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: $text-muted;
-      z-index: 1;
-    }
-  }
-
-  .form-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .register-btn {
-    width: 100%;
-    background: linear-gradient(135deg, $primary-color 0%, $green-500 100%) !important;
-    border: none !important;
-    padding: 0.75rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-
-    &:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3);
+    .avatar-carousel {
+      width: 60%;
+      margin: 0 0.5rem;
     }
 
-    &:disabled {
-      opacity: 0.7;
-      background: linear-gradient(135deg, #94e6c4 0%, #7eddbc 100%);
+    .carousel-nav-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      color: $primary-color;
+
+      &:hover {
+        background-color: rgba(52, 211, 153, 0.1);
+      }
     }
-  }
 
-  .form-separator {
-    display: flex;
-    align-items: center;
-    margin: 0.5rem 0;
-  }
-
-  .separator-line {
-    flex: 1;
-    height: 1px;
-    background-color: $gray-600;
-  }
-
-  .separator-text {
-    padding: 0 1rem;
-    color: $text-muted;
-    font-size: 0.875rem;
-  }
-
-  .form-alternative {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    color: $text-muted;
-    font-size: 0.875rem;
-  }
-
-  .login-link {
-    color: $primary-color;
-    text-decoration: none;
-    font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
+    .avatar-item {
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
     }
-  }
 
-  .registration-info {
-    display: none;
-
-    @media (min-width: $screen-lg) {
-      display: block;
-      width: 400px;
+    .avatar-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid $primary-color;
+      background-color: $gray-900;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
-  }
 
-  .info-card {
-    background: linear-gradient(135deg, $card-background-color-dark 0%, $card-background-color 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    height: 100%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  }
-
-  .info-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-
-  .info-icon {
-    font-size: 1.75rem;
-    color: $primary-color;
-    margin-right: 1rem;
-  }
-
-  .info-title {
-    margin: 0;
-    font-size: 1.5rem;
-    color: $text-color;
-    font-weight: 600;
-  }
-
-  .benefits-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-
-    li {
+    .avatar-pages {
       display: flex;
       align-items: center;
-
-      i {
-        color: $primary-color;
-        font-size: 1.25rem;
-        margin-right: 1rem;
-        width: 1.25rem;
-        text-align: center;
-      }
-
-      span {
-        color: $text-color;
-        font-size: 1rem;
-      }
-    }
-  }
-
-  .password-requirements {
-    p {
-      margin: 0.5rem 0;
+      margin-top: 0.75rem;
       color: $text-muted;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
     }
 
-    ul {
+    .current-page {
+      font-weight: 600;
+      color: $text-color;
+    }
+
+    .page-divider {
+      margin: 0 0.25rem;
+    }
+
+    .form-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-size: 0.875rem;
+        color: $text-color;
+        font-weight: 500;
+      }
+
+      .p-inputtext {
+        background-color: $gray-900;
+        border-color: $border-color;
+        color: $text-color;
+
+        &.p-invalid {
+          border-color: $danger-color;
+        }
+
+        &:focus {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+        }
+      }
+
+      .p-password {
+        width: 100%;
+      }
+
+      .p-error {
+        font-size: 0.75rem;
+        color: $danger-color;
+        margin-top: 0.25rem;
+      }
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+
+      .input-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $text-muted;
+        z-index: 1;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .register-btn {
+      width: 100%;
+      background: linear-gradient(
+        135deg,
+        $primary-color 0%,
+        $green-500 100%
+      ) !important;
+      border: none !important;
+      padding: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(52, 211, 153, 0.3);
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        background: linear-gradient(135deg, #94e6c4 0%, #7eddbc 100%);
+      }
+    }
+
+    .form-separator {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+
+    .separator-line {
+      flex: 1;
+      height: 1px;
+      background-color: $gray-600;
+    }
+
+    .separator-text {
+      padding: 0 1rem;
+      color: $text-muted;
+      font-size: 0.875rem;
+    }
+
+    .form-alternative {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      color: $text-muted;
+      font-size: 0.875rem;
+    }
+
+    .login-link {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .registration-info {
+      display: none;
+
+      @media (min-width: $screen-lg) {
+        display: block;
+        width: 400px;
+      }
+    }
+
+    .info-card {
+      background: linear-gradient(
+        135deg,
+        $card-background-color-dark 0%,
+        $card-background-color 100%
+      );
+      border-radius: 16px;
+      padding: 2rem;
+      height: 100%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .info-icon {
+      font-size: 1.75rem;
+      color: $primary-color;
+      margin-right: 1rem;
+    }
+
+    .info-title {
+      margin: 0;
+      font-size: 1.5rem;
+      color: $text-color;
+      font-weight: 600;
+    }
+
+    .benefits-list {
       list-style-type: none;
       padding: 0;
-      margin: 0.5rem 0 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
 
       li {
         display: flex;
         align-items: center;
-        margin-bottom: 0.25rem;
-        color: $text-muted;
-        font-size: 0.75rem;
 
-        &::before {
-          content: "•";
-          margin-right: 0.5rem;
-          color: $text-muted;
+        i {
+          color: $primary-color;
+          font-size: 1.25rem;
+          margin-right: 1rem;
+          width: 1.25rem;
+          text-align: center;
         }
 
-        &.requirement-met {
-          color: $primary-color;
+        span {
+          color: $text-color;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .password-requirements {
+      p {
+        margin: 0.5rem 0;
+        color: $text-muted;
+        font-size: 0.75rem;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0.5rem 0 0;
+
+        li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0.25rem;
+          color: $text-muted;
+          font-size: 0.75rem;
 
           &::before {
-            content: "✓";
+            content: "•";
+            margin-right: 0.5rem;
+            color: $text-muted;
+          }
+
+          &.requirement-met {
             color: $primary-color;
+
+            &::before {
+              content: "✓";
+              color: $primary-color;
+            }
           }
         }
       }
     }
-  }
 
+    @media (max-width: $screen-sm) {
+      .registration-card {
+        border-radius: 12px;
+      }
 
-  @media (max-width: $screen-sm) {
-    .registration-card {
-      border-radius: 12px;
-    }
+      .brand-header {
+        padding: 1.5rem 1.5rem 1rem;
+      }
 
-    .brand-header {
-      padding: 1.5rem 1.5rem 1rem;
-    }
+      .registration-form {
+        padding: 1rem 1.5rem 1.5rem;
+      }
 
-    .registration-form {
-      padding: 1rem 1.5rem 1.5rem;
-    }
+      .logo-image {
+        width: 50px;
+        height: 50px;
+      }
 
-    .logo-image {
-      width: 50px;
-      height: 50px;
-    }
+      .brand-title {
+        font-size: 1.5rem;
+      }
 
-    .brand-title {
-      font-size: 1.5rem;
-    }
+      .brand-subtitle {
+        font-size: 0.875rem;
+      }
 
-    .brand-subtitle {
-      font-size: 0.875rem;
-    }
+      .avatar-image {
+        width: 80px;
+        height: 80px;
+      }
 
-    .avatar-image {
-      width: 80px;
-      height: 80px;
-    }
-
-    .carousel-nav-btn {
-      width: 2rem;
-      height: 2rem;
+      .carousel-nav-btn {
+        width: 2rem;
+        height: 2rem;
+      }
     }
   }
 }

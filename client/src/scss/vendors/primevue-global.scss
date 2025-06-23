@@ -3,47 +3,94 @@
  */
 
 /* Float Label - make sure this works in all contexts */
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.p-float-label {
-  display: block !important;
-  position: relative !important;
+@layer vendor {
+  .p-float-label {
+    display: block !important;
+    position: relative !important;
 
-  label {
-    position: absolute !important;
-    pointer-events: none !important;
-    top: 50% !important;
-    margin-top: -0.5rem !important;
-    transition: all 0.2s ease !important;
-    line-height: 1 !important;
-    left: 0.75rem !important;
-    color: $text-muted !important;
+    label {
+      position: absolute !important;
+      pointer-events: none !important;
+      top: 50% !important;
+      margin-top: -0.5rem !important;
+      transition: all 0.2s ease !important;
+      line-height: 1 !important;
+      left: 0.75rem !important;
+      color: $text-muted !important;
+    }
+
+    input:focus ~ label,
+    input.p-filled ~ label,
+    textarea:focus ~ label,
+    textarea.p-filled ~ label,
+    .p-inputwrapper-focus ~ label,
+    .p-inputwrapper-filled ~ label {
+      top: -0.75rem !important;
+      font-size: 0.75rem !important;
+      color: $primary-color !important;
+    }
+
+    //   input,
+    //   textarea {
+    //     padding-top: 1.25rem !important;
+    //     padding-bottom: 0.25rem !important;
+    //   }
   }
 
-  input:focus ~ label,
-  input.p-filled ~ label,
-  textarea:focus ~ label,
-  textarea.p-filled ~ label,
-  .p-inputwrapper-focus ~ label,
-  .p-inputwrapper-filled ~ label {
-    top: -0.75rem !important;
-    font-size: 0.75rem !important;
-    color: $primary-color !important;
+  .dialog-content {
+    padding: 0.5rem 0 !important;
+
+    .p-inputtext {
+      background-color: $gray-900 !important;
+      border-color: $border-color !important;
+      color: $text-color !important;
+
+      &:focus {
+        border-color: $primary-color !important;
+        box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
+      }
+    }
   }
 
-//   input,
-//   textarea {
-//     padding-top: 1.25rem !important;
-//     padding-bottom: 0.25rem !important;
-//   }
-}
+  /* PrimeVue component overrides */
+  .p-component {
+    font-family: inherit;
+  }
 
+  .p-button-primary {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
 
-.dialog-content {
-  padding: 0.5rem 0 !important;
+    &:hover {
+      background-color: $primary-hover !important;
+      border-color: $primary-hover !important;
+    }
+  }
+
+  .p-button-outlined {
+    &.p-button-primary {
+      color: $primary-color !important;
+      border-color: $primary-color !important;
+
+      &:hover {
+        background-color: rgba(52, 211, 153, 0.1) !important;
+      }
+    }
+
+    &.p-button-danger {
+      color: $danger-color !important;
+      border-color: $danger-color !important;
+
+      &:hover {
+        background-color: rgba(248, 113, 113, 0.1) !important;
+      }
+    }
+  }
 
   .p-inputtext {
-    background-color: $gray-900 !important;
+    background-color: $card-background-color-dark !important;
     border-color: $border-color !important;
     color: $text-color !important;
 
@@ -52,83 +99,37 @@
       box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
     }
   }
-}
 
-/* PrimeVue component overrides */
-.p-component {
-  font-family: inherit;
-}
+  .p-toast {
+    .p-toast-message {
+      background-color: $card-background-color;
+      color: $text-color;
+      border-left-width: 6px;
 
-.p-button-primary {
-  background-color: $primary-color !important;
-  border-color: $primary-color !important;
-
-  &:hover {
-    background-color: $primary-hover !important;
-    border-color: $primary-hover !important;
-  }
-}
-
-.p-button-outlined {
-  &.p-button-primary {
-    color: $primary-color !important;
-    border-color: $primary-color !important;
-
-    &:hover {
-      background-color: rgba(52, 211, 153, 0.1) !important;
-    }
-  }
-
-  &.p-button-danger {
-    color: $danger-color !important;
-    border-color: $danger-color !important;
-
-    &:hover {
-      background-color: rgba(248, 113, 113, 0.1) !important;
-    }
-  }
-}
-
-.p-inputtext {
-  background-color: $card-background-color-dark !important;
-  border-color: $border-color !important;
-  color: $text-color !important;
-
-  &:focus {
-    border-color: $primary-color !important;
-    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
-  }
-}
-
-.p-toast {
-  .p-toast-message {
-    background-color: $card-background-color;
-    color: $text-color;
-    border-left-width: 6px;
-
-    &.p-toast-message-info {
-      border-left-color: $info-color;
-    }
-
-    &.p-toast-message-success {
-      border-left-color: $success-color;
-    }
-
-    &.p-toast-message-warn {
-      border-left-color: $warning-color;
-    }
-
-    &.p-toast-message-error {
-      border-left-color: $danger-color;
-    }
-
-    .p-toast-message-content {
-      .p-toast-summary {
-        font-weight: 600;
+      &.p-toast-message-info {
+        border-left-color: $info-color;
       }
 
-      .p-toast-detail {
-        margin-top: 0.25rem;
+      &.p-toast-message-success {
+        border-left-color: $success-color;
+      }
+
+      &.p-toast-message-warn {
+        border-left-color: $warning-color;
+      }
+
+      &.p-toast-message-error {
+        border-left-color: $danger-color;
+      }
+
+      .p-toast-message-content {
+        .p-toast-summary {
+          font-weight: 600;
+        }
+
+        .p-toast-detail {
+          margin-top: 0.25rem;
+        }
       }
     }
   }

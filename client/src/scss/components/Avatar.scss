@@ -1,13 +1,15 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.avatar {
-  display: inline-flex;
-  padding: 0.25rem;
-  border-radius: 50%;
-  background-color: $primary-color;
-
-  img {
-    height: 40px;
+@layer components {
+  .avatar {
+    display: inline-flex;
+    padding: 0.25rem;
     border-radius: 50%;
+    background-color: $primary-color;
+
+    img {
+      height: 40px;
+      border-radius: 50%;
+    }
   }
 }

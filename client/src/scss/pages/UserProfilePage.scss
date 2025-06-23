@@ -1,464 +1,465 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.profile-page {
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 3rem;
-  color: $text-color;
-
-  .profile-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1rem;
-    gap: 1rem;
-
-    @media (min-width: $screen-md) {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-
-    .page-title {
-      margin: 0;
-      font-size: 2rem;
-      color: $primary-color;
-    }
-
-    .edit-profile-btn {
-      background-color: $primary-color;
-      border-color: $primary-color;
-
-      &:hover {
-        background-color: $primary-hover;
-        border-color: $primary-hover;
-      }
-    }
-
-    .edit-mode-actions {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .cancel-btn {
-      color: $text-muted;
-      border-color: $gray-400;
-
-      &:hover {
-        background-color: rgba(156, 163, 175, 0.1);
-      }
-    }
-
-    .save-btn {
-      background-color: $primary-color;
-      border-color: $primary-color;
-
-      &:hover {
-        background-color: $primary-hover;
-        border-color: $primary-hover;
-      }
-    }
-  }
-
-  .profile-card {
-    display: flex;
-    flex-direction: column;
-    background-color: $card-background-color;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-
-    @media (min-width: $screen-md) {
-      flex-direction: row;
-    }
-  }
-
-  .avatar-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 1.5rem;
-    background-color: $gray-900;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-
-    @media (min-width: $screen-md) {
-      width: 250px;
-      flex-shrink: 0;
-    }
-  }
-
-  .avatar-container {
-    position: relative;
-    margin-bottom: 1.25rem;
-
-    &.edit-mode {
-      margin-bottom: 2rem;
-    }
-
-    .avatar-display {
-      position: relative;
-      cursor: pointer;
-      border-radius: 50%;
-      overflow: hidden;
-
-      &:hover .avatar-edit-overlay {
-        opacity: 1;
-      }
-    }
-
-    .avatar-edit-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      border-radius: 50%;
-
-      i {
-        color: #fff;
-        font-size: 1.5rem;
-      }
-    }
-
-    .avatar-badge {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 24px;
-      height: 24px;
-      background-color: $primary-color;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 2px solid $gray-900;
-
-      i {
-        color: $gray-900;
-        font-size: 0.75rem;
-      }
-    }
-  }
-
-  .avatar-carousel-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-
-    .avatar-carousel {
-      width: 140px;
-      margin: 0 0.5rem;
-    }
-
-    .carousel-nav-btn {
-      width: 36px;
-      height: 36px;
-      color: $primary-color;
-
-      &:hover:not(:disabled) {
-        background-color: rgba(52, 211, 153, 0.1);
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-  }
-
-  .avatar-item {
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem;
-
-    .avatar-image {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 3px solid $primary-color;
-    }
-  }
-
-  .user-name {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: $text-color;
-    margin-bottom: 0.5rem;
-  }
-
-  .user-role {
-    font-size: 0.875rem;
-    color: $text-muted;
-  }
-
-  .profile-info-section {
-    flex: 1;
-    padding: 2rem;
-  }
-
-  .profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .form-label {
-    font-size: 0.875rem;
-    color: $text-muted;
-  }
-
-  .info-display {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 0;
-
-    .info-icon {
-      color: $primary-color;
-      font-size: 1.25rem;
-    }
-
-    .info-text {
-      font-size: 1.125rem;
-      color: $text-color;
-    }
-  }
-
-  .input-wrapper {
-    position: relative;
-
-    .input-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: $text-muted;
-      z-index: 1;
-    }
-  }
-
-  .premium-badge {
-    background-color: #fcd34d !important;
-    color: $gray-900 !important;
-    font-weight: 600;
-    margin-left: 1rem;
-  }
-
-  .activity-section,
-  .account-section {
-    margin-top: 2rem;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-    color: $primary-color;
-    margin-bottom: 1.5rem;
-    position: relative;
-    display: inline-block;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: -0.5rem;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background-color: $primary-color;
-      border-radius: 3px;
-    }
-  }
-
-  .stats-container {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1rem;
-
-    @media (min-width: $screen-md) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (min-width: $screen-lg) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .stat-card {
-    background-color: $card-background-color;
-    border-radius: 12px;
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-    }
-
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: $primary-color;
-      margin-bottom: 0.5rem;
-
-      &.pi-spinner + .stat-label {
-        margin-top: 5px;
-      }
-    }
-
-    .stat-label {
-      font-size: 0.875rem;
-      color: $text-muted;
-    }
-
-    .stat-icon {
-      position: absolute;
-      right: 1rem;
-      bottom: 1rem;
-      font-size: 3rem;
-      color: rgba(52, 211, 153, 0.15);
-    }
-  }
-
-  .account-options {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1rem;
-
-    @media (min-width: $screen-md) {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-
-    @media (min-width: 955px) and (max-width: 1100px) {
-      /* When the container is wide enough for 2 cards but not 3 */
-      .option-card:nth-child(3) {
-        grid-column: auto; /* Reset any spanning */
-      }
-    }
-  }
-
-  .option-card {
-    display: flex;
-    align-items: center;
-    background-color: $card-background-color;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    &.danger {
-      border-left: 3px solid $danger-color;
-
-      .option-icon {
-        color: $danger-color;
-        background-color: rgba(248, 113, 113, 0.1);
-      }
-    }
-
-    .option-icon {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background-color: rgba(52, 211, 153, 0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 1rem;
-      flex-shrink: 0;
-      color: $primary-color;
-      font-size: 1.25rem;
-    }
-
-    .option-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .option-title {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: $text-color;
-      margin: 0 0 0.25rem 0;
-    }
-
-    .option-description {
-      font-size: 0.875rem;
-      color: $text-muted;
-      margin: 0;
-    }
-
-    .option-button {
-      margin-left: 1rem;
-      color: $primary-color;
-
-      &:hover {
-        background-color: rgba(52, 211, 153, 0.1);
-      }
-    }
-  }
-
-  // Dialog styles
-  .dialog-content {
-    margin: 1rem 0;
-    color: $text-color;
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: $text-muted;
-    }
-  }
-}
-
-
-@media (max-width: $screen-md) {
+@layer pages {
   .profile-page {
-    padding: 1rem;
-    .page-title {
-      font-size: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem;
+    color: $text-color;
+
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 1rem;
+
+      @media (min-width: $screen-md) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 2rem;
+        color: $primary-color;
+      }
+
+      .edit-profile-btn {
+        background-color: $primary-color;
+        border-color: $primary-color;
+
+        &:hover {
+          background-color: $primary-hover;
+          border-color: $primary-hover;
+        }
+      }
+
+      .edit-mode-actions {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .cancel-btn {
+        color: $text-muted;
+        border-color: $gray-400;
+
+        &:hover {
+          background-color: rgba(156, 163, 175, 0.1);
+        }
+      }
+
+      .save-btn {
+        background-color: $primary-color;
+        border-color: $primary-color;
+
+        &:hover {
+          background-color: $primary-hover;
+          border-color: $primary-hover;
+        }
+      }
+    }
+
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      background-color: $card-background-color;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+      @media (min-width: $screen-md) {
+        flex-direction: row;
+      }
+    }
+
+    .avatar-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem;
+      background-color: $gray-900;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+      @media (min-width: $screen-md) {
+        width: 250px;
+        flex-shrink: 0;
+      }
+    }
+
+    .avatar-container {
+      position: relative;
+      margin-bottom: 1.25rem;
+
+      &.edit-mode {
+        margin-bottom: 2rem;
+      }
+
+      .avatar-display {
+        position: relative;
+        cursor: pointer;
+        border-radius: 50%;
+        overflow: hidden;
+
+        &:hover .avatar-edit-overlay {
+          opacity: 1;
+        }
+      }
+
+      .avatar-edit-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        border-radius: 50%;
+
+        i {
+          color: #fff;
+          font-size: 1.5rem;
+        }
+      }
+
+      .avatar-badge {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 24px;
+        height: 24px;
+        background-color: $primary-color;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid $gray-900;
+
+        i {
+          color: $gray-900;
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    .avatar-carousel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+
+      .avatar-carousel {
+        width: 140px;
+        margin: 0 0.5rem;
+      }
+
+      .carousel-nav-btn {
+        width: 36px;
+        height: 36px;
+        color: $primary-color;
+
+        &:hover:not(:disabled) {
+          background-color: rgba(52, 211, 153, 0.1);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .avatar-item {
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+
+      .avatar-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid $primary-color;
+      }
     }
 
     .user-name {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: $text-color;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-role {
+      font-size: 0.875rem;
+      color: $text-muted;
+    }
+
+    .profile-info-section {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-size: 0.875rem;
+      color: $text-muted;
+    }
+
+    .info-display {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+
+      .info-icon {
+        color: $primary-color;
+        font-size: 1.25rem;
+      }
+
+      .info-text {
+        font-size: 1.125rem;
+        color: $text-color;
+      }
+    }
+
+    .input-wrapper {
+      position: relative;
+
+      .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $text-muted;
+        z-index: 1;
+      }
+    }
+
+    .premium-badge {
+      background-color: #fcd34d !important;
+      color: $gray-900 !important;
+      font-weight: 600;
+      margin-left: 1rem;
+    }
+
+    .activity-section,
+    .account-section {
+      margin-top: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      color: $primary-color;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -0.5rem;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: $primary-color;
+        border-radius: 3px;
+      }
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1rem;
+
+      @media (min-width: $screen-md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (min-width: $screen-lg) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-card {
+      background-color: $card-background-color;
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: $primary-color;
+        margin-bottom: 0.5rem;
+
+        &.pi-spinner + .stat-label {
+          margin-top: 5px;
+        }
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: $text-muted;
+      }
+
+      .stat-icon {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        font-size: 3rem;
+        color: rgba(52, 211, 153, 0.15);
+      }
+    }
+
+    .account-options {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1rem;
+
+      @media (min-width: $screen-md) {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+
+      @media (min-width: 955px) and (max-width: 1100px) {
+        /* When the container is wide enough for 2 cards but not 3 */
+        .option-card:nth-child(3) {
+          grid-column: auto; /* Reset any spanning */
+        }
+      }
     }
 
     .option-card {
-      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      background-color: $card-background-color;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      &.danger {
+        border-left: 3px solid $danger-color;
+
+        .option-icon {
+          color: $danger-color;
+          background-color: rgba(248, 113, 113, 0.1);
+        }
+      }
+
+      .option-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background-color: rgba(52, 211, 153, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        color: $primary-color;
+        font-size: 1.25rem;
+      }
+
+      .option-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .option-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: $text-color;
+        margin: 0 0 0.25rem 0;
+      }
+
+      .option-description {
+        font-size: 0.875rem;
+        color: $text-muted;
+        margin: 0;
+      }
+
+      .option-button {
+        margin-left: 1rem;
+        color: $primary-color;
+
+        &:hover {
+          background-color: rgba(52, 211, 153, 0.1);
+        }
+      }
     }
 
-    .option-icon {
-      width: 2.5rem;
-      height: 2.5rem;
-      font-size: 1rem;
-    }
+    // Dialog styles
+    .dialog-content {
+      margin: 1rem 0;
+      color: $text-color;
 
-    .option-title {
-      font-size: 1rem;
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: $text-muted;
+      }
+    }
+  }
+
+  @media (max-width: $screen-md) {
+    .profile-page {
+      padding: 1rem;
+      .page-title {
+        font-size: 1.75rem;
+      }
+
+      .user-name {
+        font-size: 1.25rem;
+      }
+
+      .option-card {
+        padding: 1.25rem;
+      }
+
+      .option-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1rem;
+      }
+
+      .option-title {
+        font-size: 1rem;
+      }
     }
   }
 }

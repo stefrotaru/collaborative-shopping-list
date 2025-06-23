@@ -1,33 +1,35 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.w-full {
-  width: 100%;
-}
+@layer utilities {
+  .w-full {
+    width: 100%;
+  }
 
-.p-button-lg {
-  font-size: 1rem !important;
-}
+  .p-button-lg {
+    font-size: 1rem !important;
+  }
 
-.mb-4 {
-  margin-bottom: 1rem;
-}
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
 
-.mt-2 {
-  margin-top: 0.5rem;
-}
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
 
-.w-full {
-  width: 100% !important;
-}
+  .w-full {
+    width: 100% !important;
+  }
 
-.text-red-400 {
-  color: $danger-color;
-}
+  .text-red-400 {
+    color: $danger-color;
+  }
 
-.w-full {
-  width: 100% !important;
-}
+  .w-full {
+    width: 100% !important;
+  }
 
-.mt-4 {
-  margin-top: 1rem !important;
+  .mt-4 {
+    margin-top: 1rem !important;
+  }
 }

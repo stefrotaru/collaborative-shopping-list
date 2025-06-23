@@ -1,58 +1,60 @@
-@use '../base/variables.scss' as *;
+@use "../base/variables.scss" as *;
 
-.user-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .profile-header {
+@layer components {
+  .user-profile {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
 
-    .avatar-container {
-      position: relative;
-
-      .status-indicator {
-        position: absolute;
-        bottom: 3.5px;
-        right: 3px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        border: 2px solid #18181b;
-
-        &.online {
-          background-color: $primary-color;
-        }
-      }
-    }
-
-    .user-info {
+    .profile-header {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      align-items: center;
+      gap: 0.75rem;
 
-      overflow: hidden;
-      text-align: center;
-      margin: 0.5rem 0 1rem 0;
+      .avatar-container {
+        position: relative;
 
-      .user-name {
-        font-weight: 600;
-        font-size: 1rem;
-        color: #e4e4e7;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        .status-indicator {
+          position: absolute;
+          bottom: 3.5px;
+          right: 3px;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          border: 2px solid #18181b;
+
+          &.online {
+            background-color: $primary-color;
+          }
+        }
       }
 
-      .user-email {
-        font-size: 0.75rem;
-        color: $text-muted;
-        white-space: nowrap;
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-align: center;
+        margin: 0.5rem 0 1rem 0;
+
+        .user-name {
+          font-weight: 600;
+          font-size: 1rem;
+          color: #e4e4e7;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .user-email {
+          font-size: 0.75rem;
+          color: $text-muted;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }

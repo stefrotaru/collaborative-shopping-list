@@ -1,23 +1,25 @@
-.p-dialog-mask {
-  background-color: rgba(0, 0, 0, 0.5);
+@layer components {
+  .p-dialog-mask {
+    background-color: rgba(0, 0, 0, 0.5);
 
-  .p-dialog {
-    p {
-      font-size: 1.2rem;
-    }
+    .p-dialog {
+      p {
+        font-size: 1.2rem;
+      }
 
-    .p-dialog-content {
-      .field {
-        display: flex;
-        align-items: center;
-        margin: 0 0 1rem 0;
+      .p-dialog-content {
+        .field {
+          display: flex;
+          align-items: center;
+          margin: 0 0 1rem 0;
 
-        label {
-          margin: 0 0.75rem 0 0;
-        }
+          label {
+            margin: 0 0.75rem 0 0;
+          }
 
-        .w-full {
-          flex: 1;
+          .w-full {
+            flex: 1;
+          }
         }
       }
     }
