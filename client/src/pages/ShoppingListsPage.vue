@@ -23,7 +23,7 @@
               id="group-name"
               v-model="newGroupName"
               placeholder="Enter group name"
-              class="create-input"
+              class="create-input no-highlight"
               @keyup.enter="createGroup"
             />
             <div class="create-input-actions">

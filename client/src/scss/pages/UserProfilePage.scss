@@ -386,9 +386,8 @@
         height: 3rem;
         border-radius: 50%;
         background-color: rgba(52, 211, 153, 0.1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        align-content: center;
+        text-align: center;
         margin-right: 1rem;
         flex-shrink: 0;
         color: $primary-color;

@@ -100,6 +100,17 @@
     }
   }
 
+  .p-inputtext.no-highlight {
+    background-color: $card-background-color-dark !important;
+    border-color: $border-color !important;
+    color: $text-color !important;
+
+    &:focus {
+      border-color: none !important;
+      box-shadow: unset !important;
+    }
+  }
+
   .p-toast {
     .p-toast-message {
       background-color: $card-background-color;

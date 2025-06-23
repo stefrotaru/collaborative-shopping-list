@@ -31,7 +31,7 @@
         <InputText
           v-model="newItemName"
           placeholder="Add item (e.g. Milk x 2)"
-          class="shopping-list__input"
+          class="shopping-list__input no-highlight"
           @keyup.enter.prevent="onItemAdded"
         />
         <div v-if="newItemName.trim()" class="shopping-list__quantity-control">

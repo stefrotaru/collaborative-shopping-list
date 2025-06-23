@@ -8,8 +8,7 @@
 @use 'base/app';
 @use 'base/typography';	
 
-//vendors
-@use 'vendors/primevue-global';
+
 
 //components
 @use 'components/GroupItem';
@@ -29,6 +28,9 @@
 @use 'pages/ShoppingListsPage';
 @use 'pages/UserProfilePage';
 @use 'pages/GroupPage';
+
+//vendors
+@use 'vendors/primevue-global';
 
 //utils
 @use 'utils/helpers.scss';
