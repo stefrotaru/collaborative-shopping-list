@@ -1,12 +1,38 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
-  // const userShoppingLists = ref([]);
-  const allUserShoppingLists = ref([]);
-  const currentGroupShoppingLists = ref([]);
+export interface ShoppingList {
+  id: number;
+  guid: string;
+  name: string;
+  groupId: number;
+  createdById: number;
+  lastSynced?: Date;
+  isOffline?: boolean;
+  pendingChanges?: boolean;
+}
 
-  const fetchGroupShoppingLists = async (groupId) => {
+export interface ShoppingItem {
+  id: number;
+  name: string;
+  quantity: number;
+  isChecked: boolean;
+  shoppingListId: number;
+  createdById?: number;
+
+  // For offline created items
+  tempId?: string;
+  lastSynced?: Date;
+  isOffline?: boolean;
+  pendingChanges?: boolean;
+  pendingDelete?: boolean;
+}
+
+export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
+  const allUserShoppingLists = ref<ShoppingList[]>([]);
+  const currentGroupShoppingLists = ref<ShoppingList[]>([]);
+
+  const fetchGroupShoppingLists = async (groupId: number) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingLists/group/${groupId}`,
@@ -43,14 +69,14 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       }
   
       currentGroupShoppingLists.value = await response.json();
-      return currentGroupShoppingLists.value;
+      return currentGroupShoppingLists.value as ShoppingList[];
     } catch (error) {
       console.error("Error fetching group shopping lists:", error);
       throw error;
     }
   };
   
-  const fetchAllGroupsShoppingLists = async (groupIds) => {
+  const fetchAllGroupsShoppingLists = async (groupIds: number[]) => {
     if (!groupIds || groupIds.length === 0) {
       allUserShoppingLists.value = [];
       return [];
@@ -92,14 +118,14 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       }
   
       allUserShoppingLists.value = await response.json();
-      return allUserShoppingLists.value;
+      return allUserShoppingLists.value as ShoppingList[];
     } catch (error) {
       console.error("Error fetching all groups shopping lists:", error);
       throw error;
     }
   };
 
-  const createNewList = async (listName, groupId, userId) => {
+  const createNewList = async (listName: string, groupId: number, userId: number) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingLists`,
@@ -125,7 +151,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     } catch (error) {}
   };
 
-  const deleteList = async (listId) => {
+  const deleteList = async (listId: number) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingLists/${listId}`,
@@ -149,7 +175,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   }
 
-  const createGroup = async (groupName, description, createdById) => { //TODO: Move to groups store
+  const createGroup = async (groupName: string, description: string, createdById: number) => { //TODO: Move to groups store
     try {
       const response = await fetch(`CollaborativeShoppingListAPI/Groups`, {
         method: "POST",
@@ -173,7 +199,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   };
 
-  const getListItems = async (listId) => {
+  const getListItems = async (listId: number) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingItems/shoppinglist/${listId}`,
@@ -216,7 +242,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   };
 
-  const getShoppingListName = async (listId) => {
+  const getShoppingListName = async (listId: number) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingLists/${listId}`,
@@ -261,7 +287,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   };
 
-  const addListItem = async (listId, itemName, quantity, userId) => {
+  const addListItem = async (listId: number, itemName: string, quantity: number, userId: number) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingItems`,
@@ -292,7 +318,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   }
 
-  const removeListItem = async (itemId) => {
+  const removeListItem = async (itemId: number) => {
     try {
       const response = await fetch(
       `/CollaborativeShoppingListAPI/ShoppingItems/${itemId}`,
@@ -314,7 +340,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
     }
   }
 
-  const updateItemCheckedState = async (itemId, checkedState) => {
+  const updateItemCheckedState = async (itemId: number, checkedState: boolean) => {
     try {
       const response = await fetch(
         `/CollaborativeShoppingListAPI/ShoppingItems/updateItemChecked/${itemId}?isChecked=${checkedState}`,
@@ -345,7 +371,7 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
 
   // TODO: add list rename service
 
-  const populateStore = async (groupId) => {
+  const populateStore = async (groupId: number) => {
     //Should receive an array of groupdId's ti display all Shopping Lists
     console.log('Shopping List populateStore 🛒🛒🛒', groupId)
     await fetchGroupShoppingLists(groupId); // TODO: Should fetch all groupId's for logged user
