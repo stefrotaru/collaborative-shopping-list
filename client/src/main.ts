@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { indexedDBService } from './services/indexedDbService'
 import './scss/style.scss'
 import router from './router'
 import App from './App.vue'
@@ -9,6 +10,14 @@ import Aura from '@primevue/themes/aura'
 import 'primeicons/primeicons.css'
 
 import ToastService from 'primevue/toastservice';
+
+// Initialize indexedDB if supported by browser
+if (indexedDBService.isSupported()) {
+  await indexedDBService.init();
+  console.log('IndexedDB ready!');
+} else {
+  console.error('IndexedDB not supported');
+}
 
 const pinia = createPinia()
 
