@@ -1,3 +1,4 @@
+import { indexedDBService } from "../services/indexedDbService";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -69,6 +70,12 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       }
   
       currentGroupShoppingLists.value = await response.json();
+
+      // Add shopping lists to IndexedDB
+      for (const list of currentGroupShoppingLists.value) {
+        await indexedDBService.saveShoppingList(list);
+      }
+      
       return currentGroupShoppingLists.value as ShoppingList[];
     } catch (error) {
       console.error("Error fetching group shopping lists:", error);
@@ -118,6 +125,12 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       }
   
       allUserShoppingLists.value = await response.json();
+
+      //Add shopping lists to IndexedDB
+      for (const list of allUserShoppingLists.value) {
+        await indexedDBService.saveShoppingList(list);
+      }
+
       return allUserShoppingLists.value as ShoppingList[];
     } catch (error) {
       console.error("Error fetching all groups shopping lists:", error);
