@@ -37,6 +37,15 @@ class IndexedDBService {
         shoppingListStore.createIndex("createdById", "createdById", { unique: false });
         console.log("📒 Created Shopping Lists store");
       }
+
+      // Create Shopping Items store
+      if (!db.objectStoreNames.contains(STORES.SHOPPING_ITEMS)) {
+        // autoIncrement -> Auto-generate IDs
+        const itemsStore = db.createObjectStore(STORES.SHOPPING_ITEMS, { keyPath: "id", autoIncrement: true });
+
+        itemsStore.createIndex("shoppingListId", "shoppingListId", { unique: false });
+        console.log("📒 Created Shopping Items store");
+      }
     };
 
     // Wait for database to open
@@ -133,6 +142,79 @@ class IndexedDBService {
     });
   }
 
+  async saveShoppingItems(items: ShoppingItem[], shoppingListId: number): Promise<void> {
+    if (!this.db) {
+      throw new Error("Database not initialized");
+    }
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORES.SHOPPING_ITEMS], "readwrite");
+      const store = transaction.objectStore(STORES.SHOPPING_ITEMS);
+
+      // First, delete existing items for this list
+      const index = store.index("shoppingListId");
+      const deleteRequest = index.openCursor(IDBKeyRange.only(shoppingListId));
+
+      deleteRequest.onsuccess = () => {
+        const cursor = deleteRequest.result;
+        if (cursor) {
+          store.delete(cursor.primaryKey);
+          cursor.continue();
+        } else {
+          // After deleting, add new items
+          const timestamp = new Date();
+          let addCount = 0;
+
+          items.forEach((item) => {
+            const itemWithTimestamp = { ...item, lastSynced: timestamp };
+            const addRequest = store.add(itemWithTimestamp);
+            addRequest.onsuccess = () => {
+              addCount++;
+              if (addCount === items.length) {
+                console.log(`✅ Saved ${items.length} items for list ${shoppingListId}`);
+                resolve();
+              }
+            };
+          });
+
+          // Handle empty list case
+          if (items.length === 0) {
+            console.log(`✅ Cleared items for list ${shoppingListId}`);
+            resolve();
+          }
+        }
+      };
+
+      transaction.onerror = () => {
+        console.error("❌ Failed to save items:", transaction.error);
+        reject(transaction.error);
+      };
+    });
+  }
+
+  async getShoppingItems(shoppingListId: number): Promise<ShoppingItem[]> {
+    if (!this.db) {
+      throw new Error("Database not initialized");
+    }
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORES.SHOPPING_ITEMS], "readonly");
+      const store = transaction.objectStore(STORES.SHOPPING_ITEMS);
+      const index = store.index("shoppingListId");
+      const request = index.getAll(shoppingListId);
+
+      request.onsuccess = () => {
+        console.log( `✅ Found ${request.result.length} items for list ${shoppingListId}` );
+        resolve(request.result);
+      };
+      request.onerror = () => {
+        console.error("❌ Failed to get items:", request.error);
+        reject(request.error);
+      };
+    });
+  }
+
+  // UTILITY METHODS
   async clearAll(): Promise<void> {
     if (!this.db) { 
       throw new Error("Database not initialized");
