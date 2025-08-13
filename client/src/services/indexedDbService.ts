@@ -142,7 +142,86 @@ class IndexedDBService {
     });
   }
 
-  async saveShoppingItems(items: ShoppingItem[], shoppingListId: number): Promise<void> {
+  async addShoppingItem(item: ShoppingItem): Promise<ShoppingItem> {
+    if (!this.db) {
+      throw new Error("Database not initialized");
+    }
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORES.SHOPPING_ITEMS], "readwrite");
+      const store = transaction.objectStore(STORES.SHOPPING_ITEMS);
+      
+      const itemWithTimestamp = {...item, lastSynced: new Date()};
+      
+      const request = store.add(itemWithTimestamp);
+      
+      request.onsuccess = () => {
+        // Return the item with its generated ID
+        const completeItem = { ...itemWithTimestamp, id: request.result as number };
+        console.log(`✅ Added item: ${item.name} (ID: ${completeItem.id})`);
+        resolve(completeItem);
+      };
+      
+      request.onerror = () => {
+        console.error("❌ Failed to add item:", request.error);
+        reject(request.error);
+      };
+    });
+  }
+
+  async updateShoppingItem(item: ShoppingItem): Promise<void> {
+    if (!this.db) {
+      throw new Error("Database not initialized");
+    }
+
+    if (!item.id) {
+      throw new Error("Item must have an ID to update");
+    }
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORES.SHOPPING_ITEMS], "readwrite");
+      const store = transaction.objectStore(STORES.SHOPPING_ITEMS);
+      
+      const itemWithTimestamp = {...item, lastSynced: new Date()};
+      
+      const request = store.put(itemWithTimestamp);
+      
+      request.onsuccess = () => {
+        console.log(`✅ Updated item: ${item.name} (ID: ${item.id})`);
+        resolve();
+      };
+      
+      request.onerror = () => {
+        console.error("❌ Failed to update item:", request.error);
+        reject(request.error);
+      };
+    });
+  }
+
+  async deleteShoppingItem(itemId: number): Promise<void> {
+    if (!this.db) {
+      throw new Error("Database not initialized");
+    }
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORES.SHOPPING_ITEMS], "readwrite");
+      const store = transaction.objectStore(STORES.SHOPPING_ITEMS);
+      
+      const request = store.delete(itemId);
+      
+      request.onsuccess = () => {
+        console.log(`✅ Deleted item with ID: ${itemId}`);
+        resolve();
+      };
+      
+      request.onerror = () => {
+        console.error("❌ Failed to delete item:", request.error);
+        reject(request.error);
+      };
+    });
+  }
+
+  async replaceAllShoppingItems(items: ShoppingItem[], shoppingListId: number): Promise<void> {
     if (!this.db) {
       throw new Error("Database not initialized");
     }
