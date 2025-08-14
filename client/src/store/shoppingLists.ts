@@ -228,7 +228,12 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
         throw new Error("Failed to fetch shopping list items");
       }
 
-      return await response.json();
+      const listItems = await response.json();
+      for (const item of listItems) {
+        indexedDBService.addShoppingItem(item);
+      }
+
+      return listItems;
     } catch (error) {}
   };
 
@@ -247,8 +252,13 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       if (!response.ok) {
         throw new Error("Failed to fetch shopping list items");
       }
+
+      const listItems = await response.json();
+      for (const item of listItems) {
+        indexedDBService.addShoppingItem(item);
+      }
   
-      return await response.json();
+      return listItems;
     } catch (error) {
       console.error("Error fetching shopping list items by GUID:", error);
       throw error;
@@ -325,7 +335,10 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
         throw new Error("Failed to add item to shopping list");
       }
 
-      return await response.json();
+      const listItem = await response.json();
+      indexedDBService.addShoppingItem(listItem);
+
+      return await listItem;
     } catch (error) {
       console.error("Error adding item to shopping list:", error);
     }
@@ -346,6 +359,8 @@ export const useShoppingListsStore = defineStore("shoppingListsStore", () => {
       if (!response.ok) {
         throw new Error()
       }
+
+      indexedDBService.deleteShoppingItem(itemId);
 
       return response;
     } catch {
